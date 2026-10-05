@@ -289,3 +289,8 @@ document.addEventListener('submit',function(ev){if(ev.target.closest&&ev.target.
 </script>
 	<?php
 }, 20 );
+
+// Meta (Facebook) domain verification for meccalimo.com.
+add_action( 'wp_head', function () {
+	echo '<meta name="facebook-domain-verification" content="9hvv9tal1zgi0653vyqvwee0zrjxrf" />' . "\n";
+}, 1 );
