@@ -1,0 +1,782 @@
+[
+ {
+  "slug": "about",
+  "find": "Who we are?",
+  "replace": "Who we are"
+ },
+ {
+  "slug": "about",
+  "find": "We are Mecca limo services a company with a variety models of luxury vehicles",
+  "replace": "We are Mecca Limo, a company with a variety of luxury vehicle models"
+ },
+ {
+  "slug": "about",
+  "find": "all social Events, Weddings, Night out, various trips between the historic landmarks, Beaches, museums, theaters, to visit Charleston attractions.",
+  "replace": "all social events, weddings, nights out, trips between historic landmarks, beaches, museums, theaters, and visits to Charleston attractions."
+ },
+ {
+  "slug": "about",
+  "find": "And finding delicious meal restaurants, hotels in Charleston town. We are distinguishable in organizing",
+  "replace": "We also help you find delicious restaurants and hotels in Charleston. We stand out in organizing"
+ },
+ {
+  "slug": "about",
+  "find": "Also transportation services from and to the airports.",
+  "replace": "We also provide transportation to and from the airports."
+ },
+ {
+  "slug": "about",
+  "find": "Mecca Limo is a startup because we want to serve",
+  "replace": "Mecca Limo was started because we want to serve"
+ },
+ {
+  "slug": "about",
+  "find": "Our luxury car service Charleston SC of limousines and executive transportation Charleston will be there",
+  "replace": "Our luxury car service in Charleston, SC, with limousines and executive transportation, will be there"
+ },
+ {
+  "slug": "about",
+  "find": "on time for your airport conference,",
+  "replace": "on time for the airport or a conference,"
+ },
+ {
+  "slug": "about",
+  "find": "Our ability to change is",
+  "replace": "Our ability to adapt is"
+ },
+ {
+  "slug": "about",
+  "find": "efficiency, being on time, comfort",
+  "replace": "efficiency, punctuality, comfort"
+ },
+ {
+  "slug": "about",
+  "find": "By establishing the prosperous \"Mecca Limo\" business and putting in a lot of effort, we are producing",
+  "replace": "By building Mecca Limo and putting in a lot of effort, we are creating"
+ },
+ {
+  "slug": "about",
+  "find": "limousine service in Charleston SC, we also",
+  "replace": "limousine service in Charleston, SC, we also"
+ },
+ {
+  "slug": "about",
+  "find": "OUR FLEETS",
+  "replace": "OUR FLEET"
+ },
+ {
+  "slug": "about",
+  "find": "whole family perfect for trip in Charleston beaches.",
+  "replace": "whole family, perfect for trips to Charleston beaches."
+ },
+ {
+  "slug": "about",
+  "find": "simple pleasures..",
+  "replace": "simple pleasures."
+ },
+ {
+  "slug": "about",
+  "find": "leather Interior",
+  "replace": "leather interior"
+ },
+ {
+  "slug": "about",
+  "find": "Seat Adjusters",
+  "replace": "Seat adjusters"
+ },
+ {
+  "slug": "about",
+  "find": "Perfect for corporation transport",
+  "replace": "Perfect for corporate transport"
+ },
+ {
+  "slug": "airport",
+  "find": "Mecca Limousine is excited",
+  "replace": "Mecca Limo is excited"
+ },
+ {
+  "slug": "airport",
+  "find": "in Charleston The punctuality",
+  "replace": "in Charleston. The punctuality"
+ },
+ {
+  "slug": "airport",
+  "find": "Charleston area.You may",
+  "replace": "Charleston area. You may"
+ },
+ {
+  "slug": "airport",
+  "find": "Mercedes Sprinter Limo buses",
+  "replace": "Mercedes-Benz Sprinter limo buses"
+ },
+ {
+  "slug": "airport",
+  "find": "spread out throughout the city",
+  "replace": "spread throughout the city"
+ },
+ {
+  "slug": "airport",
+  "find": "Executive Airport We take",
+  "replace": "Executive Airport. We take"
+ },
+ {
+  "slug": "airport",
+  "find": "Arrived at Atlantic Aviation",
+  "replace": "Just arrived at Atlantic Aviation"
+ },
+ {
+  "slug": "airport",
+  "find": "Finally, after you have arrived at your destination, take it easy, put your feet up, and relax as our experienced chauffeurs drive you there.",
+  "replace": "Take it easy, put your feet up, and relax as our experienced chauffeurs drive you to your destination."
+ },
+ {
+  "slug": "airport",
+  "find": "Mecca Limo service CharlestonSC provides an excellent recommendation for",
+  "replace": "Mecca Limo provides excellent recommendations for"
+ },
+ {
+  "slug": "airport",
+  "find": "Mecca Limo.",
+  "replace": "Mecca Limo"
+ },
+ {
+  "slug": "airport",
+  "find": "including but not limited to",
+  "replace": "including but not limited to:"
+ },
+ {
+  "slug": "airport",
+  "find": "Regional Airport (MPR)",
+  "replace": "Regional Airport (LRO)"
+ },
+ {
+  "slug": "airport",
+  "find": "Johns Island Airport (JZI)",
+  "replace": "Charleston Executive Airport (JZI)"
+ },
+ {
+  "slug": "attractions",
+  "find": "brick-walked streets and Spanish-style mosques is one of the top things to do in Charleston, and it is on the list of things to do in Charleston.",
+  "replace": "brick-lined streets and historic churches, is one of the top things to do in Charleston."
+ },
+ {
+  "slug": "attractions",
+  "find": "National Russell House",
+  "replace": "Nathaniel Russell House"
+ },
+ {
+  "slug": "attractions",
+  "find": "These are only a few instances.",
+  "replace": "These are only a few examples."
+ },
+ {
+  "slug": "attractions",
+  "find": "Charleston Limo is excited",
+  "replace": "Mecca Limo is excited"
+ },
+ {
+  "slug": "attractions",
+  "find": "The best historically significant activities and attractions to do in Charleston",
+  "replace": "The best historic activities and attractions in Charleston"
+ },
+ {
+  "slug": "attractions",
+  "find": "To Do In Charleston, Sc",
+  "replace": "To Do In Charleston, SC"
+ },
+ {
+  "slug": "attractions",
+  "find": "\"A small place with a great history”",
+  "replace": "“A small place with a great history”"
+ },
+ {
+  "slug": "attractions",
+  "find": "At 6 Chalmers street, constructed in 1859, it is considered the last extant slave auction facility in SC. with a Romanesque architecture style.",
+  "replace": "At 6 Chalmers Street, constructed in 1859, it is considered the last extant slave auction facility in SC, built in the Romanesque architectural style."
+ },
+ {
+  "slug": "attractions",
+  "find": "It tells the story of the “history of enslaved people “from the beginning of civil war",
+  "replace": "It tells the story of the “history of enslaved people” from the beginning of the Civil War"
+ },
+ {
+  "slug": "attractions",
+  "find": "provides the sole park Service authorized",
+  "replace": "provides the sole National Park Service authorized"
+ },
+ {
+  "slug": "attractions",
+  "find": "a park Service visitor center",
+  "replace": "a National Park Service visitor center"
+ },
+ {
+  "slug": "attractions",
+  "find": "A great place & worth to visit.",
+  "replace": "A great place & worth a visit."
+ },
+ {
+  "slug": "attractions",
+  "find": "the first ship of the Navy & the Maritime Museum",
+  "replace": "the first ship of the Naval & Maritime Museum"
+ },
+ {
+  "slug": "attractions",
+  "find": "Spending a day in Patriots Point Naval & Maritime Museum not enough, there are so much to see and do. Time will run fast!",
+  "replace": "A day at Patriots Point Naval & Maritime Museum is not enough; there is so much to see and do. Time will fly!"
+ },
+ {
+  "slug": "beach",
+  "find": "fun and easy?Mecca Limousine Services is available",
+  "replace": "fun and easy? Mecca Limo is available"
+ },
+ {
+  "slug": "beach",
+  "find": "for the atmosphere and, as a result, the surfing;",
+  "replace": "for the atmosphere and the surfing;"
+ },
+ {
+  "slug": "beach",
+  "find": "in the several pubs",
+  "replace": "in the many pubs"
+ },
+ {
+  "slug": "beach",
+  "find": "as the day develops",
+  "replace": "as the day goes on"
+ },
+ {
+  "slug": "beach",
+  "find": "non-motorized sports products",
+  "replace": "non-motorized sports equipment"
+ },
+ {
+  "slug": "beach",
+  "find": "Take advantage of the Wild Dunes car service; whether you're traveling from the Isle of Palms to Kiawah Island Mecca limo services, they'd be happy to assist you.",
+  "replace": "Take advantage of our Wild Dunes car service; whether you're traveling from the Isle of Palms to Kiawah Island, Mecca Limo will be happy to assist you."
+ },
+ {
+  "slug": "beach",
+  "find": "enjoying a stunning sunset",
+  "replace": "enjoying a stunning sunset,"
+ },
+ {
+  "slug": "beach",
+  "find": "simple pleasures..",
+  "replace": "simple pleasures."
+ },
+ {
+  "slug": "beach",
+  "find": "from the city center, is filled",
+  "replace": "from the city center is filled"
+ },
+ {
+  "slug": "beach",
+  "find": "is a family-balanced beach of residents & visitors",
+  "replace": "is a family-friendly beach for residents & visitors"
+ },
+ {
+  "slug": "beach",
+  "find": "is known as \"Edge of America\"",
+  "replace": "is known as the \"Edge of America\""
+ },
+ {
+  "slug": "charleston-hourly-limo-charter",
+  "find": "choose from 2 up to 12 hours",
+  "replace": "choose from 2 to 12 hours"
+ },
+ {
+  "slug": "corporate",
+  "find": "(Conventions and Exhibitions) Transportation to and from",
+  "replace": "(conventions and exhibitions). Transportation to and from"
+ },
+ {
+  "slug": "corporate",
+  "find": "Formal settings (homecoming",
+  "replace": "Formal events (homecoming"
+ },
+ {
+  "slug": "corporate",
+  "find": "Transportation for the Elderly",
+  "replace": "Transportation for the elderly"
+ },
+ {
+  "slug": "corporate",
+  "find": "from our sizable fleets. You may travel suitably to Charleston, South Carolina's professional vehicle service.",
+  "replace": "from our sizable fleet. Travel in comfort with Charleston, South Carolina's professional car service."
+ },
+ {
+  "slug": "corporate",
+  "find": "Check out our Kiawah Island car service",
+  "replace": "Check out our Kiawah Island car service."
+ },
+ {
+  "slug": "corporate",
+  "find": "Service with Mecca limo",
+  "replace": "Service with Mecca Limo"
+ },
+ {
+  "slug": "corporate",
+  "find": "For your mobility requirements",
+  "replace": "For your transportation needs"
+ },
+ {
+  "slug": "cruise-trips",
+  "find": "Navigator and GMC Denali",
+  "replace": "Navigator and GMC Yukon Denali"
+ },
+ {
+  "slug": "events",
+  "find": "They are becoming an \"arena of impressions.\"",
+  "replace": "It is becoming an \"arena of impressions.\""
+ },
+ {
+  "slug": "events",
+  "find": "exposure à la fashion is almost required!",
+  "replace": "arriving in fashion is almost required!"
+ },
+ {
+  "slug": "events",
+  "find": "While selecting our prom limo service",
+  "replace": "When you select our prom limo service"
+ },
+ {
+  "slug": "events",
+  "find": "wellbeing",
+  "replace": "well-being"
+ },
+ {
+  "slug": "events",
+  "find": "Charleston SC Car Service: Our Limo service SC is waiting",
+  "replace": "Our Charleston, SC limo service is waiting"
+ },
+ {
+  "slug": "events",
+  "find": "expert Chuffer",
+  "replace": "expert chauffeur"
+ },
+ {
+  "slug": "events",
+  "find": "in a perfect attitude",
+  "replace": "with the perfect attitude"
+ },
+ {
+  "slug": "events",
+  "find": "among the simplest places",
+  "replace": "among the easiest places"
+ },
+ {
+  "slug": "events",
+  "find": "all of the simplest areas",
+  "replace": "all of the best areas"
+ },
+ {
+  "slug": "events",
+  "find": "neighborhood lounges, dance clubs,",
+  "replace": "neighborhood lounges, or dance clubs,"
+ },
+ {
+  "slug": "events",
+  "find": "We care about your fancy, comfort & your trust",
+  "replace": "We care about your taste, comfort & trust"
+ },
+ {
+  "slug": "events",
+  "find": "beautiful moments of your celebration",
+  "replace": "beautiful moments of your celebration."
+ },
+ {
+  "slug": "golf-courses",
+  "find": "standing by to assist you. to play rounds of golf at",
+  "replace": "standing by to take you to play a round of golf at"
+ },
+ {
+  "slug": "golf-courses",
+  "find": "Country Club Charleston Golf",
+  "replace": "Country Club of Charleston"
+ },
+ {
+  "slug": "golf-courses",
+  "find": "The Ocean Golf Course",
+  "replace": "The Ocean Course"
+ },
+ {
+  "slug": "golf-courses",
+  "find": "Why choose Mecca Limousine Services ?",
+  "replace": "Why choose Mecca Limo?"
+ },
+ {
+  "slug": "home",
+  "find": "A warm welcome to Mecca limo LLC As a family- base business with you – our valued clients at the center of it all,",
+  "replace": "A warm welcome to Mecca Limo! As a family-based business with you, our valued clients, at the center of it all,"
+ },
+ {
+  "slug": "home",
+  "find": "most reliable Car services in Charleston SC and",
+  "replace": "most reliable car services in Charleston, SC and"
+ },
+ {
+  "slug": "home",
+  "find": ", museums, theaters, to visit Charleston",
+  "replace": ", museums, theaters, and visits to Charleston"
+ },
+ {
+  "slug": "home",
+  "find": "And finding delicious meal restaurants,",
+  "replace": "We also help you find delicious restaurants and"
+ },
+ {
+  "slug": "home",
+  "find": "in Charleston town. We are distinguishable in organizing",
+  "replace": "in Charleston. We stand out in organizing"
+ },
+ {
+  "slug": "home",
+  "find": "Also transportation services from and to the",
+  "replace": "We also provide transportation to and from the"
+ },
+ {
+  "slug": "home",
+  "find": "your wedding day, pre-wedding party easily",
+  "replace": "your wedding day and pre-wedding party easily"
+ },
+ {
+  "slug": "home",
+  "find": "Mecca Limo gives your night out enthusiasm and excitement and enjoy every moment.",
+  "replace": "Mecca Limo brings enthusiasm and excitement to your night out so you can enjoy every moment."
+ },
+ {
+  "slug": "home",
+  "find": "We care about your fancy, comfort &",
+  "replace": "We care about your taste, comfort &"
+ },
+ {
+  "slug": "home",
+  "find": "Every minute counts, Mecca Limo pleased to serve you in Arrival on time to & from the airport",
+  "replace": "Every minute counts. Mecca Limo is pleased to get you to & from the airport on time."
+ },
+ {
+  "slug": "home",
+  "find": "Attractions.",
+  "replace": "Attractions"
+ },
+ {
+  "slug": "home",
+  "find": "Let's create a guided tour for you,Our cars are equipped to enjoy your tour with all luxury. It is experience unique & enjoyable.",
+  "replace": "Let's create a guided tour for you. Our cars are equipped so you can enjoy your tour in full luxury. It is a unique & enjoyable experience."
+ },
+ {
+  "slug": "home",
+  "find": "charming beaches of Charleston",
+  "replace": "charming beaches of Charleston."
+ },
+ {
+  "slug": "home",
+  "find": "We give services to Golf courses, our drivers",
+  "replace": "We provide service to golf courses; our drivers"
+ },
+ {
+  "slug": "home",
+  "find": "In mecca limo we offer a top great suggestion to the best hotels in Charleston and get there easy.",
+  "replace": "At Mecca Limo, we offer great suggestions for the best hotels in Charleston and get you there easily."
+ },
+ {
+  "slug": "home",
+  "find": "happy to service you with pick ups and drop off.",
+  "replace": "happy to serve you with pickups and drop-offs."
+ },
+ {
+  "slug": "hotels",
+  "find": "It is considered one of Historic Districts",
+  "replace": "It is located in one of Charleston's historic districts"
+ },
+ {
+  "slug": "hotels",
+  "find": "from the old slave market museum",
+  "replace": "from the Old Slave Mart Museum"
+ },
+ {
+  "slug": "hotels",
+  "find": "Hotel Bennett's collected",
+  "replace": "Hotel Bennett has collected"
+ },
+ {
+  "slug": "hotels",
+  "find": "A Decorative hand-crafted metalwork’s in every square.",
+  "replace": "Decorative hand-crafted metalwork in every square."
+ },
+ {
+  "slug": "hotels",
+  "find": "historic Charleston.You’ll",
+  "replace": "historic Charleston. You’ll"
+ },
+ {
+  "slug": "hotels",
+  "find": "within close proximity of",
+  "replace": "close to"
+ },
+ {
+  "slug": "mount-pleasant-limo-service",
+  "find": "Regional Airport (MPR)",
+  "replace": "Regional Airport (LRO)"
+ },
+ {
+  "slug": "night-out",
+  "find": "our sprinters are also",
+  "replace": "our Sprinters are also"
+ },
+ {
+  "slug": "night-out",
+  "find": "Our sprinters are ideal",
+  "replace": "Our Sprinters are ideal"
+ },
+ {
+  "slug": "night-out",
+  "find": "Mecca Limousine Service can help",
+  "replace": "Mecca Limo can help"
+ },
+ {
+  "slug": "night-out",
+  "find": "Our sprinters will keep",
+  "replace": "Our Sprinters will keep"
+ },
+ {
+  "slug": "night-out",
+  "find": "Any party, whether it be for women or men.",
+  "replace": "Any party, whether it is for women or men."
+ },
+ {
+  "slug": "night-out",
+  "find": "With Concert Limo Rental in",
+  "replace": "With our concert limo rental in"
+ },
+ {
+  "slug": "night-out",
+  "find": "Get Mecca Limousine Services to arrive",
+  "replace": "Book Mecca Limo to arrive"
+ },
+ {
+  "slug": "night-out",
+  "find": "hiring Mecca Limo Service and",
+  "replace": "hiring Mecca Limo and"
+ },
+ {
+  "slug": "night-out",
+  "find": "We can help you to arrive in stylish way",
+  "replace": "We can help you arrive in style"
+ },
+ {
+  "slug": "night-out",
+  "find": "Our sprinters Are an Extremely Unique ride as it is custom built",
+  "replace": "Our Sprinters are an extremely unique ride, as they are custom built"
+ },
+ {
+  "slug": "night-out",
+  "find": "Our sprinters are perfect for, birthday party, or just",
+  "replace": "Our Sprinters are perfect for a birthday party or just"
+ },
+ {
+  "slug": "night-out",
+  "find": "with Mecca Limousine Service.",
+  "replace": "with Mecca Limo."
+ },
+ {
+  "slug": "night-out",
+  "find": "Our sprinters are sure",
+  "replace": "Our Sprinters are sure"
+ },
+ {
+  "slug": "night-out",
+  "find": "Stand up, and interact freely",
+  "replace": "Stand up, interact freely"
+ },
+ {
+  "slug": "policy",
+  "find": "All of our vehicles cannot be loaded beyond",
+  "replace": "None of our vehicles can be loaded beyond"
+ },
+ {
+  "slug": "policy",
+  "find": "20 minutes Wait Time from landing time,",
+  "replace": "20 minutes of wait time from landing,"
+ },
+ {
+  "slug": "policy",
+  "find": "cancellation and rescheduling.",
+  "replace": "Cancellation and rescheduling"
+ },
+ {
+  "slug": "policy",
+  "find": "(843) 804- 1188",
+  "replace": "(843) 804-1188"
+ },
+ {
+  "slug": "policy",
+  "find": "Mecca Limo LLC is not",
+  "replace": "Mecca Limo is not"
+ },
+ {
+  "slug": "policy",
+  "find": "Pet FEE:",
+  "replace": "Pet Fee:"
+ },
+ {
+  "slug": "policy",
+  "find": "LOST ITEMS:",
+  "replace": "Lost Items:"
+ },
+ {
+  "slug": "policy",
+  "find": "Any items left and not claimed in 14 business days. Items will be recycled.",
+  "replace": "Any items left and not claimed within 14 business days will be recycled."
+ },
+ {
+  "slug": "policy",
+  "find": "zero tolerance compliance policy",
+  "replace": "zero-tolerance policy"
+ },
+ {
+  "slug": "policy",
+  "find": "or drugs.Our clients",
+  "replace": "or drugs. Our clients"
+ },
+ {
+  "slug": "policy",
+  "find": "violate our policy, Our driver",
+  "replace": "violate our policy, our driver"
+ },
+ {
+  "slug": "policy",
+  "find": "for usual cleaning such as vomiting, spells,",
+  "replace": "for unusual cleaning such as vomit, spills,"
+ },
+ {
+  "slug": "policy",
+  "find": "No containers are allowed in our fleets, according to the state and federal laws of South Carolina.",
+  "replace": "No open containers are allowed in our vehicles, according to South Carolina state and federal laws."
+ },
+ {
+  "slug": "policy",
+  "find": "Our FlEETS:",
+  "replace": "Our Fleet:"
+ },
+ {
+  "slug": "policy",
+  "find": "Hourly services included:",
+  "replace": "Hourly services include:"
+ },
+ {
+  "slug": "policy",
+  "find": "$100 SUV’s",
+  "replace": "$100 SUVs"
+ },
+ {
+  "slug": "policy",
+  "find": "$135 sprinters minimum 3 hours.",
+  "replace": "$135 Sprinters minimum 3 hours"
+ },
+ {
+  "slug": "policy",
+  "find": "Our services including but not limited to:",
+  "replace": "Our services include but are not limited to:"
+ },
+ {
+  "slug": "policy",
+  "find": "( CHS ) from/to",
+  "replace": "(CHS) from/to"
+ },
+ {
+  "slug": "policy",
+  "find": "JOHN’S ISLAND",
+  "replace": "JOHNS ISLAND"
+ },
+ {
+  "slug": "policy",
+  "find": "George Town",
+  "replace": "Georgetown"
+ },
+ {
+  "slug": "policy",
+  "find": "We also service out of town locations from Charleston Airport From Charleston Airport",
+  "replace": "We also serve out-of-town locations from Charleston Airport:"
+ },
+ {
+  "slug": "policy",
+  "find": "Savannah Georgia",
+  "replace": "Savannah, Georgia"
+ },
+ {
+  "slug": "policy",
+  "find": "(CHS)  / Columbia SC",
+  "replace": "(CHS) / Columbia, SC"
+ },
+ {
+  "slug": "policy",
+  "find": "Hilton Head Georgia",
+  "replace": "Hilton Head, SC"
+ },
+ {
+  "slug": "policy",
+  "find": "Augusta Georgia",
+  "replace": "Augusta, Georgia"
+ },
+ {
+  "slug": "policy",
+  "find": "Charlotte NC",
+  "replace": "Charlotte, NC"
+ },
+ {
+  "slug": "policy",
+  "find": "Signature Airport (FBO)",
+  "replace": "Signature Aviation (FBO)"
+ },
+ {
+  "slug": "service",
+  "find": "Mount Pleasant Regional (MPR), Johns Island (JZI), and Charleston Executive Airport",
+  "replace": "Mount Pleasant Regional (LRO), and Charleston Executive Airport (JZI) on Johns Island"
+ },
+ {
+  "slug": "service",
+  "find": "Navigator and GMC Denali",
+  "replace": "Navigator and GMC Yukon Denali"
+ },
+ {
+  "slug": "wedding",
+  "find": "Mecca Limo Service's success",
+  "replace": "Mecca Limo's success"
+ },
+ {
+  "slug": "wedding",
+  "find": "Limo providers for bachelor and bachelorette parties in Charleston are happy to assist.",
+  "replace": "Our limo service for bachelor and bachelorette parties in Charleston is happy to assist."
+ },
+ {
+  "slug": "wedding",
+  "find": "Mecca Limousine Service has the appropriate vehicle",
+  "replace": "Mecca Limo has the appropriate vehicle"
+ },
+ {
+  "slug": "wedding",
+  "find": "Our services include all",
+  "replace": "Our services include:"
+ },
+ {
+  "slug": "wedding",
+  "find": "Why choose Mecca Limousine Services for your wedding limo Rental?",
+  "replace": "Why choose Mecca Limo for your wedding limo rental?"
+ },
+ {
+  "slug": "wedding",
+  "find": "from Mecca Limousine for your wedding",
+  "replace": "from Mecca Limo for your wedding"
+ },
+ {
+  "slug": "wedding",
+  "find": "Private car service Charleson employs",
+  "replace": "Our private car service in Charleston employs"
+ },
+ {
+  "slug": "home",
+  "find": ", various trips between the historic landmarks,",
+  "replace": ", trips between historic landmarks,"
+ }
+]

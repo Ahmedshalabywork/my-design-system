@@ -109,6 +109,8 @@ function mecca_home_clean( $html ) {
 	if ( false === stripos( $html, '<h2' ) && false !== stripos( $html, '<h3' ) ) {
 		$html = preg_replace( array( '#<(/?)h3>#i', '#<(/?)h4>#i' ), array( '<$1h2>', '<$1h3>' ), $html );
 	}
+	// Third-party shortcodes from removed Divi add-ons would otherwise show as raw text.
+	$html = preg_replace( '/\[\/?dsm_[^\]]*\]/', '', $html );
 	$html = str_replace( array( '&nbsp;', '<p></p>' ), ' ', $html );
 	return trim( wpautop( $html ) );
 }
