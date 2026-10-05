@@ -1,0 +1,26 @@
+{
+  "extraKnownMarketplaces": {
+    "agricidaniel-claude-seo": {
+      "source": { "source": "github", "repo": "AgriciDaniel/claude-seo" }
+    },
+    "openseo": {
+      "source": { "source": "github", "repo": "every-app/open-seo" }
+    }
+  },
+  "enabledPlugins": {
+    "claude-seo@agricidaniel-claude-seo": true,
+    "openseo@openseo": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
