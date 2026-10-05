@@ -12,6 +12,12 @@ $email = antispambot( 'info@meccalimo.com' );
 $logo  = $a( 'logo.webp' );
 $is_home = is_front_page();
 $h     = $is_home ? '' : esc_url( home_url( '/' ) );
+$is_quote = is_page( 'get-a-quote' );
+$is_page  = ! $is_home && ! $is_quote;
+$pg       = $is_page ? mecca_home_parse_page( get_post()->post_content ) : null;
+if ( $is_page && ! $pg['h1'] ) {
+	$pg['h1'] = get_the_title();
+}
 
 $services = array(
 	array( 'Weddings', '/wedding/', 'On-time, on-theme rides for the couple, the wedding party and guests.' ),
@@ -59,7 +65,7 @@ $faqs = array(
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
 <style>
-:root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#aaa494}
+:root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#c2bcae}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:16px}
@@ -81,9 +87,9 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 
 /* nav */
 .mh-page .mh-nav{background:rgba(10,10,11,.97);border-bottom:1px solid var(--line)}
-.mh-page #quote{padding-top:150px}
-.mh-page main{display:flex;flex-direction:column}
-.mh-page main>#quote{order:-1}
+.mh-quotepage #quote{padding-top:150px}
+.mh-quotepage main{display:flex;flex-direction:column}
+.mh-quotepage main>#quote{order:-1}
 #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
 .mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:14px 40px;background:linear-gradient(to bottom,rgba(10,10,11,.92),rgba(10,10,11,0));transition:background .4s,padding .4s}
 .mh-nav.scrolled{background:rgba(10,10,11,.94);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
@@ -206,7 +212,7 @@ body.menu-open{overflow:hidden}
 .svc::before{content:"";position:absolute;left:0;top:0;width:2px;height:0;background:linear-gradient(var(--gold),var(--gold-bright));transition:height .4s ease}
 .svc:hover::before{height:100%}
 .mh .svc h3{font-size:1.4rem;color:var(--paper)}
-.svc p{color:var(--muted);font-size:.9rem;margin-top:8px}
+.svc p{color:var(--muted);font-size:.96rem;margin-top:8px}
 .svc .go{display:inline-block;margin-top:12px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-bright)}
 
 /* steps */
@@ -251,6 +257,12 @@ body.menu-open{overflow:hidden}
 #quote .mqf label{color:var(--gold-bright);font-weight:500;font-size:clamp(.98rem,1.5vw,1.08rem);letter-spacing:.02em;margin:20px 0 9px}
 #quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{background:rgba(255,255,255,.04);color:var(--paper);border:1px solid rgba(226,194,116,.35);border-radius:10px;padding:14px 16px;font-family:'Jost',sans-serif;font-size:1.05rem;font-weight:400;color-scheme:dark}
 #quote .mqf select option{background:#141416;color:var(--paper)}
+#quote .mqf .mqf-row>div{min-width:0}
+#quote .mqf input[type=date],#quote .mqf input[type=time]{-webkit-appearance:none;appearance:none;display:block;width:100%;min-width:0;max-width:100%;min-height:58px;line-height:1.3;text-align:left;background-repeat:no-repeat;background-position:right 16px center;padding-right:48px}
+#quote .mqf input[type=date]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23e2c274' stroke-width='1.8' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E")}
+#quote .mqf input[type=time]{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%23e2c274' stroke-width='1.8' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E")}
+#quote .mqf input::-webkit-date-and-time-value{text-align:left;margin:0}
+#quote .mqf input::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer}
 #quote .mqf input::placeholder,#quote .mqf textarea::placeholder{color:#8f897b;font-weight:300}
 #quote .mqf input:focus,#quote .mqf select:focus,#quote .mqf textarea:focus{border-color:var(--gold-bright);box-shadow:0 0 0 3px rgba(226,194,116,.18)}
 #quote .mqf .mqf-row{gap:26px}
@@ -329,12 +341,28 @@ body.mh::after{display:none}
 .hero-mcta .btn-ghost{background:rgba(10,10,11,.45)}
 .lede{margin-bottom:24px}
 .mh main{display:flex;flex-direction:column}
-.mh main>#quote{order:-1}
+.mh:not(.mh-inner) main>#quote{order:-1}
 .mh section.quote-white{padding:48px 0 60px}
-.mh-page #quote.quote-white{padding-top:104px}
+.mh-quotepage #quote.quote-white{padding-top:104px}
 .quote-sub{margin-bottom:26px}
 }
 @media(max-width:560px){
+body.mh{font-size:17px}
+.lede{font-size:1.12rem}
+.car-body p,.step p,.svc p,.faq-item p,.story p{font-size:1.06rem}
+.rev-text{font-size:1.04rem}
+.stat span{font-size:.82rem}
+.seats,.rev-tag{font-size:.82rem}
+.foot-col a,.foot-col span,.foot-brand p{font-size:1.04rem}
+#quote .mqf label{font-size:1.15rem}
+#quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{font-size:1.12rem;padding:15px 16px}
+#quote .mqf input[type=date],#quote .mqf input[type=time]{padding-right:48px}
+#quote .mqf .mqf-check{font-size:1.06rem}
+#quote .mqf .mqf-addstop{font-size:1.08rem}
+#quote .mqf .mqf-note{font-size:.98rem}
+.quote-sub{font-size:1.12rem}
+#quote .mqf-trust div{font-size:.86rem}
+#quote .mqf-trust b{font-size:.98rem}
 .wrap{padding:0 16px}
 .mh section{padding:64px 0}
 .svc-grid{grid-template-columns:1fr}
@@ -358,8 +386,43 @@ body.mh::after{display:none}
 .will-reveal{opacity:1!important;transform:none!important}
 .hero h1 em{-webkit-text-fill-color:var(--gold-bright);color:var(--gold-bright)}
 }
+
+/* inner pages */
+.mh-inner .mh-nav{background:rgba(10,10,11,.6)}
+.pg-hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;padding:150px 0 64px;overflow:hidden;background:#0a0a0b}
+.pg-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.pg-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#0a0a0b 0%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.75) 100%)}
+.pg-hero-inner{position:relative;z-index:2}
+.mh .pg-hero h1{font-size:clamp(2.4rem,5.5vw,4.6rem);color:var(--paper);max-width:18ch;margin-bottom:26px}
+.pg-hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.mh section.pg-body{padding:70px 0 90px}
+.pg-wrap{max-width:900px}
+.pg-text{color:#d8d2c6;font-size:1.08rem;line-height:1.75;margin-bottom:34px}
+.pg-text p,.pg-text ul,.pg-text ol{margin-bottom:16px}
+.pg-text ul,.pg-text ol{padding-left:22px}
+.pg-text li{margin-bottom:6px}
+.pg-text li::marker{color:var(--gold)}
+.mh .pg-text h2{font-size:clamp(1.8rem,3.4vw,2.6rem);color:var(--paper);margin:10px 0 16px}
+.mh .pg-text h3,.mh .pg-text h4{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold-bright);margin:22px 0 10px;font-weight:500}
+.pg-text a{color:var(--gold-bright);text-decoration:underline;text-underline-offset:3px}
+.pg-text strong{color:var(--paper);font-weight:500}
+.pg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;margin:10px 0 40px}
+.pg-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:6px;overflow:hidden;transition:border-color .4s,transform .4s}
+.pg-card:hover{border-color:var(--gold);transform:translateY(-5px)}
+.pg-card-img{height:190px;overflow:hidden}
+.pg-card-img img{width:100%;height:100%;object-fit:cover}
+.pg-card-body{padding:22px;color:var(--muted);font-size:.98rem}
+.pg-card-body p,.pg-card-body ul{margin-bottom:10px}.pg-card-body ul{padding-left:18px}
+.mh .pg-card-body h3{font-size:1.5rem;color:var(--paper);margin-bottom:10px}
+.pg-card-body h4{color:var(--gold-bright);font-weight:400;margin-bottom:8px}
+.pg-card-link{display:inline-block;margin-top:6px;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-bright)}
+.pg-contact{display:inline-block;margin:0 12px 14px 0;padding:16px 24px;border:1px solid var(--gold);border-radius:10px;color:var(--gold-bright);font-size:1.15rem;background:var(--panel)}
+.pg-contact:hover{background:var(--gold);color:var(--ink)}
+.pg-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:10px 0 40px}
+.pg-gallery img{width:100%;height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+@media(max-width:560px){.pg-hero{min-height:0;padding:120px 0 40px}.pg-text{font-size:1.1rem}.pg-card-body{font-size:1.04rem}.pg-hero-cta .btn{flex:1 1 100%;text-align:center}}
 </style>
-<script type="application/ld+json"><?php
+<?php if ( ! $is_page ) : ?><script type="application/ld+json"><?php
 echo wp_json_encode( array(
 	'@context'   => 'https://schema.org',
 	'@type'      => 'FAQPage',
@@ -367,9 +430,9 @@ echo wp_json_encode( array(
 		return array( '@type' => 'Question', 'name' => $f[0], 'acceptedAnswer' => array( '@type' => 'Answer', 'text' => $f[1] ) );
 	}, $faqs ),
 ) );
-?></script>
+?></script><?php endif; ?>
 </head>
-<body <?php body_class( $is_home ? 'mh' : 'mh mh-page' ); ?>>
+<body <?php body_class( $is_home ? 'mh' : ( $is_quote ? 'mh mh-page mh-quotepage' : 'mh mh-page mh-inner' ) ); ?>>
 <?php wp_body_open(); ?>
 <a class="skip" href="#main">Skip to content</a>
 <div id="progress" aria-hidden="true"></div>
@@ -428,6 +491,29 @@ echo wp_json_encode( array(
 <?php endif; ?>
 
 <main id="main">
+<?php if ( $is_page ) : ?>
+<header class="pg-hero">
+	<?php if ( $pg['hero'] ) : ?><img class="pg-hero-img" src="<?php echo esc_url( $pg['hero'] ); ?>" alt="" fetchpriority="high"><?php endif; ?>
+	<div class="wrap pg-hero-inner">
+		<span class="eyebrow">Mecca Limo · Charleston, SC</span>
+		<h1><?php echo esc_html( $pg['h1'] ); ?></h1>
+		<div class="pg-hero-cta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
+	</div>
+</header>
+<section class="pg-body">
+	<div class="wrap pg-wrap"><?php echo $pg['html']; // Built from the page's own content. ?></div>
+</section>
+<section class="alt pg-more">
+	<div class="wrap">
+		<div class="sec-head"><span class="eyebrow">Our Services</span><h2>Explore more ways to ride.</h2></div>
+		<div class="svc-grid">
+			<?php foreach ( $services as $s ) : ?>
+			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p></a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+<?php else : ?>
 <div class="strip">
 	<div class="wrap">
 		<div class="stat"><b>5.0 ★</b><span>Google rating</span></div>
@@ -436,6 +522,7 @@ echo wp_json_encode( array(
 		<div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div>
 	</div>
 </div>
+<?php endif; ?>
 
 <?php if ( $is_home ) : ?>
 <section id="fleet">
@@ -505,6 +592,7 @@ echo wp_json_encode( array(
 </section>
 <?php endif; ?>
 
+<?php if ( ! $is_page ) : ?>
 <section id="reviews">
 	<div class="wrap">
 		<div class="sec-head center">
@@ -528,15 +616,17 @@ echo wp_json_encode( array(
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section id="quote" class="quote-white">
 	<div class="wrap">
-		<?php if ( $is_home ) : ?><h2 class="quote-title">Get a Quote</h2><?php else : ?><h1 class="quote-title">Get a Quote</h1><?php endif; ?>
+		<?php if ( $is_quote ) : ?><h1 class="quote-title">Get a Quote</h1><?php else : ?><h2 class="quote-title">Get a Quote</h2><?php endif; ?>
 		<p class="quote-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
 		<?php echo do_shortcode( '[mecca_quote_form]' ); ?>
 	</div>
 </section>
 
+<?php if ( ! $is_page ) : ?>
 <section class="alt" id="faq">
 	<div class="wrap">
 		<div class="sec-head center">
@@ -550,6 +640,7 @@ echo wp_json_encode( array(
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 </main>
 
 <footer class="mh-foot">
