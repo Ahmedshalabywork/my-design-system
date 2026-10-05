@@ -757,7 +757,7 @@ echo wp_json_encode( array(
 		addEventListener('load',function(){setTimeout(function(){(window.requestIdleCallback||function(f){f();})(function(){
 			v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;
 			var p=v.play();if(p&&p.catch)p.catch(function(){});
-		});},200);});
+		});},1200);});
 	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
