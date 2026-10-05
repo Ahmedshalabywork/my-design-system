@@ -345,6 +345,23 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .fleet-pop>.will-reveal .car-img img{transform:translateY(30px) scale(.8);transition:transform 1.2s cubic-bezier(.2,.7,.2,1) .15s}
 .fleet-pop>.will-reveal.is-in .car-img img{transform:none}
 
+/* same readable text sizes on every screen */
+body.mh{font-size:17px}
+.lede{font-size:1.12rem}
+.car-body p,.step p,.svc p,.faq-item p,.story p{font-size:1.06rem}
+.rev-text{font-size:1.04rem}
+.stat span{font-size:.82rem}
+.seats,.rev-tag{font-size:.82rem}
+.foot-col a,.foot-col span,.foot-brand p{font-size:1.04rem}
+#quote .mqf label{font-size:1.15rem}
+#quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{font-size:1.12rem;padding:15px 16px}
+#quote .mqf input[type=date],#quote .mqf input[type=time]{padding-right:48px}
+#quote .mqf .mqf-check{font-size:1.06rem}
+#quote .mqf .mqf-addstop{font-size:1.08rem}
+#quote .mqf .mqf-note{font-size:.98rem}
+.quote-sub{font-size:1.12rem}
+#quote .mqf-trust div{font-size:.86rem}
+#quote .mqf-trust b{font-size:.98rem}
 @media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
 .nav-links{display:none}.burger{display:flex}.nav-actions{display:flex}
@@ -369,22 +386,6 @@ body.mh::after{display:none}
 .quote-sub{margin-bottom:26px}
 }
 @media(max-width:560px){
-body.mh{font-size:17px}
-.lede{font-size:1.12rem}
-.car-body p,.step p,.svc p,.faq-item p,.story p{font-size:1.06rem}
-.rev-text{font-size:1.04rem}
-.stat span{font-size:.82rem}
-.seats,.rev-tag{font-size:.82rem}
-.foot-col a,.foot-col span,.foot-brand p{font-size:1.04rem}
-#quote .mqf label{font-size:1.15rem}
-#quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{font-size:1.12rem;padding:15px 16px}
-#quote .mqf input[type=date],#quote .mqf input[type=time]{padding-right:48px}
-#quote .mqf .mqf-check{font-size:1.06rem}
-#quote .mqf .mqf-addstop{font-size:1.08rem}
-#quote .mqf .mqf-note{font-size:.98rem}
-.quote-sub{font-size:1.12rem}
-#quote .mqf-trust div{font-size:.86rem}
-#quote .mqf-trust b{font-size:.98rem}
 .wrap{padding:0 16px}
 .mh section{padding:64px 0}
 .svc-grid{grid-template-columns:1fr}
@@ -422,7 +423,7 @@ body.mh{font-size:17px}
 .pg-hero-cta{display:flex;gap:14px;flex-wrap:wrap}
 .mh section.pg-body{padding:70px 0 90px}
 .pg-wrap{max-width:900px}
-.pg-text{color:#d8d2c6;font-size:1.08rem;line-height:1.75;margin-bottom:34px}
+.pg-text{color:#d8d2c6;font-size:1.1rem;line-height:1.75;margin-bottom:34px}
 .pg-text p,.pg-text ul,.pg-text ol{margin-bottom:16px}
 .pg-text ul,.pg-text ol{padding-left:22px}
 .pg-text li{margin-bottom:6px}
@@ -435,7 +436,7 @@ body.mh{font-size:17px}
 .pg-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:6px;overflow:hidden;transition:border-color .4s,transform .4s}
 .pg-card:hover{border-color:var(--gold);transform:translateY(-5px)}
 .pg-card-img img{width:100%;height:auto;display:block}
-.pg-card-body{padding:22px;color:var(--muted);font-size:.98rem}
+.pg-card-body{padding:22px;color:var(--muted);font-size:1.04rem}
 .pg-card-body p,.pg-card-body ul{margin-bottom:10px}.pg-card-body ul{padding-left:18px}
 .mh .pg-card-body h3{font-size:1.5rem;color:var(--paper);margin-bottom:10px}
 .pg-card-body h4{color:var(--gold-bright);font-weight:400;margin-bottom:8px}
@@ -445,7 +446,7 @@ body.mh{font-size:17px}
 .pg-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:10px 0 40px}
 .pg-gallery img{width:100%;height:auto;border-radius:6px;border:1px solid var(--line)}
 @media(max-width:900px){.pg-hero-grid{grid-template-columns:1fr;gap:28px}.pg-hero-photo{order:-1}}
-@media(max-width:560px){.pg-hero{min-height:0;padding:104px 0 36px}.pg-text{font-size:1.1rem}.pg-card-body{font-size:1.04rem}.pg-hero-cta .btn{flex:1 1 100%;text-align:center}}
+@media(max-width:560px){.pg-hero{min-height:0;padding:104px 0 36px}.pg-hero-cta .btn{flex:1 1 100%;text-align:center}}
 </style>
 <?php if ( ! $is_page ) : ?><script type="application/ld+json"><?php
 echo wp_json_encode( array(
