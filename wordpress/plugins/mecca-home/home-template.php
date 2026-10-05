@@ -680,7 +680,8 @@ echo wp_json_encode( array(
 		</div>
 		<div class="rev-cta">
 			<a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="btn btn-ghost">More client reviews</a>
-			<a href="https://www.google.com/search?q=Mecca+Limo+Charleston+reviews" target="_blank" rel="noopener" class="btn btn-gold">Read all reviews on Google</a>
+			<a href="https://www.google.com/maps/place/?q=place_id:ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener" class="btn btn-gold">Read all reviews on Google</a>
+			<a href="https://search.google.com/local/writereview?placeid=ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener" class="btn btn-ghost">Leave a review</a>
 		</div>
 	</div>
 </section>
@@ -749,7 +750,7 @@ echo wp_json_encode( array(
 				<h5 class="foot-sub">Hours</h5>
 				<span>Open 24 hours, 7 days a week</span>
 				<h6 class="foot-sub">Directions &amp; quotes</h6>
-				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
+				<a href="https://www.google.com/maps/dir/?api=1&amp;destination=Mecca+Limo+Charleston&amp;destination_place_id=ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener">Get directions →</a>
 				<a href="<?php echo esc_url( home_url( '/get-a-quote/' ) ); ?>">Get a quote</a>
 			</div>
 		</div>
