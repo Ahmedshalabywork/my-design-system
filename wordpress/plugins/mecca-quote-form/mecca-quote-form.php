@@ -233,7 +233,7 @@ function mecca_qf_shortcode( $atts = array() ) {
 	</style>
 	<?php if ( empty( $state['sent'] ) ) : ?>
 	<div class="mqf-trust" aria-label="Why choose Mecca Limo">
-		<div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>24/7</b>Always on call</div>
+		<div><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><b>24/7</b>Always open</div>
 		<div><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg><b>Family-Owned</b>Local to Charleston</div>
 		<div><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><b>Professional</b>Chauffeurs</div>
 	</div>

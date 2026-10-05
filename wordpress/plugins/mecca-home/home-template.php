@@ -26,7 +26,7 @@ $services = array(
 	array( 'Corporate', '/corporate/', 'Discreet chauffeurs and clean billing for executives and clients.' ),
 	array( 'Events & Prom', '/events/', 'Proms, galas and celebrations, arriving together in style.' ),
 	array( 'Sightseeing & Tours', '/attractions/', 'Historic landmarks, plantations, museums and custom Charleston tours.' ),
-	array( 'Beach Transportation', '/beach/', 'Folly Beach, Isle of Palms, Sullivan\'s Island and Kiawah.' ),
+	array( 'Beach Transportation', '/beach/', 'Folly Beach, Sullivan\'s Island, Kiawah and more.' ),
 	array( 'Golf Courses', '/golf-courses/', 'Kiawah, Wild Dunes and the Lowcountry\'s best courses.' ),
 	array( 'Hotel Transfers', '/hotels/', 'Door-to-door service to and from Charleston hotels and rentals.' ),
 	array( 'Cruise Port', '/cruise-trips/', 'Transfers to and from the Charleston cruise terminal.' ),
@@ -45,12 +45,12 @@ $reviews = array(
 );
 
 $faqs = array(
-	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is free. Just call ' . $phone . ', 24/7.' ),
+	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is free. Just phone ' . $phone . ', 24/7.' ),
 	array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
 	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade and Chevrolet Suburban, and an executive sedan for airport transfers and business travel. Tell us your group size and we will match the right vehicle.' ),
 	array( 'Do you handle airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
 	array( 'Do you operate 24/7?', 'Yes. Mecca Limo runs around the clock, every day, including early-morning airport transfers and late nights out.' ),
-	array( 'How do I get a price?', 'Fill out the quote form on this page or call ' . $phone . '. We will send a price for your date and route, with no obligation.' ),
+	array( 'How do I get a price?', 'Fill out the quote form on this page or phone ' . $phone . '. We will send a price for your date and route, with no obligation.' ),
 );
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -588,7 +588,7 @@ echo wp_json_encode( array(
 </section>
 <?php else : ?>
 <div class="strip">
-	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always on call</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always on call</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
+	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always open</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always open</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
 </div>
 <?php endif; ?>
 
@@ -666,7 +666,7 @@ echo wp_json_encode( array(
 		<div class="sec-head center">
 			<h2>What our clients say</h2>
 		</div>
-		<div class="rev-badge"><span class="g-stars">★★★★★</span><span><b>5.0</b> from <b>140+</b> reviews on Google</span></div>
+		<div class="rev-badge"><span class="g-stars">★★★★★</span><span><b>5.0</b> from <b>140+</b> Google reviews</span></div>
 		<div class="grid3">
 			<?php foreach ( $reviews as $r ) :
 				$ini = implode( '', array_map( function ( $w ) { return mb_substr( $w, 0, 1 ); }, explode( ' ', $r[0] ) ) );
@@ -739,7 +739,7 @@ echo wp_json_encode( array(
 				<a href="<?php echo esc_url( home_url( '/policy/' ) ); ?>">Booking policy</a>
 			</div>
 			<div class="foot-col"><h2 class="foot-h">Contact</h2>
-				<h3 class="foot-sub">Call or text 24/7</h3>
+				<h3 class="foot-sub">Phone &amp; text 24/7</h3>
 				<a href="<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $phone ); ?></a>
 				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
 				<h4 class="foot-sub">Office</h4>
@@ -769,10 +769,13 @@ echo wp_json_encode( array(
 		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 		v.addEventListener('playing',function(){v.classList.add('on');});
 		v.addEventListener('ended',function(){if(st)st.classList.add('hold');});
-		addEventListener('load',function(){setTimeout(function(){(window.requestIdleCallback||function(f){f();})(function(){
+		// Start on the visitor's first touch, scroll or mouse move so the photo stays the first view.
+		var go=false,ev=['pointerdown','touchstart','scroll','wheel','mousemove','keydown'];
+		function start(){if(go)return;go=true;ev.forEach(function(e){removeEventListener(e,start);});
 			v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;
 			var p=v.play();if(p&&p.catch)p.catch(function(){});
-		});},1200);});
+		}
+		ev.forEach(function(e){addEventListener(e,start,{passive:true});});
 	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
