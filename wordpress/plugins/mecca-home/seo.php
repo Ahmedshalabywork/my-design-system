@@ -125,6 +125,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			$e['alternateName'] = 'Mecca Limo Chauffeur Service';
 			$e['url']          = $home;
 			unset( $e['email'] );
+			$e['address']      = array( '@type' => 'PostalAddress', 'streetAddress' => '1914 Weeping Cypress Dr', 'addressLocality' => 'Charleston', 'addressRegion' => 'SC', 'postalCode' => '29412', 'addressCountry' => 'US' );
 			$e['telephone']    = '+1-843-804-1188';
 			$e['priceRange']   = '$$$';
 			$e['image']        = plugins_url( 'assets/open-first.webp', __FILE__ );
@@ -164,7 +165,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			'image'      => plugins_url( 'assets/open-first.webp', __FILE__ ),
 			'telephone'  => '+1-843-804-1188',
 			'priceRange' => '$$$',
-			'address'    => array( '@type' => 'PostalAddress', 'addressLocality' => 'Charleston', 'addressRegion' => 'SC', 'addressCountry' => 'US' ),
+			'address'    => array( '@type' => 'PostalAddress', 'streetAddress' => '1914 Weeping Cypress Dr', 'addressLocality' => 'Charleston', 'addressRegion' => 'SC', 'postalCode' => '29412', 'addressCountry' => 'US' ),
 			'areaServed' => array_map( function ( $c ) {
 				return array( '@type' => 'City', 'name' => $c . ', SC' );
 			}, mecca_seo_areas() ),

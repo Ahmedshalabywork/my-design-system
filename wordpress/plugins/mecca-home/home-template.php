@@ -65,7 +65,8 @@ $faqs = array(
 <link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/jost.woff2' ) ); ?>" crossorigin>
 <style>@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500 500;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500 700;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
-@font-face{font-family:'Jost';font-style:normal;font-weight:300 600;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/jost.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
+@font-face{font-family:'Jost';font-style:normal;font-weight:300 600;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/jost.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}.foot-addr{font-style:normal}
+</style>
 <?php wp_head(); ?>
 <style>
 :root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#c2bcae}
@@ -143,7 +144,7 @@ body.menu-open{overflow:hidden}
 .hero-slides.run img:nth-child(3){animation-delay:16s}
 @keyframes fleetfade{0%{opacity:0;transform:scale(1.05)}8%{opacity:1}33%{opacity:1}41%{opacity:0;transform:scale(1.15)}100%{opacity:0;transform:scale(1.05)}}
 .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(8,8,10,.95) 0%,rgba(8,8,10,.45) 48%,rgba(8,8,10,.65) 100%)}
-.hero-aurora{position:absolute;inset:-25%;z-index:2;pointer-events:none;mix-blend-mode:screen;filter:blur(22px);background:radial-gradient(38% 42% at 28% 72%,rgba(201,163,78,.28),transparent 60%),radial-gradient(30% 34% at 74% 38%,rgba(226,194,116,.18),transparent 60%);animation:aurora 22s ease-in-out infinite alternate}
+.hero-aurora{position:absolute;inset:-25%;z-index:2;pointer-events:none;mix-blend-mode:screen;filter:blur(22px);background:radial-gradient(38% 42% at 28% 72%,rgba(201,163,78,.28),transparent 60%),radial-gradient(30% 34% at 74% 38%,rgba(226,194,116,.18),transparent 60%);transform:translate3d(-2%,2%,0) scale(1.06)}
 @keyframes aurora{0%{transform:translate3d(-4%,3%,0) scale(1)}50%{transform:translate3d(5%,-3%,0) scale(1.14)}100%{transform:translate3d(-2%,5%,0) scale(1.06)}}
 .hero-inner{position:relative;z-index:3;width:100%}
 .hero.hero-v{display:block;min-height:0;padding:0 0 64px}
@@ -175,7 +176,7 @@ body.menu-open{overflow:hidden}
 @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
 @keyframes riseT{from{transform:translateY(18px)}to{transform:none}}
 .mh .hero h1{font-size:clamp(2.6rem,6.2vw,5.2rem);color:var(--paper);margin-bottom:18px;max-width:15ch}
-.hero h1 em{font-style:italic;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:shine 6s linear infinite}
+.hero h1 em{font-style:italic;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;background-position:40% center}
 @keyframes shine{to{background-position:-220% center}}
 .lede{max-width:520px;font-size:1.06rem;color:#d8d2c6;margin-bottom:28px}
 .hero-quote{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;max-width:860px;background:rgba(12,12,14,.62);backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 26px 60px -30px rgba(0,0,0,.75)}
@@ -339,7 +340,7 @@ body.menu-open{overflow:hidden}
 .foot-brand img{height:70px;width:auto}
 .foot-brand p{color:var(--muted);max-width:300px;font-size:.94rem;margin-top:14px}
 .foot-h{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.foot-col a,.foot-col span{display:block;color:var(--muted);font-size:.94rem;margin-bottom:10px;transition:color .25s}
+.foot-col a,.foot-col span,.foot-col address{display:block;color:var(--muted);font-size:.94rem;margin-bottom:10px;transition:color .25s}
 .foot-col a:hover{color:var(--gold-bright)}
 .foot-social{display:flex;gap:12px;margin-top:20px}
 .foot-social a{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold-bright);transition:all .3s}
@@ -366,7 +367,7 @@ body.mh{font-size:17px}
 .rev-text{font-size:1.04rem}
 .stat span{font-size:.82rem}
 .seats,.rev-tag{font-size:.82rem}
-.foot-col a,.foot-col span,.foot-brand p{font-size:1.04rem}
+.foot-col a,.foot-col span,.foot-col address,.foot-brand p{font-size:1.04rem}
 #quote .mqf label{font-size:1.15rem}
 #quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{font-size:1.12rem;padding:15px 16px}
 #quote .mqf input[type=date],#quote .mqf input[type=time]{padding-right:48px}
@@ -734,8 +735,8 @@ echo wp_json_encode( array(
 			<div class="foot-col"><p class="foot-h">Contact</p>
 				<a href="<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $phone ); ?></a>
 				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
-				<span>Charleston, SC</span>
-				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+Charleston+SC" target="_blank" rel="noopener">Get directions →</a>
+				<address class="foot-addr">1914 Weeping Cypress Dr<br>Charleston, SC 29412</address>
+				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
 				<span>Open 24 hours, 7 days a week</span>
 				<a href="<?php echo esc_url( home_url( '/get-a-quote/' ) ); ?>">Get a quote</a>
 			</div>
