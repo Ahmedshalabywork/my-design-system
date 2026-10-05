@@ -98,7 +98,7 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 .nav-links a,.burger{filter:drop-shadow(0 1px 6px rgba(0,0,0,.7))}
 .mh-nav.scrolled{background:rgba(10,10,11,.6);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
 .brand{grid-column:2;justify-self:center}
-.brand img{height:86px;width:auto;transition:height .4s;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+.brand img{height:112px;width:auto;transition:height .4s;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
 .nav-left{grid-column:1;justify-self:start}
 .nav-right{grid-column:3;justify-self:end}
 .nav-actions{display:none;grid-column:1;justify-self:start;gap:10px}
@@ -109,7 +109,7 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 .nav-tel{display:flex;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;align-items:center;justify-content:center;color:var(--gold-bright)}
 .nav-tel svg{width:18px;height:18px;fill:currentColor}
 .burger{grid-column:3;justify-self:end}
-.mh-nav.scrolled .brand img{height:60px}
+.mh-nav.scrolled .brand img{height:72px}
 .nav-links{display:flex;gap:clamp(14px,2vw,30px);align-items:center}
 .nav-links a{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#cfc9bc;transition:color .25s}
 .nav-links a:hover{color:var(--gold-bright)}
@@ -145,7 +145,7 @@ body.menu-open{overflow:hidden}
 @keyframes aurora{0%{transform:translate3d(-4%,3%,0) scale(1)}50%{transform:translate3d(5%,-3%,0) scale(1.14)}100%{transform:translate3d(-2%,5%,0) scale(1.06)}}
 .hero-inner{position:relative;z-index:3;width:100%}
 .hero.hero-v{display:block;min-height:0;padding:0 0 64px}
-.stage{position:relative;height:min(56.25vw,82vh);overflow:hidden;background:#0a0a0b;margin-top:96px}
+.stage{position:relative;height:min(56.25vw,82vh);overflow:hidden;background:#0a0a0b;margin-top:124px}
 .stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 50%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;transform-origin:50% 62%;transition:opacity 1s ease;will-change:transform,opacity,filter}
 .stage-img.pop{animation:popcars 7s cubic-bezier(.22,.8,.25,1) forwards}
 .stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;opacity:0;transition:opacity .9s ease;z-index:1}
@@ -489,7 +489,7 @@ echo wp_json_encode( array(
 		<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
 	</div>
 	<div class="nav-actions"><a href="<?php echo esc_attr( $tel ); ?>" class="nav-tel" aria-label="Call <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></a><a href="sms:+18438041188" class="nav-tel" aria-label="Text <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Zm3 6.5a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Z"/></svg></a></div>
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="(max-width: 900px) 135px, 181px" width="180" height="86" alt="Mecca Limo Chauffeur Service"></a>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="(max-width: 900px) 135px, 236px" width="180" height="86" alt="Mecca Limo Chauffeur Service"></a>
 	<div class="nav-links nav-right">
 		<a href="<?php echo esc_attr( $tel ); ?>" class="nav-call"><?php echo esc_html( $phone ); ?></a>
 	</div>
@@ -511,7 +511,6 @@ echo wp_json_encode( array(
 	<div class="stage" aria-hidden="true">
 		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
 		<video id="heroVideo" muted playsinline preload="none" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video>
-		<img class="stage-logo" src="<?php echo esc_url( $a( 'logo-360.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w, <?php echo esc_url( $a( 'logo-640.webp' ) ); ?> 640w" sizes="(max-width: 900px) 118px, 24vw" width="360" height="171" alt="" decoding="async">
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
