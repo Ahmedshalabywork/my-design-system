@@ -79,6 +79,8 @@ function mecca_home_strip( $html ) {
 	// Hosting monitoring scripts are not needed on these pages and slow them down.
 	$html = preg_replace( "#<script[^>]*src=['\"][^'\"]*wsimg\.com/traffic-assets[^'\"]*['\"][^>]*></script>#", '', $html );
 	$html = preg_replace( '#<script[^>]*>[^<]*_trfq[^<]*</script>#', '', $html );
+	// Rank Math's 'Written by / Time to read' labels make no sense on a business page.
+	$html = preg_replace( '#<meta name="twitter:(?:label|data)\d"[^>]*>\s*#', '', $html );
 	// Hide email addresses from spam bots.
 	$parts = preg_split( '#(<script\b.*?</script>)#is', $html, -1, PREG_SPLIT_DELIM_CAPTURE );
 	foreach ( $parts as $k => $part ) {
@@ -149,8 +151,9 @@ function mecca_home_parse_page( $content ) {
 			$out['hero'] = $im[1];
 			$c           = str_replace( $im[0], '', $c );
 		}
-		$c = preg_replace_callback( '#<img[^>]+src="([^"]+)"[^>]*?(?:alt="([^"]*)")?[^>]*>#', function ( $im ) {
-			return mecca_home_img( $im[1], isset( $im[2] ) ? html_entity_decode( $im[2] ) : '', array( 'loading' => 'lazy' ) );
+		$c = preg_replace_callback( '#<img[^>]+src="([^"]+)"[^>]*>#', function ( $im ) {
+			$alt = preg_match( '#\balt="([^"]*)"#', $im[0], $am ) ? html_entity_decode( $am[1] ) : '';
+			return mecca_home_img( $im[1], $alt, array( 'loading' => 'lazy' ) );
 		}, $c );
 		$out['html'] = '<div class="pg-text">' . $c . '</div>';
 		return $out;

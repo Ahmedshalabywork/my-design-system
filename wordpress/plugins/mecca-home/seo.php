@@ -120,11 +120,11 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			continue;
 		}
 		if ( array_intersect( $types, array( 'LocalBusiness', 'Organization', 'LimousineService' ) ) ) {
-			$e['@type']        = array( 'LimousineService', 'Organization' );
+			$e['@type']        = 'LocalBusiness';
 			$e['name']         = 'Mecca Limo';
 			$e['alternateName'] = 'Mecca Limo Chauffeur Service';
 			$e['url']          = $home;
-			$e['email']        = 'info@meccalimo.com';
+			unset( $e['email'] );
 			$e['telephone']    = '+1-843-804-1188';
 			$e['priceRange']   = '$$$';
 			$e['image']        = plugins_url( 'assets/open-first.webp', __FILE__ );
@@ -155,7 +155,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 	}
 	if ( ! $has_org ) {
 		$data['MeccaOrg'] = array(
-			'@type'      => array( 'LimousineService', 'Organization' ),
+			'@type'      => 'LocalBusiness',
 			'@id'        => $home . '#organization',
 			'name'       => 'Mecca Limo',
 			'alternateName' => 'Mecca Limo Chauffeur Service',
@@ -163,7 +163,6 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			'logo'       => array( '@type' => 'ImageObject', 'url' => 'https://www.meccalimo.com/wp-content/uploads/2026/10/mecca-limo-logo-gold.png' ),
 			'image'      => plugins_url( 'assets/open-first.webp', __FILE__ ),
 			'telephone'  => '+1-843-804-1188',
-			'email'      => 'info@meccalimo.com',
 			'priceRange' => '$$$',
 			'address'    => array( '@type' => 'PostalAddress', 'addressLocality' => 'Charleston', 'addressRegion' => 'SC', 'addressCountry' => 'US' ),
 			'areaServed' => array_map( function ( $c ) {
@@ -268,3 +267,23 @@ add_filter( 'robots_txt', function ( $out ) {
 	}
 	return $out;
 }, 99 );
+
+// Meta (Facebook) Pixel. Set the ID with update_option( 'mecca_fb_pixel_id', '...' ).
+// fbevents.js loads on the first interaction so it never slows the first paint.
+add_action( 'wp_head', function () {
+	$id = preg_replace( '/\D/', '', (string) get_option( 'mecca_fb_pixel_id' ) );
+	if ( ! $id || is_admin() ) {
+		return;
+	}
+	?>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+var go=function(){if(t)return;t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);};
+['scroll','touchstart','pointerdown','mousemove','keydown','click','wheel'].forEach(function(x){f.addEventListener(x,go,{once:true,passive:true});});
+}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','<?php echo esc_js( $id ); ?>');fbq('track','PageView');
+document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href^="tel:"],a[href^="sms:"]');if(a)fbq('track','Contact');});
+document.addEventListener('submit',function(ev){if(ev.target.closest&&ev.target.closest('.mqf,form[id*="quote"],#mqf'))fbq('track','Lead');});
+</script>
+	<?php
+}, 20 );

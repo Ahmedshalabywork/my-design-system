@@ -47,9 +47,9 @@ $reviews = array(
 $faqs = array(
 	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is available. Just call ' . $phone . ', 24/7.' ),
 	array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
-	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali, and an executive sedan for airport runs and business travel. Tell us your group size and we will match the right vehicle.' ),
+	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali, and an executive sedan for airport transfers and business travel. Tell us your group size and we will match the right vehicle.' ),
 	array( 'Do you handle airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
-	array( 'Are you available 24/7?', 'Yes. Mecca Limo is available around the clock, every day, including early-morning airport runs and late nights out.' ),
+	array( 'Are you available 24/7?', 'Yes. Mecca Limo is available around the clock, every day, including early-morning airport transfers and late nights out.' ),
 	array( 'How do I get a price?', 'Fill out the quote form on this page or call ' . $phone . '. We will send pricing and availability for your trip, with no obligation.' ),
 );
 ?><!DOCTYPE html>
@@ -60,7 +60,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="icon" type="image/png" sizes="96x96" href="<?php echo esc_url( $a( 'icon-96.png' ) ); ?>">
 <link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url( $a( 'icon-192.png' ) ); ?>">
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'open3-480.webp' ) ); ?> 480w, <?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-828.webp' ) ); ?> 828w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3-1440.webp' ) ); ?> 1440w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/cormorant.woff2' ) ); ?>" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/jost.woff2' ) ); ?>" crossorigin>
 <style>@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500 500;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
@@ -93,7 +93,9 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 .mh-quotepage #quote{padding-top:150px}
 .mh-quotepage main{display:flex;flex-direction:column}
 .mh-quotepage main>#quote{order:-1}
-#progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
+
+.anim-off,.anim-off *,.anim-off::before,.anim-off::after,.anim-off *::before,.anim-off *::after{animation-play-state:paused!important}
+#progress{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;will-change:transform;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
 .mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:14px 40px;background:transparent;transition:background .4s,padding .4s}
 .nav-links a,.burger{filter:drop-shadow(0 1px 6px rgba(0,0,0,.7))}
 .mh-nav.scrolled{background:rgba(10,10,11,.6);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
@@ -177,8 +179,8 @@ body.menu-open{overflow:hidden}
 @keyframes shine{to{background-position:-220% center}}
 .lede{max-width:520px;font-size:1.06rem;color:#d8d2c6;margin-bottom:28px}
 .hero-quote{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;max-width:860px;background:rgba(12,12,14,.62);backdrop-filter:blur(12px) saturate(120%);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 26px 60px -30px rgba(0,0,0,.75)}
-.hero-quote::after{content:"";position:absolute;top:0;left:-45%;width:45%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);animation:qscan 5s linear infinite}
-@keyframes qscan{0%{left:-45%}100%{left:100%}}
+.hero-quote::after{content:"";position:absolute;top:0;left:-45%;width:45%;height:1px;will-change:transform;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);animation:qscan 5s linear infinite}
+@keyframes qscan{0%{transform:translateX(0)}100%{transform:translateX(322%)}}
 .hq-field:nth-child(1),.hq-field:nth-child(2),.hq-btn{grid-column:1/-1}
 .hq-field{display:flex;flex-direction:column;gap:7px;min-width:0}
 .hq-field label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
@@ -489,7 +491,7 @@ echo wp_json_encode( array(
 		<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
 	</div>
 	<div class="nav-actions"><a href="<?php echo esc_attr( $tel ); ?>" class="nav-tel" aria-label="Call <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></a><a href="sms:+18438041188" class="nav-tel" aria-label="Text <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Zm3 6.5a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Z"/></svg></a></div>
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="(max-width: 900px) 135px, 236px" width="180" height="86" alt="Mecca Limo Chauffeur Service"></a>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-270.webp' ) ); ?> 270w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="(max-width: 900px) 135px, 236px" width="180" height="86" alt="Mecca Limo Chauffeur Service"></a>
 	<div class="nav-links nav-right">
 		<a href="<?php echo esc_attr( $tel ); ?>" class="nav-call"><?php echo esc_html( $phone ); ?></a>
 	</div>
@@ -509,7 +511,7 @@ echo wp_json_encode( array(
 <?php if ( $is_home ) : ?>
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
-		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
+		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-480.webp' ) ); ?> 480w, <?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-828.webp' ) ); ?> 828w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3-1440.webp' ) ); ?> 1440w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
 		<video id="heroVideo" muted playsinline preload="none" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
@@ -569,7 +571,7 @@ echo wp_json_encode( array(
 <?php endif; ?>
 <section class="alt pg-more">
 	<div class="wrap">
-		<div class="sec-head"><span class="eyebrow">Our Services</span><h2>Explore more ways to ride.</h2></div>
+		<div class="sec-head"><span class="eyebrow">Our Services</span><h2>More ways to ride with Mecca Limo.</h2></div>
 		<div class="svc-grid">
 			<?php foreach ( $services as $s ) : ?>
 			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p></a>
@@ -593,16 +595,16 @@ echo wp_json_encode( array(
 		</div>
 		<div class="grid3 fleet-pop">
 			<div class="car">
-				<div class="car-img"><span class="car-tag">Sprinter</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" alt="" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" width="800" height="754" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
+				<div class="car-img"><span class="car-tag">Sprinter</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" alt="Mercedes Sprinter limo van background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" width="800" height="754" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
 				<div class="car-body"><h3>Mercedes Sprinter</h3><div class="seats">Seats up to 14 with luggage</div><p>The choice for wedding parties, corporate groups and bachelorette weekends.</p></div>
 			</div>
 			<div class="car">
-				<div class="car-img"><span class="car-tag">SUV</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" alt="" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="446" alt="Black Cadillac Escalade SUV limo in Charleston SC"></div>
+				<div class="car-img"><span class="car-tag">SUV</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" alt="Cadillac Escalade SUV limo background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="446" alt="Black Cadillac Escalade SUV limo in Charleston SC"></div>
 				<div class="car-body"><h3>Luxury SUV</h3><div class="seats">Seats up to 6 with luggage</div><p>Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali. Room for the group and every bag.</p></div>
 			</div>
 			<div class="car">
-				<div class="car-img"><span class="car-tag">Sedan</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" alt="" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" width="800" height="437" alt="Black executive sedan for airport and business travel in Charleston"></div>
-				<div class="car-body"><h3>Executive Sedan</h3><div class="seats">Seats up to 3 with 2 bags</div><p>Quiet and private for airport runs and business travel. Always on time.</p></div>
+				<div class="car-img"><span class="car-tag">Sedan</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" alt="Executive sedan background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" width="800" height="437" alt="Black executive sedan for airport and business travel in Charleston"></div>
+				<div class="car-body"><h3>Executive Sedan</h3><div class="seats">Seats up to 3 with 2 bags</div><p>Quiet and private for airport transfers and business travel. Always on time.</p></div>
 			</div>
 		</div>
 	</div>
@@ -616,7 +618,7 @@ echo wp_json_encode( array(
 		</div>
 		<div class="svc-grid">
 			<?php foreach ( $services as $s ) : ?>
-			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p><span class="go">Explore <?php echo esc_html( strtolower( $s[0] ) ); ?> →</span></a>
+			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
 		</div>
 	</div>
@@ -642,8 +644,8 @@ echo wp_json_encode( array(
 			<span class="eyebrow">Our Story</span>
 			<h2>A family business, built on trust.</h2>
 			<p><span class="initial">M</span>ecca Limo was created with a simple mission: to give Charleston a more convenient, reliable and luxurious way to get around. As a family-owned business, our clients are at the center of everything we do.</p>
-			<p>From 4 a.m. airport runs to wedding weekends and corporate events across the Lowcountry, we show up early, drive clean vehicles, and get you there safely. That is the whole promise.</p>
-			<div class="sig">Moe &amp; the Mecca team</div>
+			<p>From 4 a.m. airport transfers to wedding weekends and corporate events across the Lowcountry, we show up early, drive clean vehicles, and get you there safely. That is the whole promise.</p>
+			<div class="sig">Moe &amp; the Mecca Limo family</div>
 			<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">Learn more about Mecca Limo</a>
 		</div>
 		<div class="story-photo"><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'story-sprinter2.webp' ) ); ?>" width="1000" height="943" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo at sunset"></div>
@@ -708,7 +710,7 @@ echo wp_json_encode( array(
 	<div class="wrap">
 		<div class="foot-grid">
 			<div class="foot-brand">
-				<img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="148px" width="180" height="86" alt="Mecca Limo" loading="lazy">
+				<img src="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'logo-180.webp' ) ); ?> 180w, <?php echo esc_url( $a( 'logo-270.webp' ) ); ?> 270w, <?php echo esc_url( $a( 'logo-360.webp' ) ); ?> 360w" sizes="148px" width="180" height="86" alt="Mecca Limo" loading="lazy">
 				<p>A family-owned chauffeur service with our clients at the center of it all. Luxury vehicles and professional drivers, 24/7.</p>
 				<div class="foot-social">
 					<a href="https://www.facebook.com/profile.php?id=100090948969233" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.29-.04-1.28-.12-2.43-.12-2.4 0-4.07 1.47-4.07 4.17V9.9H7.8V13h2.7v8h3Z"/></svg></a>
@@ -720,7 +722,7 @@ echo wp_json_encode( array(
 			<div class="foot-col"><p class="foot-h">Services</p>
 				<?php foreach ( array_slice( $services, 0, 6 ) as $s ) : ?><a href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?>
 			</div>
-			<div class="foot-col"><p class="foot-h">Explore</p>
+			<div class="foot-col"><p class="foot-h">Quick links</p>
 				<?php foreach ( array_slice( $services, 6 ) as $s ) : ?><a href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?>
 				<a href="<?php echo esc_url( home_url( '/service/' ) ); ?>">All services</a>
 				<a href="<?php echo esc_url( home_url( '/charleston-limo-fleet/' ) ); ?>">Our fleet</a>
@@ -745,8 +747,10 @@ echo wp_json_encode( array(
 <script>
 (function(){
 	var nav=document.getElementById('nav'),bar=document.getElementById('progress'),sticky=document.getElementById('stickyQuote');
-	function onScroll(){var y=window.scrollY;nav.classList.toggle('scrolled',y>40);var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?y/h*100:0)+'%';sticky.classList.toggle('show',y>innerHeight*.7);}
-	addEventListener('scroll',onScroll,{passive:true});onScroll();
+	var docH=0,tick=false;function measure(){docH=document.documentElement.scrollHeight-innerHeight;}
+	function onScroll(){tick=false;var y=window.scrollY;nav.classList.toggle('scrolled',y>40);bar.style.transform='scaleX('+(docH>0?Math.min(y/docH,1):0)+')';sticky.classList.toggle('show',y>innerHeight*.7);}
+	function req(){if(!tick){tick=true;requestAnimationFrame(onScroll);}}
+	addEventListener('scroll',req,{passive:true});addEventListener('resize',function(){measure();req();},{passive:true});addEventListener('load',function(){measure();req();});measure();onScroll();
 
 
 	(function(){
@@ -775,6 +779,11 @@ echo wp_json_encode( array(
 				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(c.classList.contains('fleet-pop')?i*180:i%5*90)+'ms';io.observe(el);});
 			});
 		});
+	}
+
+	if('IntersectionObserver' in window){
+		var po=new IntersectionObserver(function(es){es.forEach(function(en){en.target.classList.toggle('anim-off',!en.isIntersecting);});});
+		document.querySelectorAll('.strip,.marquee,.story-photo,.pg-hero-photo,.hero-quote,.stats').forEach(function(el){po.observe(el);});
 	}
 
 	var burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu');
