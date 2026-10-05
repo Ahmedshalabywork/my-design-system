@@ -60,7 +60,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-fleet-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
@@ -86,21 +86,22 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 @keyframes sheen{from{left:-120%}to{left:150%}}
 
 /* nav */
-.mh-page .mh-nav{background:rgba(10,10,11,.97);border-bottom:1px solid var(--line)}
+.mh-page .mh-nav{background:transparent}
 .mh-quotepage #quote{padding-top:150px}
 .mh-quotepage main{display:flex;flex-direction:column}
 .mh-quotepage main>#quote{order:-1}
 #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
-.mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:14px 40px;background:linear-gradient(to bottom,rgba(10,10,11,.92),rgba(10,10,11,0));transition:background .4s,padding .4s}
-.mh-nav.scrolled{background:rgba(10,10,11,.94);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
+.mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:14px 40px;background:transparent;transition:background .4s,padding .4s}
+.nav-links a,.burger{filter:drop-shadow(0 1px 6px rgba(0,0,0,.7))}
+.mh-nav.scrolled{background:rgba(10,10,11,.6);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
 .brand{grid-column:2;justify-self:center}
-.brand img{height:62px;width:auto;transition:height .4s}
+.brand img{height:86px;width:auto;transition:height .4s;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
 .nav-left{grid-column:1;justify-self:start}
 .nav-right{grid-column:3;justify-self:end}
 .nav-tel{display:none;grid-column:1;justify-self:start;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;align-items:center;justify-content:center;color:var(--gold-bright)}
 .nav-tel svg{width:18px;height:18px;fill:currentColor}
 .burger{grid-column:3;justify-self:end}
-.mh-nav.scrolled .brand img{height:48px}
+.mh-nav.scrolled .brand img{height:60px}
 .nav-links{display:flex;gap:30px;align-items:center}
 .nav-links a{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#cfc9bc;transition:color .25s}
 .nav-links a:hover{color:var(--gold-bright)}
@@ -327,10 +328,11 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .story-photo{height:280px;order:-1}
 .foot-grid{grid-template-columns:1fr 1fr}
 .mh section{padding:80px 0}.wrap{padding:0 22px}.mh-nav,.mh-nav.scrolled{padding:10px 22px}
-.brand img{height:46px}.mh-nav.scrolled .brand img{height:40px}
+.brand img{height:64px}.mh-nav.scrolled .brand img{height:52px}
 .hero{min-height:0;padding:118px 0 44px}
 .hero.hero-v{padding:0 0 44px}
-.stage{height:56.25vw;margin-top:64px}
+.stage{height:max(78vw,300px);margin-top:0}
+.stage img,.stage video{object-position:50% 40%}
 .hero-v .hero-inner{margin-top:8px}
 .hero-aurora,.hero-overlay+.hero-aurora{display:none}
 body.mh::after{display:none}
@@ -388,7 +390,7 @@ body.mh{font-size:17px}
 }
 
 /* inner pages */
-.mh-inner .mh-nav{background:rgba(10,10,11,.6)}
+.mh-inner .mh-nav{background:transparent}
 .pg-hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;padding:150px 0 64px;overflow:hidden;background:#0a0a0b}
 .pg-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
 .pg-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#0a0a0b 0%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.75) 100%)}
@@ -467,8 +469,8 @@ echo wp_json_encode( array(
 <?php if ( $is_home ) : ?>
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
-		<img src="<?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-fleet-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
-		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-fleet-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-fleet-480' ) ); ?>"></video>
+		<img src="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
+		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-gold-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-gold-480' ) ); ?>"></video>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
