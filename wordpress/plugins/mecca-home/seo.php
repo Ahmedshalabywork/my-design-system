@@ -125,6 +125,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			$e['alternateName'] = 'Mecca Limo Chauffeur Service';
 			$e['url']          = $home;
 			unset( $e['email'] );
+			$e['sameAs']       = array_values( array_unique( array_merge( isset( $e['sameAs'] ) ? (array) $e['sameAs'] : array(), array( 'https://www.facebook.com/profile.php?id=100090948969233', 'https://x.com/meccalimo', 'https://www.instagram.com/meccalimo/', 'https://www.tiktok.com/@meccalimo', 'https://www.linkedin.com/in/moe-shalaby-60a8602aa/', 'https://www.youtube.com/channel/UClskMeHN_YUk3bRdJgpF95A' ) ) ) );
 			$e['address']      = array( '@type' => 'PostalAddress', 'streetAddress' => '1914 Weeping Cypress Dr', 'addressLocality' => 'Charleston', 'addressRegion' => 'SC', 'postalCode' => '29412', 'addressCountry' => 'US' );
 			$e['telephone']    = '+1-843-804-1188';
 			$e['priceRange']   = '$$$';
@@ -175,7 +176,7 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 				'opens'     => '00:00',
 				'closes'    => '23:59',
 			),
-			'sameAs'     => array( 'https://www.facebook.com/profile.php?id=100090948969233', 'https://x.com/meccalimo', 'https://www.instagram.com/meccalimo/', 'https://www.tiktok.com/@meccalimo' ),
+			'sameAs'     => array( 'https://www.facebook.com/profile.php?id=100090948969233', 'https://x.com/meccalimo', 'https://www.instagram.com/meccalimo/', 'https://www.tiktok.com/@meccalimo', 'https://www.linkedin.com/in/moe-shalaby-60a8602aa/', 'https://www.youtube.com/channel/UClskMeHN_YUk3bRdJgpF95A' ),
 		);
 	}
 	if ( is_singular() && ! $has_page ) {
