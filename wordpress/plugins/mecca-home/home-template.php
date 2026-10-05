@@ -60,7 +60,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-new.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-new-m.webp' ) ); ?> 900w, <?php echo esc_url( $a( 'hero-new.webp' ) ); ?> 1676w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
@@ -98,11 +98,16 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 .brand img{height:86px;width:auto;transition:height .4s;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
 .nav-left{grid-column:1;justify-self:start}
 .nav-right{grid-column:3;justify-self:end}
-.nav-tel{display:none;grid-column:1;justify-self:start;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;align-items:center;justify-content:center;color:var(--gold-bright)}
+.nav-actions{display:none;grid-column:1;justify-self:start;gap:10px}
+.nav-sms{display:inline-flex!important;white-space:nowrap;align-items:center;gap:8px;border:1px solid var(--gold);color:var(--gold-bright)!important;padding:8px 14px;border-radius:2px}
+.nav-sms svg{width:16px;height:16px;fill:currentColor}
+.nav-sms:hover{background:var(--gold);color:var(--ink)!important}
+.nav-links a.nav-sms::after{display:none}
+.nav-tel{display:flex;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;align-items:center;justify-content:center;color:var(--gold-bright)}
 .nav-tel svg{width:18px;height:18px;fill:currentColor}
 .burger{grid-column:3;justify-self:end}
 .mh-nav.scrolled .brand img{height:60px}
-.nav-links{display:flex;gap:30px;align-items:center}
+.nav-links{display:flex;gap:clamp(14px,2vw,30px);align-items:center}
 .nav-links a{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#cfc9bc;transition:color .25s}
 .nav-links a:hover{color:var(--gold-bright)}
 .nav-links a:not(.nav-call)::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--gold-bright));transition:width .35s ease}
@@ -137,17 +142,19 @@ body.menu-open{overflow:hidden}
 @keyframes aurora{0%{transform:translate3d(-4%,3%,0) scale(1)}50%{transform:translate3d(5%,-3%,0) scale(1.14)}100%{transform:translate3d(-2%,5%,0) scale(1.06)}}
 .hero-inner{position:relative;z-index:3;width:100%}
 .hero.hero-v{display:block;min-height:0;padding:0 0 64px}
-.stage{position:relative;height:min(38.3vw,80vh);min-height:380px;overflow:hidden;background:#0a0a0b}
-.stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%;transform-origin:50% 62%;animation:popcars 10s cubic-bezier(.22,.8,.25,1) infinite;will-change:transform,opacity,filter}
+.stage{position:relative;height:min(56.25vw,82vh);overflow:hidden;background:#0a0a0b;margin-top:96px}
+.stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 50%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;transform-origin:50% 62%;transition:opacity 1s ease;will-change:transform,opacity,filter}
+.stage-img.pop{animation:popcars 7s cubic-bezier(.22,.8,.25,1) forwards}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;opacity:0;transition:opacity .9s ease;z-index:1}
+.stage video.on{opacity:1}
 @keyframes popcars{
-0%{opacity:0;transform:translateY(7%) scale(.9);filter:blur(6px) brightness(.6)}
-9%{opacity:1;transform:translateY(-1%) scale(1.02);filter:blur(0) brightness(1.08)}
-14%{transform:translateY(0) scale(1);filter:brightness(1)}
-55%{transform:scale(1.045) rotate(.4deg)}
-86%{opacity:1;transform:scale(1.07) rotate(-.3deg);filter:blur(0) brightness(1)}
-96%,100%{opacity:0;transform:scale(1.1);filter:blur(5px) brightness(.5)}}
-.stage-shine{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(105deg,transparent 40%,rgba(255,236,170,.35) 50%,transparent 60%);background-size:250% 100%;animation:shinepass 10s ease-in-out infinite}
-@keyframes shinepass{0%,14%{background-position:130% 0}30%{background-position:-30% 0}100%{background-position:-30% 0}}
+0%{transform:translateY(7%) scale(.9);filter:blur(6px) brightness(.6)}
+14%{transform:translateY(-1%) scale(1.02);filter:blur(0) brightness(1.08)}
+20%{transform:translateY(0) scale(1);filter:brightness(1)}
+100%{transform:scale(1.025);filter:brightness(1)}}
+.stage-shine{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(105deg,transparent 40%,rgba(255,236,170,.35) 50%,transparent 60%);background-size:250% 100%;opacity:0;z-index:2}
+.stage-shine.go{opacity:1;animation:shinepass 7s ease-in-out forwards}
+@keyframes shinepass{0%,18%{background-position:130% 0}45%,100%{background-position:-30% 0}}
 .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(rgba(10,10,11,0),#0a0a0b);z-index:2}
 .hero-v .hero-inner{margin-top:-2vw}
 .mh .hero-v h1{font-size:clamp(2.4rem,4.6vw,4.2rem);max-width:20ch}
@@ -174,7 +181,12 @@ body.menu-open{overflow:hidden}
 @media(min-width:860px){.hero-quote{grid-template-columns:1.25fr 1.25fr 1fr .8fr auto;gap:12px;padding:18px}.hq-field:nth-child(1),.hq-field:nth-child(2),.hq-btn{grid-column:auto}}
 .hero-links{margin-top:18px;display:flex;gap:22px;flex-wrap:wrap;font-size:.86rem;color:#d8d2c6}
 .hero-links a:hover{color:var(--gold-bright)}
-.hero-mcta{display:none}
+.mh main{display:flex;flex-direction:column}
+.mh:not(.mh-inner) main>#quote{order:-1}
+.hero-quote{display:none}
+.hero-mcta{display:flex;flex-wrap:wrap;gap:12px;max-width:520px}
+.hero-mcta .btn{text-align:center;padding:17px 26px;font-size:.85rem;border-radius:10px;flex:1 1 220px}
+.hero-mcta .btn-ghost{background:rgba(10,10,11,.45)}
 
 /* strip */
 .strip{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-soft)}
@@ -203,8 +215,8 @@ body.menu-open{overflow:hidden}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .car,.rev-card,.step{background:var(--panel);border:1px solid rgba(255,255,255,.05);border-radius:4px;overflow:hidden;transition:border-color .4s,transform .4s,box-shadow .4s}
 .car:hover,.rev-card:hover,.step:hover{border-color:var(--gold);transform:translateY(-6px);box-shadow:0 24px 60px -20px rgba(0,0,0,.7),0 0 40px -12px rgba(201,163,78,.35)}
-.car-img{height:230px;overflow:hidden;position:relative}
-.car-img img{width:100%;height:100%;object-fit:cover;animation:kenburns 15s ease-in-out infinite alternate;transition:filter .5s}
+.car-img{aspect-ratio:16/9;overflow:hidden;position:relative;background:#0a0a0b}
+.car-img img{width:100%;height:100%;object-fit:contain;transition:filter .5s}
 .car:nth-child(2) .car-img img{animation-duration:18s}
 .car:nth-child(3) .car-img img{animation-duration:13s}
 @keyframes kenburns{0%{transform:scale(1.05)}100%{transform:scale(1.12) translate3d(-2.5%,-1.5%,0)}}
@@ -239,8 +251,9 @@ body.menu-open{overflow:hidden}
 .story p{color:#c9c4b8;font-size:1.05rem;margin-bottom:16px}
 .story .initial{font-family:'Cormorant Garamond',serif;color:var(--gold);float:left;font-size:4.2rem;line-height:.8;margin:6px 14px 0 0}
 .story .sig{color:var(--gold-bright);font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin:6px 0 22px}
-.story-photo{border:1px solid var(--line);border-radius:4px;overflow:hidden;height:400px}
-.story-photo img{width:100%;height:100%;object-fit:cover}
+.story-photo{perspective:1200px}
+.story-photo img{width:100%;height:auto;border:1px solid var(--line);border-radius:8px;transform-origin:50% 60%;animation:carturn 9s ease-in-out infinite;box-shadow:0 40px 70px -30px rgba(0,0,0,.9),0 0 50px -20px rgba(201,163,78,.35)}
+@keyframes carturn{0%,100%{transform:rotateY(-14deg) rotateX(3deg) translateY(0)}50%{transform:rotateY(14deg) rotateX(-2deg) translateY(-10px)}}
 
 /* reviews */
 .rev-badge{display:flex;align-items:center;justify-content:center;gap:12px;margin:-30px auto 50px;color:var(--muted);font-size:.92rem;flex-wrap:wrap}
@@ -329,32 +342,28 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .fleet-pop .car-img img{animation:none}
 .fleet-pop>.will-reveal{transform:translateY(90px) scale(.86);transition:opacity .6s ease,transform 1s cubic-bezier(.34,1.56,.64,1)}
 .fleet-pop>.will-reveal.is-in{transform:none}
-.fleet-pop>.will-reveal .car-img img{transform:scale(1.3);transition:transform 1.2s cubic-bezier(.2,.7,.2,1) .15s}
-.fleet-pop>.will-reveal.is-in .car-img img{transform:scale(1.05)}
+.fleet-pop>.will-reveal .car-img img{transform:translateY(30px) scale(.8);transition:transform 1.2s cubic-bezier(.2,.7,.2,1) .15s}
+.fleet-pop>.will-reveal.is-in .car-img img{transform:none}
 
 @media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
-.nav-links{display:none}.burger{display:flex}.nav-tel{display:flex}
+.nav-links{display:none}.burger{display:flex}.nav-actions{display:flex}
 .grid3,.story-grid{grid-template-columns:1fr}
 .svc-grid{grid-template-columns:1fr 1fr}
-.story-photo{height:280px;order:-1}
+.story-photo{order:-1}
 .foot-grid{grid-template-columns:1fr 1fr}
 .mh section{padding:80px 0}.wrap{padding:0 22px}.mh-nav,.mh-nav.scrolled{padding:10px 22px}
 .brand img{height:64px}.mh-nav.scrolled .brand img{height:52px}
 .hero{min-height:0;padding:118px 0 44px}
 .hero.hero-v{padding:0 0 44px}
-.stage{height:64vw;min-height:0;margin-top:78px}
+.stage{height:56.25vw;min-height:0;margin-top:80px}
 .hero-v .hero-inner{margin-top:8px}
 .hero-aurora,.hero-overlay+.hero-aurora{display:none}
 body.mh::after{display:none}
 .car-img img,.hero-quote::after,.strip::before{animation:none}
-.hero-quote,.hero-links{display:none}
-.hero-mcta{display:flex;flex-direction:column;gap:12px;max-width:420px}
-.hero-mcta .btn{text-align:center;padding:17px 20px;font-size:.85rem;border-radius:10px}
-.hero-mcta .btn-ghost{background:rgba(10,10,11,.45)}
+
+
 .lede{margin-bottom:24px}
-.mh main{display:flex;flex-direction:column}
-.mh:not(.mh-inner) main>#quote{order:-1}
 .mh section.quote-white{padding:48px 0 60px}
 .mh-quotepage #quote.quote-white{padding-top:104px}
 .quote-sub{margin-bottom:26px}
@@ -403,10 +412,12 @@ body.mh{font-size:17px}
 
 /* inner pages */
 .mh-inner .mh-nav{background:transparent}
-.pg-hero{position:relative;min-height:62vh;display:flex;align-items:flex-end;padding:150px 0 64px;overflow:hidden;background:#0a0a0b}
-.pg-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
-.pg-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#0a0a0b 0%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.75) 100%)}
-.pg-hero-inner{position:relative;z-index:2}
+.pg-hero{position:relative;padding:150px 0 50px;background:radial-gradient(800px 500px at 75% 40%,rgba(201,163,78,.12),transparent 65%),#0a0a0b}
+.pg-hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
+.pg-hero-grid.no-img{grid-template-columns:1fr}
+.pg-hero-inner{position:relative;z-index:2;animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.pg-hero-photo{perspective:1200px;animation:rise 1s cubic-bezier(.34,1.56,.64,1) .15s both}
+.pg-hero-photo img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);box-shadow:0 40px 70px -30px rgba(0,0,0,.9),0 0 50px -20px rgba(201,163,78,.35);animation:carturn 10s ease-in-out infinite}
 .mh .pg-hero h1{font-size:clamp(2.4rem,5.5vw,4.6rem);color:var(--paper);max-width:18ch;margin-bottom:26px}
 .pg-hero-cta{display:flex;gap:14px;flex-wrap:wrap}
 .mh section.pg-body{padding:70px 0 90px}
@@ -423,8 +434,7 @@ body.mh{font-size:17px}
 .pg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;margin:10px 0 40px}
 .pg-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:6px;overflow:hidden;transition:border-color .4s,transform .4s}
 .pg-card:hover{border-color:var(--gold);transform:translateY(-5px)}
-.pg-card-img{height:190px;overflow:hidden}
-.pg-card-img img{width:100%;height:100%;object-fit:cover}
+.pg-card-img img{width:100%;height:auto;display:block}
 .pg-card-body{padding:22px;color:var(--muted);font-size:.98rem}
 .pg-card-body p,.pg-card-body ul{margin-bottom:10px}.pg-card-body ul{padding-left:18px}
 .mh .pg-card-body h3{font-size:1.5rem;color:var(--paper);margin-bottom:10px}
@@ -433,8 +443,9 @@ body.mh{font-size:17px}
 .pg-contact{display:inline-block;margin:0 12px 14px 0;padding:16px 24px;border:1px solid var(--gold);border-radius:10px;color:var(--gold-bright);font-size:1.15rem;background:var(--panel)}
 .pg-contact:hover{background:var(--gold);color:var(--ink)}
 .pg-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:10px 0 40px}
-.pg-gallery img{width:100%;height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
-@media(max-width:560px){.pg-hero{min-height:0;padding:120px 0 40px}.pg-text{font-size:1.1rem}.pg-card-body{font-size:1.04rem}.pg-hero-cta .btn{flex:1 1 100%;text-align:center}}
+.pg-gallery img{width:100%;height:auto;border-radius:6px;border:1px solid var(--line)}
+@media(max-width:900px){.pg-hero-grid{grid-template-columns:1fr;gap:28px}.pg-hero-photo{order:-1}}
+@media(max-width:560px){.pg-hero{min-height:0;padding:104px 0 36px}.pg-text{font-size:1.1rem}.pg-card-body{font-size:1.04rem}.pg-hero-cta .btn{flex:1 1 100%;text-align:center}}
 </style>
 <?php if ( ! $is_page ) : ?><script type="application/ld+json"><?php
 echo wp_json_encode( array(
@@ -454,15 +465,15 @@ echo wp_json_encode( array(
 
 <nav class="mh-nav" id="nav" aria-label="Main">
 	<div class="nav-links nav-left">
+		<a href="sms:+18438041188" class="nav-sms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Zm3 6.5a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Z"/></svg>Text us</a>
 		<a href="<?php echo $h; ?>#fleet">Fleet</a>
 		<a href="<?php echo $h; ?>#services">Services</a>
 		<a href="#reviews">Reviews</a>
 		<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
 	</div>
-	<a href="<?php echo esc_attr( $tel ); ?>" class="nav-tel" aria-label="Call <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></a>
+	<div class="nav-actions"><a href="<?php echo esc_attr( $tel ); ?>" class="nav-tel" aria-label="Call <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></a><a href="sms:+18438041188" class="nav-tel" aria-label="Text <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Zm3 6.5a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Zm5 0a1.5 1.5 0 1 0 0 .01Z"/></svg></a></div>
 	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $logo ); ?>" width="240" height="114" alt="Mecca Limo Chauffeur Service"></a>
 	<div class="nav-links nav-right">
-		<a href="#quote">Get a Quote</a>
 		<a href="<?php echo esc_attr( $tel ); ?>" class="nav-call"><?php echo esc_html( $phone ); ?></a>
 	</div>
 	<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
@@ -481,8 +492,8 @@ echo wp_json_encode( array(
 <?php if ( $is_home ) : ?>
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
-		<img class="stage-img" src="<?php echo esc_url( $a( 'hero-new.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-new-m.webp' ) ); ?> 900w, <?php echo esc_url( $a( 'hero-new.webp' ) ); ?> 1676w" sizes="100vw" width="1676" height="642" alt="" fetchpriority="high">
-		<span class="stage-shine"></span>
+		<img class="stage-img" src="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
+		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-gold-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-gold-480' ) ); ?>"></video>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
@@ -498,7 +509,6 @@ echo wp_json_encode( array(
 				<button class="hq-btn" type="submit">Get a Quote</button>
 			</form>
 			<div class="hero-mcta"><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
-			<div class="hero-links"><a href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a><a href="<?php echo $h; ?>#fleet">View our fleet →</a></div>
 		</div>
 	</div>
 </header>
@@ -507,11 +517,13 @@ echo wp_json_encode( array(
 <main id="main">
 <?php if ( $is_page ) : ?>
 <header class="pg-hero">
-	<?php if ( $pg['hero'] ) : ?><img class="pg-hero-img" src="<?php echo esc_url( $pg['hero'] ); ?>" alt="" fetchpriority="high"><?php endif; ?>
-	<div class="wrap pg-hero-inner">
+	<div class="wrap pg-hero-grid<?php echo $pg['hero'] ? '' : ' no-img'; ?>">
+	<div class="pg-hero-inner">
 		<span class="eyebrow">Mecca Limo · Charleston, SC</span>
 		<h1><?php echo esc_html( $pg['h1'] ); ?></h1>
 		<div class="pg-hero-cta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
+	</div>
+	<?php if ( $pg['hero'] ) : ?><div class="pg-hero-photo"><img src="<?php echo esc_url( $pg['hero'] ); ?>" alt="<?php echo esc_attr( $pg['h1'] ); ?>" fetchpriority="high"></div><?php endif; ?>
 	</div>
 </header>
 <section class="pg-body">
@@ -596,7 +608,7 @@ echo wp_json_encode( array(
 			<div class="sig">Moe &amp; the Mecca team</div>
 			<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">Learn more about Mecca Limo</a>
 		</div>
-		<div class="story-photo"><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'story.webp' ) ); ?>" width="900" height="700" alt="Mecca Limo branded Mercedes-Benz Sprinter at sunset"></div>
+		<div class="story-photo"><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'story-full.webp' ) ); ?>" width="1100" height="703" alt="Mecca Limo branded Mercedes-Benz Sprinter at sunset"></div>
 	</div>
 </section>
 <?php endif; ?>
@@ -605,8 +617,7 @@ echo wp_json_encode( array(
 <section id="reviews">
 	<div class="wrap">
 		<div class="sec-head center">
-			<span class="eyebrow">What our clients say</span>
-			<h2>Charleston keeps coming back.</h2>
+			<h2>What our clients say</h2>
 		</div>
 		<div class="rev-badge"><span class="g-stars">★★★★★</span><span><b>5.0</b> from <b>140+</b> reviews on Google</span></div>
 		<div class="grid3">
@@ -676,8 +687,8 @@ echo wp_json_encode( array(
 			<div class="foot-col"><p class="foot-h">Contact</p>
 				<a href="<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $phone ); ?></a>
 				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
-				<span>1914 Weeping Cypress Dr<br>Charleston, SC 29412</span>
-				<a href="https://www.google.com/maps/dir/?api=1&amp;destination=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
+				<span>Charleston, SC</span>
+				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+Charleston+SC" target="_blank" rel="noopener">Get directions →</a>
 				<span>Open 24 hours, 7 days a week</span>
 				<a href="<?php echo esc_url( home_url( '/get-a-quote/' ) ); ?>">Get a quote</a>
 			</div>
@@ -693,6 +704,12 @@ echo wp_json_encode( array(
 	addEventListener('scroll',onScroll,{passive:true});onScroll();
 
 
+	(function(){
+		var v=document.getElementById('heroVideo');
+		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+		v.addEventListener('playing',function(){v.classList.add('on');});
+		addEventListener('load',function(){setTimeout(function(){var ext=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?'.mp4':'.webm';v.src=(innerWidth<900?v.dataset.m:v.dataset.d)+ext;var p=v.play();if(p&&p.catch)p.catch(function(){});},500);});
+	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
 		var map={hqPickup:'mqf-pickup',hqDrop:'mqf-dropoff',hqDate:'mqf-date',hqPax:'mqf-pax'};

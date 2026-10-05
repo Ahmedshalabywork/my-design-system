@@ -314,7 +314,7 @@ function mecca_qf_shortcode() {
 			function digits(s){return (s||'').replace(/\D/g,'');}
 			function phoneOk(s){var d=digits(s); if(d.length===11&&d[0]==='1') d=d.slice(1); return /^[2-9]\d{2}[2-9]\d{6}$/.test(d) && !/^(\d)\1{9}$/.test(d);}
 			function emailOk(s){return /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(s||'');}
-			function mark(el,msg){var n=el.parentNode.querySelector('.mqf-err.js'); if(n) n.remove(); el.classList.toggle('mqf-bad',!!msg); if(msg){n=document.createElement('span'); n.className='mqf-err js'; n.textContent=msg; el.insertAdjacentElement('afterend',n);}}
+			function mark(el,msg){var n=el.nextElementSibling; if(n&&n.classList.contains('mqf-err')&&n.classList.contains('js')) n.remove(); el.classList.toggle('mqf-bad',!!msg); if(msg){n=document.createElement('span'); n.className='mqf-err js'; n.textContent=msg; el.insertAdjacentElement('afterend',n);}}
 			var ph=f.querySelector('[name=phone]'), em=f.querySelector('[name=email]');
 			var hourly=<?php echo wp_json_encode( mecca_qf_hourly() ); ?>;
 			var svc=f.querySelector('[name=service]'), rt=f.querySelector('[name=round_trip]');
