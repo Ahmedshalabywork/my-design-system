@@ -20,13 +20,13 @@ if ( $is_page && ! $pg['h1'] ) {
 }
 
 $services = array(
-	array( 'Weddings', '/wedding/', 'On-time, on-theme rides for the couple, the wedding party and guests.' ),
+	array( 'Weddings', '/wedding/', 'On-time, on-theme limo service for the couple, the wedding party and guests.' ),
 	array( 'Airport Transfers', '/airport/', 'Pickups and drop-offs at Charleston International (CHS), with flight tracking.' ),
 	array( 'Night Out & Party Bus', '/night-out/', 'Birthdays, bachelorette weekends, concerts. Everyone gets home safely.' ),
 	array( 'Corporate', '/corporate/', 'Discreet chauffeurs and clean billing for executives and clients.' ),
 	array( 'Events & Prom', '/events/', 'Proms, galas and celebrations, arriving together in style.' ),
 	array( 'Sightseeing & Tours', '/attractions/', 'Historic landmarks, plantations, museums and custom Charleston tours.' ),
-	array( 'Beach Trips', '/beach/', 'Folly Beach, Isle of Palms, Sullivan\'s Island and Kiawah.' ),
+	array( 'Beach Transportation', '/beach/', 'Folly Beach, Isle of Palms, Sullivan\'s Island and Kiawah.' ),
 	array( 'Golf Courses', '/golf-courses/', 'Kiawah, Wild Dunes and the Lowcountry\'s best courses.' ),
 	array( 'Hotel Transfers', '/hotels/', 'Door-to-door service to and from Charleston hotels and rentals.' ),
 	array( 'Cruise Port', '/cruise-trips/', 'Transfers to and from the Charleston cruise terminal.' ),
@@ -45,12 +45,12 @@ $reviews = array(
 );
 
 $faqs = array(
-	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is available. Just call ' . $phone . ', 24/7.' ),
+	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is free. Just call ' . $phone . ', 24/7.' ),
 	array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
-	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali, and an executive sedan for airport transfers and business travel. Tell us your group size and we will match the right vehicle.' ),
+	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade and Chevrolet Suburban, and an executive sedan for airport transfers and business travel. Tell us your group size and we will match the right vehicle.' ),
 	array( 'Do you handle airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
-	array( 'Are you available 24/7?', 'Yes. Mecca Limo is available around the clock, every day, including early-morning airport transfers and late nights out.' ),
-	array( 'How do I get a price?', 'Fill out the quote form on this page or call ' . $phone . '. We will send pricing and availability for your trip, with no obligation.' ),
+	array( 'Do you operate 24/7?', 'Yes. Mecca Limo runs around the clock, every day, including early-morning airport transfers and late nights out.' ),
+	array( 'How do I get a price?', 'Fill out the quote form on this page or call ' . $phone . '. We will send a price for your date and route, with no obligation.' ),
 );
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -518,7 +518,7 @@ echo wp_json_encode( array(
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
-		<span class="eyebrow">Charleston, SC · Available 24/7</span>
+		<span class="eyebrow">Charleston, SC · Open 24/7</span>
 		<h1>Charleston limo service with comfort, safety &amp; <em>luxury</em>.</h1>
 		<p class="lede">Family-owned chauffeur service for airport transfers, weddings, corporate travel and nights out across Charleston and the Lowcountry.</p>
 		<div>
@@ -583,7 +583,7 @@ echo wp_json_encode( array(
 </section>
 <?php else : ?>
 <div class="strip">
-	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always available</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always available</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
+	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always on call</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always on call</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
 </div>
 <?php endif; ?>
 
@@ -593,7 +593,7 @@ echo wp_json_encode( array(
 		<div class="sec-head">
 			<span class="eyebrow">Our Fleet</span>
 			<h2>Black car and limo service in Charleston, SC.</h2>
-			<p>Late-model, professionally maintained and detailed before every ride. Choose the vehicle that fits your group and your occasion. <a class="inline-link" href="<?php echo esc_url( home_url( '/charleston-limo-fleet/' ) ); ?>">See the full fleet →</a></p>
+			<p>Late-model, professionally maintained and detailed before every pickup. Choose the vehicle that fits your group and your occasion. <a class="inline-link" href="<?php echo esc_url( home_url( '/charleston-limo-fleet/' ) ); ?>">See the full fleet →</a></p>
 		</div>
 		<div class="grid3 fleet-pop">
 			<div class="car">
@@ -616,7 +616,7 @@ echo wp_json_encode( array(
 	<div class="wrap">
 		<div class="sec-head">
 			<span class="eyebrow">What We Do</span>
-			<h2>One call for every kind of trip.</h2>
+			<h2>Limo service for every occasion.</h2>
 		</div>
 		<div class="svc-grid">
 			<?php foreach ( $services as $s ) : ?>
@@ -634,7 +634,7 @@ echo wp_json_encode( array(
 		</div>
 		<div class="grid3">
 			<div class="step"><span class="step-num">01</span><h3>Request a quote</h3><p>Tell us your pickup, destination, date and group size. It takes under a minute.</p></div>
-			<div class="step"><span class="step-num">02</span><h3>We confirm your ride</h3><p>We reply quickly with pricing, the right vehicle for your group, and your professional chauffeur.</p></div>
+			<div class="step"><span class="step-num">02</span><h3>We confirm your booking</h3><p>We reply quickly with pricing, the right vehicle for your group, and your professional chauffeur.</p></div>
 			<div class="step"><span class="step-num">03</span><h3>Arrive in style</h3><p>Your chauffeur arrives early, tracks your flight when needed, and gets you there safely and on time.</p></div>
 		</div>
 	</div>
@@ -644,7 +644,7 @@ echo wp_json_encode( array(
 	<div class="wrap story-grid">
 		<div class="story-copy">
 			<span class="eyebrow">Our Story</span>
-			<h2>A family business, built on trust.</h2>
+			<h2>Mecca Limo: a family business built on trust.</h2>
 			<p><span class="initial">M</span>ecca Limo was created with a simple mission: to give Charleston a more convenient, reliable and luxurious way to get around. As a family-owned business, our clients are at the center of everything we do.</p>
 			<p>From 4 a.m. airport transfers to wedding weekends and corporate events across the Lowcountry, we show up early, drive clean vehicles, and get you there safely. That is the whole promise.</p>
 			<div class="sig">Moe &amp; the Mecca Limo family</div>
