@@ -341,6 +341,11 @@ body.menu-open{overflow:hidden}
 .foot-brand img{height:70px;width:auto}
 .foot-brand p{color:var(--muted);max-width:300px;font-size:.94rem;margin-top:14px}
 .foot-h{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.mh .foot-h{font-family:inherit;font-size:.74rem;font-weight:400;line-height:1.5;letter-spacing:.16em}
+.mh .foot-sub{font-family:inherit;font-weight:400;line-height:1.5;letter-spacing:.14em}
+:where(.mh) :where(h4,h5,h6){font-family:inherit;font-weight:400;line-height:1.5;margin:0;padding:0}
+.foot-sub{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.75;margin:14px 0 6px}
+.foot-col .foot-sub:first-of-type{margin-top:0}
 .foot-col a,.foot-col span,.foot-col address{display:block;color:var(--muted);font-size:.94rem;margin-bottom:10px;transition:color .25s}
 .foot-col a:hover{color:var(--gold-bright)}
 .foot-social{display:flex;gap:12px;margin-top:20px}
@@ -598,15 +603,15 @@ echo wp_json_encode( array(
 		<div class="grid3 fleet-pop">
 			<div class="car">
 				<div class="car-img"><span class="car-tag">Sprinter</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" alt="Mercedes Sprinter limo van background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter2.webp' ) ); ?>" width="800" height="754" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
-				<div class="car-body"><h3>Mercedes Sprinter</h3><div class="seats">Seats up to 14 with luggage</div><p>The choice for wedding parties, corporate groups and bachelorette weekends.</p></div>
+				<div class="car-body"><h3>Mercedes Sprinter</h3><h4 class="seats">Seats up to 14 with luggage</h4><p>The choice for wedding parties, corporate groups and bachelorette weekends.</p></div>
 			</div>
 			<div class="car">
 				<div class="car-img"><span class="car-tag">SUV</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" alt="Cadillac Escalade SUV limo background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="446" alt="Black Cadillac Escalade SUV limo in Charleston SC"></div>
-				<div class="car-body"><h3>Luxury SUV</h3><div class="seats">Seats up to 6 with luggage</div><p>Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali. Room for the group and every bag.</p></div>
+				<div class="car-body"><h3>Luxury SUV</h3><h4 class="seats">Seats up to 6 with luggage</h4><p>Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali. Room for the group and every bag.</p></div>
 			</div>
 			<div class="car">
 				<div class="car-img"><span class="car-tag">Sedan</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" alt="Executive sedan background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" width="800" height="437" alt="Black executive sedan for airport and business travel in Charleston"></div>
-				<div class="car-body"><h3>Executive Sedan</h3><div class="seats">Seats up to 3 with 2 bags</div><p>Quiet and private for airport transfers and business travel. Always on time.</p></div>
+				<div class="car-body"><h3>Executive Sedan</h3><h4 class="seats">Seats up to 3 with 2 bags</h4><p>Quiet and private for airport transfers and business travel. Always on time.</p></div>
 			</div>
 		</div>
 	</div>
@@ -721,10 +726,10 @@ echo wp_json_encode( array(
 					<a href="https://www.tiktok.com/@meccalimo" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.5 3c.3 2.03 1.44 3.24 3.5 3.5v2.5c-1.2.12-2.25-.27-3.48-1.01v4.66c0 5.92-6.45 7.77-9.04 3.52-1.67-2.74-.64-7.55 4.73-7.74v2.63c-.41.07-.85.17-1.25.31-1.2.4-1.88 1.16-1.69 2.5.36 2.57 5.08 3.33 4.68-1.7V3h2.55Z"/></svg></a>
 				</div>
 			</div>
-			<div class="foot-col"><p class="foot-h">Services</p>
+			<div class="foot-col"><h2 class="foot-h">Services</h2>
 				<?php foreach ( array_slice( $services, 0, 6 ) as $s ) : ?><a href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?>
 			</div>
-			<div class="foot-col"><p class="foot-h">Quick links</p>
+			<div class="foot-col"><h2 class="foot-h">Quick links</h2>
 				<?php foreach ( array_slice( $services, 6 ) as $s ) : ?><a href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><?php echo esc_html( $s[0] ); ?></a><?php endforeach; ?>
 				<a href="<?php echo esc_url( home_url( '/service/' ) ); ?>">All services</a>
 				<a href="<?php echo esc_url( home_url( '/charleston-limo-fleet/' ) ); ?>">Our fleet</a>
@@ -733,12 +738,16 @@ echo wp_json_encode( array(
 				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Contact</a>
 				<a href="<?php echo esc_url( home_url( '/policy/' ) ); ?>">Booking policy</a>
 			</div>
-			<div class="foot-col"><p class="foot-h">Contact</p>
+			<div class="foot-col"><h2 class="foot-h">Contact</h2>
+				<h3 class="foot-sub">Call or text 24/7</h3>
 				<a href="<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $phone ); ?></a>
 				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+				<h4 class="foot-sub">Office</h4>
 				<address class="foot-addr">1914 Weeping Cypress Dr<br>Charleston, SC 29412</address>
-				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
+				<h5 class="foot-sub">Hours</h5>
 				<span>Open 24 hours, 7 days a week</span>
+				<h6 class="foot-sub">Directions &amp; quotes</h6>
+				<a href="https://www.google.com/maps/search/?api=1&amp;query=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
 				<a href="<?php echo esc_url( home_url( '/get-a-quote/' ) ); ?>">Get a quote</a>
 			</div>
 		</div>
