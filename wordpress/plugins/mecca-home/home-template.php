@@ -58,11 +58,12 @@ $faqs = array(
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a0a0b">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-hq.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-hq-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'hero-hq.webp' ) ); ?> 1920w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/cormorant.woff2' ) ); ?>" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/jost.woff2' ) ); ?>" crossorigin>
+<style>@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500 500;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant-italic.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500 700;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Jost';font-style:normal;font-weight:300 600;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/jost.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
 <?php wp_head(); ?>
 <style>
 :root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#c2bcae}
@@ -158,11 +159,12 @@ body.menu-open{overflow:hidden}
 .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(rgba(10,10,11,0),#0a0a0b);z-index:2}
 .hero-v .hero-inner{margin-top:-2vw}
 .mh .hero-v h1{font-size:clamp(2.4rem,4.6vw,4.2rem);max-width:20ch}
-.hero-inner>*{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero-inner>*{animation:riseT .9s cubic-bezier(.2,.7,.2,1) both}
 .hero-inner>:nth-child(2){animation-delay:.12s}
 .hero-inner>:nth-child(3){animation-delay:.24s}
 .hero-inner>:nth-child(4){animation-delay:.36s}
 @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes riseT{from{transform:translateY(18px)}to{transform:none}}
 .mh .hero h1{font-size:clamp(2.6rem,6.2vw,5.2rem);color:var(--paper);margin-bottom:18px;max-width:15ch}
 .hero h1 em{font-style:italic;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:shine 6s linear infinite}
 @keyframes shine{to{background-position:-220% center}}
@@ -272,7 +274,7 @@ body.menu-open{overflow:hidden}
 
 /* quote (white) */
 .mh section.quote-white{position:relative;background:radial-gradient(900px 520px at 50% 0%,rgba(201,163,78,.10),transparent 65%),var(--ink-soft);color:var(--paper);padding:clamp(90px,12vw,150px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.mh .quote-title{font-weight:600;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-bright);animation:shine 8s linear infinite}
+.mh .quote-title{font-weight:600;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-bright)}
 .quote-sub{text-align:center;max-width:560px;margin:0 auto 50px;color:#d8d2c6;font-size:1.08rem;font-weight:300}
 #quote .mqf>h2,#quote .mqf>.mqf-sub{display:none}
 #quote .mqf-trust{max-width:920px;margin:0 auto 22px;gap:14px}
@@ -416,8 +418,8 @@ body.mh::after{display:none}
 .pg-hero{position:relative;padding:150px 0 50px;background:radial-gradient(800px 500px at 75% 40%,rgba(201,163,78,.12),transparent 65%),#0a0a0b}
 .pg-hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
 .pg-hero-grid.no-img{grid-template-columns:1fr}
-.pg-hero-inner{position:relative;z-index:2;animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
-.pg-hero-photo{perspective:1200px;animation:rise 1s cubic-bezier(.34,1.56,.64,1) .15s both}
+.pg-hero-inner{position:relative;z-index:2;animation:riseT .9s cubic-bezier(.2,.7,.2,1) both}
+.pg-hero-photo{perspective:1200px;animation:riseT 1s cubic-bezier(.34,1.56,.64,1) .15s both}
 .pg-hero-photo img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);box-shadow:0 40px 70px -30px rgba(0,0,0,.9),0 0 50px -20px rgba(201,163,78,.35);animation:carturn 10s ease-in-out infinite}
 .mh .pg-hero h1{font-size:clamp(2.4rem,5.5vw,4.6rem);color:var(--paper);max-width:18ch;margin-bottom:26px}
 .pg-hero-cta{display:flex;gap:14px;flex-wrap:wrap}
@@ -524,7 +526,7 @@ echo wp_json_encode( array(
 		<h1><?php echo esc_html( $pg['h1'] ); ?></h1>
 		<div class="pg-hero-cta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
 	</div>
-	<?php if ( $pg['hero'] ) : ?><div class="pg-hero-photo"><img src="<?php echo esc_url( $pg['hero'] ); ?>" alt="<?php echo esc_attr( $pg['h1'] ); ?>" fetchpriority="high"></div><?php endif; ?>
+	<?php if ( $pg['hero'] ) : ?><div class="pg-hero-photo"><?php echo mecca_home_img( $pg['hero'], $pg['h1'], array( 'fetchpriority' => 'high', 'sizes' => '(max-width: 900px) 100vw, 45vw' ) ); ?></div><?php endif; ?>
 	</div>
 </header>
 <section class="pg-body">

@@ -105,7 +105,7 @@ function mecca_home_parse_page( $content ) {
 		foreach ( $cards as $c ) {
 			$html .= '<div class="pg-card">';
 			if ( $c['img'] ) {
-				$html .= '<div class="pg-card-img"><img loading="lazy" decoding="async" src="' . esc_url( $c['img'] ) . '" alt="' . esc_attr( $c['alt'] ?: $c['title'] ) . '"></div>';
+				$html .= '<div class="pg-card-img">' . mecca_home_img( $c['img'], $c['alt'] ? $c['alt'] : $c['title'], array( 'loading' => 'lazy', 'sizes' => '(max-width: 900px) 100vw, 300px' ) ) . '</div>';
 			}
 			$html .= '<div class="pg-card-body"><h3>' . esc_html( $c['title'] ) . '</h3>' . $c['body'];
 			if ( $c['url'] ) {
@@ -190,4 +190,68 @@ function mecca_home_parse_page( $content ) {
 	$flush();
 	$out['html'] = $html;
 	return $out;
+}
+
+// Responsive <img> with real width/height for a media-library URL, so photos load small and never shift the page.
+function mecca_home_img( $url, $alt, $extra = array() ) {
+	$path = preg_replace( '#^https?://(www\.)?meccalimo\.com#', '', $url );
+	$id   = attachment_url_to_postid( home_url( $path ) );
+	if ( ! $id ) {
+		$id = attachment_url_to_postid( 'https://meccalimo.com' . $path );
+	}
+	$attr = array_merge( array( 'alt' => $alt, 'decoding' => 'async' ), $extra );
+	$file = ABSPATH . ltrim( wp_parse_url( $path, PHP_URL_PATH ), '/' );
+	$webp = mecca_home_webp( $file );
+	if ( $webp ) {
+		unset( $attr['sizes'] );
+		$html = '<img src="' . esc_url( $webp['url'] ) . '" width="' . (int) $webp['w'] . '" height="' . (int) $webp['h'] . '"';
+		foreach ( $attr as $k => $v ) {
+			$html .= ' ' . $k . '="' . esc_attr( $v ) . '"';
+		}
+		return $html . '>';
+	}
+	if ( $id ) {
+		return wp_get_attachment_image( $id, 'large', false, $attr );
+	}
+	$dim  = file_exists( $file ) ? @getimagesize( $file ) : false;
+	$html = '<img src="' . esc_url( $url ) . '"';
+	if ( $dim ) {
+		$html .= ' width="' . (int) $dim[0] . '" height="' . (int) $dim[1] . '"';
+	}
+	foreach ( $attr as $k => $v ) {
+		$html .= ' ' . $k . '="' . esc_attr( $v ) . '"';
+	}
+	return $html . '>';
+}
+
+// Light WebP copy (max 1200px wide) of a local JPG/PNG, made once and reused.
+function mecca_home_webp( $file ) {
+	if ( ! preg_match( '/\.(jpe?g|png)$/i', $file ) || ! file_exists( $file ) ) {
+		return false;
+	}
+	$up   = wp_upload_dir();
+	$dir  = $up['basedir'] . '/mecca-webp';
+	$name = md5( $file . filemtime( $file ) ) . '.webp';
+	$out  = $dir . '/' . $name;
+	if ( ! file_exists( $out ) ) {
+		$ed = wp_get_image_editor( $file );
+		if ( is_wp_error( $ed ) ) {
+			return false;
+		}
+		$sz = $ed->get_size();
+		if ( $sz['width'] > 1200 ) {
+			$ed->resize( 1200, null );
+		}
+		$ed->set_quality( 72 );
+		wp_mkdir_p( $dir );
+		$saved = $ed->save( $out, 'image/webp' );
+		if ( is_wp_error( $saved ) || ! file_exists( $out ) ) {
+			return false;
+		}
+	}
+	$dim = @getimagesize( $out );
+	if ( ! $dim ) {
+		return false;
+	}
+	return array( 'url' => $up['baseurl'] . '/mecca-webp/' . $name, 'w' => $dim[0], 'h' => $dim[1] );
 }
