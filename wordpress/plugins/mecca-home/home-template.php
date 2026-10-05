@@ -67,6 +67,7 @@ $faqs = array(
 @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:500 700;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/cormorant.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:'Jost';font-style:normal;font-weight:300 600;font-display:swap;src:url(<?php echo esc_url( plugins_url( 'assets/fonts', __FILE__ ) ); ?>/jost.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}.foot-addr{font-style:normal}
 </style>
+<?php if ( $is_page && ! empty( $pg['hero'] ) && preg_match( '#src="([^"]+)"(?:[^>]*srcset="([^"]+)")?#', mecca_home_img( $pg['hero'], '', array( 'sizes' => '(max-width: 900px) calc(100vw - 32px), 45vw' ) ), $lp ) ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $lp[1] ); ?>"<?php if ( ! empty( $lp[2] ) ) : ?> imagesrcset="<?php echo esc_attr( $lp[2] ); ?>" imagesizes="(max-width: 900px) calc(100vw - 32px), 45vw"<?php endif; ?> fetchpriority="high"><?php endif; ?>
 <?php wp_head(); ?>
 <style>
 :root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#c2bcae}
@@ -434,7 +435,7 @@ body.mh::after{display:none}
 .pg-hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:50px;align-items:center}
 .pg-hero-grid.no-img{grid-template-columns:1fr}
 .pg-hero-inner{position:relative;z-index:2;animation:riseT .9s cubic-bezier(.2,.7,.2,1) both}
-.pg-hero-photo{perspective:1200px;animation:riseT 1s cubic-bezier(.34,1.56,.64,1) .15s both}
+.pg-hero-photo{perspective:1200px}
 .pg-hero-photo img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);box-shadow:0 40px 70px -30px rgba(0,0,0,.9),0 0 50px -20px rgba(201,163,78,.35);animation:carturn 10s ease-in-out infinite}
 .mh .pg-hero h1{font-size:clamp(2.4rem,5.5vw,4.6rem);color:var(--paper);max-width:18ch;margin-bottom:26px}
 .pg-hero-cta{display:flex;gap:14px;flex-wrap:wrap}
@@ -552,7 +553,7 @@ echo wp_json_encode( array(
 		<h1><?php echo esc_html( $pg['h1'] ); ?></h1>
 		<div class="pg-hero-cta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
 	</div>
-	<?php if ( $pg['hero'] ) : ?><div class="pg-hero-photo"><?php echo mecca_home_img( $pg['hero'], $pg['h1'], array( 'fetchpriority' => 'high', 'sizes' => '(max-width: 900px) 100vw, 45vw' ) ); ?></div><?php endif; ?>
+	<?php if ( $pg['hero'] ) : ?><div class="pg-hero-photo"><?php echo mecca_home_img( $pg['hero'], $pg['h1'], array( 'fetchpriority' => 'high', 'sizes' => '(max-width: 900px) calc(100vw - 32px), 45vw' ) ); ?></div><?php endif; ?>
 	</div>
 </header>
 <section class="pg-body">

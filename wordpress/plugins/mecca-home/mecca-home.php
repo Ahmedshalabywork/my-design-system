@@ -252,8 +252,13 @@ function mecca_home_img( $url, $alt, $extra = array() ) {
 	$file = ABSPATH . ltrim( wp_parse_url( $path, PHP_URL_PATH ), '/' );
 	$webp = mecca_home_webp( $file );
 	if ( $webp ) {
+		$sizes = isset( $attr['sizes'] ) ? $attr['sizes'] : '(max-width: 900px) 100vw, 800px';
 		unset( $attr['sizes'] );
+		$set = mecca_home_webp_srcset( $file, $webp );
 		$html = '<img src="' . esc_url( $webp['url'] ) . '" width="' . (int) $webp['w'] . '" height="' . (int) $webp['h'] . '"';
+		if ( $set ) {
+			$html .= ' srcset="' . esc_attr( $set ) . '" sizes="' . esc_attr( $sizes ) . '"';
+		}
 		foreach ( $attr as $k => $v ) {
 			$html .= ' ' . $k . '="' . esc_attr( $v ) . '"';
 		}
@@ -274,13 +279,49 @@ function mecca_home_img( $url, $alt, $extra = array() ) {
 }
 
 // Light WebP copy (max 1200px wide) of a local JPG/PNG, made once and reused.
-function mecca_home_webp( $file ) {
+// Smaller WebP copies (480w, 720w) so phones don't download the 1200px file.
+function mecca_home_webp_srcset( $file, $full ) {
+	$parts = array();
+	$up  = wp_upload_dir();
+	$src = isset( $full['path'] ) ? $full['path'] : $up['basedir'] . '/mecca-webp/' . basename( $full['url'] );
+	foreach ( array( 480, 720 ) as $w ) {
+		if ( $full['w'] <= $w || ! file_exists( $src ) ) {
+			continue;
+		}
+		$name = isset( $full['path'] ) ? md5( $src . filemtime( $src ) ) . '-s' . $w . '.webp' : preg_replace( '/\.webp$/', '-s' . $w . '.webp', basename( $src ) );
+		$out  = $up['basedir'] . '/mecca-webp/' . $name;
+		if ( ! file_exists( $out ) ) {
+			$ed = wp_get_image_editor( $src );
+			if ( is_wp_error( $ed ) ) {
+				continue;
+			}
+			$ed->resize( $w, null );
+			$ed->set_quality( 50 );
+			$saved = $ed->save( $out, 'image/webp' );
+			if ( is_wp_error( $saved ) || ! file_exists( $out ) ) {
+				continue;
+			}
+		}
+		$parts[] = $up['baseurl'] . '/mecca-webp/' . $name . ' ' . $w . 'w';
+	}
+	if ( ! $parts ) {
+		return '';
+	}
+	$parts[] = $full['url'] . ' ' . $full['w'] . 'w';
+	return implode( ', ', $parts );
+}
+function mecca_home_webp( $file, $max = 1200 ) {
+	// Already WebP (e.g. plugin assets): use as-is so it still gets a srcset.
+	if ( preg_match( '/\.webp$/i', $file ) && file_exists( $file ) ) {
+		$dim = @getimagesize( $file );
+		return $dim ? array( 'url' => home_url( '/' . ltrim( str_replace( wp_normalize_path( ABSPATH ), '', wp_normalize_path( $file ) ), '/' ) ), 'w' => $dim[0], 'h' => $dim[1], 'path' => $file ) : false;
+	}
 	if ( ! preg_match( '/\.(jpe?g|png)$/i', $file ) || ! file_exists( $file ) ) {
 		return false;
 	}
 	$up   = wp_upload_dir();
 	$dir  = $up['basedir'] . '/mecca-webp';
-	$name = md5( $file . filemtime( $file ) ) . '.webp';
+	$name = md5( $file . filemtime( $file ) ) . ( 1200 === $max ? '' : '-' . $max ) . '.webp';
 	$out  = $dir . '/' . $name;
 	if ( ! file_exists( $out ) ) {
 		$ed = wp_get_image_editor( $file );
@@ -288,10 +329,10 @@ function mecca_home_webp( $file ) {
 			return false;
 		}
 		$sz = $ed->get_size();
-		if ( $sz['width'] > 1200 ) {
-			$ed->resize( 1200, null );
+		if ( $sz['width'] > $max ) {
+			$ed->resize( $max, null );
 		}
-		$ed->set_quality( 72 );
+		$ed->set_quality( 1200 === $max ? 72 : 50 );
 		wp_mkdir_p( $dir );
 		$saved = $ed->save( $out, 'image/webp' );
 		if ( is_wp_error( $saved ) || ! file_exists( $out ) ) {
