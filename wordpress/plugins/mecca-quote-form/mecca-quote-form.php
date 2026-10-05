@@ -187,7 +187,8 @@ function mecca_qf_handle() {
 	return array( 'sent' => true, 'values' => array() );
 }
 
-function mecca_qf_shortcode() {
+function mecca_qf_shortcode( $atts = array() ) {
+	$atts = shortcode_atts( array( 'heading' => '1' ), $atts );
 	$state = array( 'errors' => array(), 'values' => array() );
 	if ( 'POST' === ( $_SERVER['REQUEST_METHOD'] ?? '' ) && isset( $_POST['mecca_qf_submit'] ) ) {
 		$state = array_merge( $state, mecca_qf_handle() );
@@ -241,8 +242,10 @@ function mecca_qf_shortcode() {
 	<?php if ( ! empty( $state['sent'] ) ) : ?>
 		<div class="mqf-ok"><h2>Thank you!</h2><p>We have received your request and will be in contact with you shortly.</p><p>Need us sooner? Call <a href="tel:+18438041188" style="color:#DCAD4F">(843) 804-1188</a>, available 24/7.</p></div>
 	<?php else : ?>
+		<?php if ( '0' !== $atts['heading'] ) : ?>
 		<h2>Get a Quote</h2>
 		<p class="mqf-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
+		<?php endif; ?>
 		<?php if ( $state['errors'] ) : ?>
 			<div class="mqf-alert" role="alert"><?php echo isset( $state['errors']['form'] ) ? esc_html( $state['errors']['form'] ) : 'Please fix the highlighted fields below.'; ?></div>
 		<?php endif; ?>

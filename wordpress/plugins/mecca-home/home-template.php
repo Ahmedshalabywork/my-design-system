@@ -58,6 +58,8 @@ $faqs = array(
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a0a0b">
+<link rel="icon" type="image/png" sizes="96x96" href="<?php echo esc_url( $a( 'icon-96.png' ) ); ?>">
+<link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url( $a( 'icon-192.png' ) ); ?>">
 <?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-hq.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-hq-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'hero-hq.webp' ) ); ?> 1920w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/cormorant.woff2' ) ); ?>" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="<?php echo esc_url( $a( 'fonts/jost.woff2' ) ); ?>" crossorigin>
@@ -518,6 +520,15 @@ echo wp_json_encode( array(
 <?php endif; ?>
 
 <main id="main">
+<?php if ( ! $is_page ) : ?>
+<section id="quote" class="quote-white">
+	<div class="wrap">
+		<?php if ( $is_quote ) : ?><h1 class="quote-title">Get a Quote</h1><?php else : ?><h2 class="quote-title">Get a Quote</h2><?php endif; ?>
+		<p class="quote-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
+		<?php echo do_shortcode( '[mecca_quote_form heading="0"]' ); ?>
+	</div>
+</section>
+<?php endif; ?>
 <?php if ( $is_page ) : ?>
 <header class="pg-hero">
 	<div class="wrap pg-hero-grid<?php echo $pg['hero'] ? '' : ' no-img'; ?>">
@@ -641,13 +652,15 @@ echo wp_json_encode( array(
 </section>
 <?php endif; ?>
 
+<?php if ( $is_page ) : ?>
 <section id="quote" class="quote-white">
 	<div class="wrap">
 		<?php if ( $is_quote ) : ?><h1 class="quote-title">Get a Quote</h1><?php else : ?><h2 class="quote-title">Get a Quote</h2><?php endif; ?>
 		<p class="quote-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
-		<?php echo do_shortcode( '[mecca_quote_form]' ); ?>
+		<?php echo do_shortcode( '[mecca_quote_form heading="0"]' ); ?>
 	</div>
 </section>
+<?php endif; ?>
 
 <?php if ( ! $is_page ) : ?>
 <section class="alt" id="faq">
@@ -711,7 +724,7 @@ echo wp_json_encode( array(
 		var v=document.getElementById('heroVideo');
 		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 		v.addEventListener('playing',function(){v.classList.add('on');});
-		addEventListener('load',function(){setTimeout(function(){var ext=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?'.mp4':'.webm';v.src=(innerWidth<900?v.dataset.m:v.dataset.d)+ext;var p=v.play();if(p&&p.catch)p.catch(function(){});},500);});
+		addEventListener('load',function(){setTimeout(function(){(window.requestIdleCallback||function(f){f();})(function(){var ext=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?'.mp4':'.webm';v.src=(innerWidth<900?v.dataset.m:v.dataset.d)+ext;var p=v.play();if(p&&p.catch)p.catch(function(){});});},1200);});
 	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();

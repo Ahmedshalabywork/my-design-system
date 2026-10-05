@@ -72,6 +72,21 @@ add_action( 'template_redirect', function () {
 
 // Remove Divi's leftover inline CSS and its late-CSS loader, which only apply to Divi layouts.
 function mecca_home_strip( $html ) {
+	// Divi adds a second viewport tag that blocks pinch-zoom; ours already sets the viewport.
+	$html = preg_replace( '#<meta name="viewport"[^>]*user-scalable[^>]*>\s*#i', '', $html );
+	// Hosting monitoring scripts are not needed on these pages and slow them down.
+	$html = preg_replace( "#<script[^>]*src=['\"][^'\"]*wsimg\.com/traffic-assets[^'\"]*['\"][^>]*></script>#", '', $html );
+	$html = preg_replace( '#<script[^>]*>[^<]*_trfq[^<]*</script>#', '', $html );
+	// Hide email addresses from spam bots.
+	$parts = preg_split( '#(<script\b.*?</script>)#is', $html, -1, PREG_SPLIT_DELIM_CAPTURE );
+	foreach ( $parts as $k => $part ) {
+		if ( 0 !== stripos( $part, '<script' ) ) {
+			$parts[ $k ] = preg_replace_callback( '#(?<![\w.@/-])([\w.+-]+@meccalimo\.com)#i', function ( $m ) {
+				return antispambot( $m[1] );
+			}, $part );
+		}
+	}
+	$html = implode( '', $parts );
 	$html = preg_replace( '#<style[^>]*id="et-divi-customizer-global-cached-inline-styles"[^>]*>.*?</style>#s', '', $html );
 	$html = preg_replace( '#<script[^>]*>(?:(?!</script>).)*et-divi-dynamic(?:(?!</script>).)*</script>#s', '', $html );
 	return $html;
@@ -88,6 +103,10 @@ function mecca_home_attr( $attrs, $name ) {
 
 function mecca_home_clean( $html ) {
 	$html = preg_replace( '/\s(style|class|id)="[^"]*"/i', '', $html );
+	// Keep heading levels in order: pages that jump from H1 to H3 get their H3s promoted.
+	if ( false === stripos( $html, '<h2' ) && false !== stripos( $html, '<h3' ) ) {
+		$html = preg_replace( array( '#<(/?)h3>#i', '#<(/?)h4>#i' ), array( '<$1h2>', '<$1h3>' ), $html );
+	}
 	$html = str_replace( array( '&nbsp;', '<p></p>' ), ' ', $html );
 	return trim( wpautop( $html ) );
 }
@@ -188,6 +207,13 @@ function mecca_home_parse_page( $content ) {
 		}
 	}
 	$flush();
+	// Keep heading levels in order after the page H1 (no jumps like H1 -> H3).
+	$prev = 1;
+	$html = preg_replace_callback( '#<h([1-6])>(.*?)</h\1>#s', function ( $m ) use ( &$prev ) {
+		$lv   = min( (int) $m[1], $prev + 1 );
+		$prev = $lv;
+		return '<h' . $lv . '>' . $m[2] . '</h' . $lv . '>';
+	}, $html );
 	$out['html'] = $html;
 	return $out;
 }
