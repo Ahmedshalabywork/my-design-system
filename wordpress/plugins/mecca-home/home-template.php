@@ -41,7 +41,7 @@ $reviews = array(
 $faqs = array(
 	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is available. Just call ' . $phone . ', 24/7.' ),
 	array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
-	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Chevrolet Suburban and GMC Yukon Denali, and an executive sedan for airport runs and business travel. Tell us your group size and we will match the right vehicle.' ),
+	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali, and an executive sedan for airport runs and business travel. Tell us your group size and we will match the right vehicle.' ),
 	array( 'Do you handle airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
 	array( 'Are you available 24/7?', 'Yes. Mecca Limo is available around the clock, every day, including early-morning airport runs and late nights out.' ),
 	array( 'How do I get a price?', 'Fill out the quote form on this page or call ' . $phone . '. We will send pricing and availability for your trip, with no obligation.' ),
@@ -54,8 +54,9 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-suburban-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap">
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-fleet-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
 <style>
 :root{--ink:#0a0a0b;--ink-soft:#141416;--panel:#1a1a1d;--gold:#c9a34e;--gold-bright:#e2c274;--line:rgba(201,163,78,.22);--paper:#f3efe6;--muted:#aaa494}
@@ -122,6 +123,14 @@ body.menu-open{overflow:hidden}
 .hero-aurora{position:absolute;inset:-25%;z-index:2;pointer-events:none;mix-blend-mode:screen;filter:blur(22px);background:radial-gradient(38% 42% at 28% 72%,rgba(201,163,78,.28),transparent 60%),radial-gradient(30% 34% at 74% 38%,rgba(226,194,116,.18),transparent 60%);animation:aurora 22s ease-in-out infinite alternate}
 @keyframes aurora{0%{transform:translate3d(-4%,3%,0) scale(1)}50%{transform:translate3d(5%,-3%,0) scale(1.14)}100%{transform:translate3d(-2%,5%,0) scale(1.06)}}
 .hero-inner{position:relative;z-index:3;width:100%}
+.hero.hero-v{display:block;min-height:0;padding:0 0 64px}
+.stage{position:relative;height:min(56.25vw,80vh);overflow:hidden;background:#0a0a0b}
+.stage img,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage video{opacity:0;transition:opacity .5s}
+.stage video.on{opacity:1}
+.stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(rgba(10,10,11,0),#0a0a0b);z-index:2}
+.hero-v .hero-inner{margin-top:-2vw}
+.mh .hero-v h1{font-size:clamp(2.4rem,4.6vw,4.2rem);max-width:20ch}
 .hero-inner>*{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
 .hero-inner>:nth-child(2){animation-delay:.12s}
 .hero-inner>:nth-child(3){animation-delay:.24s}
@@ -224,34 +233,35 @@ body.menu-open{overflow:hidden}
 .rev-cta a{margin:0 8px}
 
 /* quote (white) */
-.mh section.quote-white{position:relative;background:#fff;color:#0a0a0b;padding:clamp(90px,12vw,150px) 0}
-.quote-eyebrow{display:flex;align-items:center;justify-content:center;gap:16px;font-size:.82rem;letter-spacing:.42em;text-transform:uppercase;color:rgba(10,10,11,.5);margin-bottom:20px}
-.quote-eyebrow::before,.quote-eyebrow::after{content:"";width:46px;height:1px;background:rgba(10,10,11,.28)}
-.mh .quote-title{font-weight:700;color:#0a0a0b;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px}
-.quote-sub{text-align:center;max-width:560px;margin:0 auto 50px;color:rgba(10,10,11,.62);font-size:1.08rem;font-weight:400}
+.mh section.quote-white{position:relative;background:radial-gradient(900px 520px at 50% 0%,rgba(201,163,78,.10),transparent 65%),var(--ink-soft);color:var(--paper);padding:clamp(90px,12vw,150px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mh .quote-title{font-weight:600;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px;background:linear-gradient(100deg,var(--gold) 0%,#fff7e0 28%,var(--gold-bright) 50%,var(--gold) 78%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-bright);animation:shine 8s linear infinite}
+.quote-sub{text-align:center;max-width:560px;margin:0 auto 50px;color:#d8d2c6;font-size:1.08rem;font-weight:300}
 #quote .mqf>h2,#quote .mqf>.mqf-sub{display:none}
 #quote .mqf-trust{max-width:920px;margin:0 auto 22px;gap:14px}
-#quote .mqf-trust div{background:#fff;border:2px solid #0a0a0b;border-radius:12px;color:#333;font-size:.95rem;padding:16px 8px}
-#quote .mqf-trust b{color:#0a0a0b;font-size:1.05rem;font-weight:600}
-#quote .mqf-trust svg{stroke:#c9a34e;width:30px;height:30px}
-#quote .mqf{max-width:920px;background:#fff;border:2px solid #0a0a0b;border-radius:14px;padding:clamp(26px,5vw,56px);color:#0a0a0b;box-shadow:0 34px 80px -34px rgba(0,0,0,.28);font-family:'Jost',sans-serif}
-#quote .mqf label{color:#0a0a0b;font-weight:600;font-size:clamp(1rem,1.6vw,1.15rem);margin:20px 0 9px}
-#quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{background:#fff;color:#0a0a0b;border:2px solid #0a0a0b;border-radius:8px;padding:14px 16px;font-family:'Jost',sans-serif;font-size:1.05rem;font-weight:500}
-#quote .mqf input::placeholder,#quote .mqf textarea::placeholder{color:#777;font-weight:400}
-#quote .mqf input:focus,#quote .mqf select:focus,#quote .mqf textarea:focus{border-color:#0a0a0b;box-shadow:0 0 0 4px rgba(201,163,78,.35)}
+#quote .mqf-trust div{background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--muted);font-family:'Jost',sans-serif;font-size:.95rem;padding:16px 8px}
+#quote .mqf-trust b{color:var(--gold-bright);font-size:1.05rem;font-weight:500}
+#quote .mqf-trust svg{stroke:var(--gold-bright);width:30px;height:30px}
+#quote .mqf{max-width:920px;background:rgba(20,20,22,.92);border:1px solid var(--gold);border-radius:16px;padding:clamp(26px,5vw,56px);color:var(--paper);box-shadow:0 34px 80px -34px rgba(0,0,0,.8),0 0 50px -18px rgba(201,163,78,.35);font-family:'Jost',sans-serif}
+#quote .mqf label{color:var(--gold-bright);font-weight:500;font-size:clamp(.98rem,1.5vw,1.08rem);letter-spacing:.02em;margin:20px 0 9px}
+#quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{background:rgba(255,255,255,.04);color:var(--paper);border:1px solid rgba(226,194,116,.35);border-radius:10px;padding:14px 16px;font-family:'Jost',sans-serif;font-size:1.05rem;font-weight:400;color-scheme:dark}
+#quote .mqf select option{background:#141416;color:var(--paper)}
+#quote .mqf input::placeholder,#quote .mqf textarea::placeholder{color:#8f897b;font-weight:300}
+#quote .mqf input:focus,#quote .mqf select:focus,#quote .mqf textarea:focus{border-color:var(--gold-bright);box-shadow:0 0 0 3px rgba(226,194,116,.18)}
 #quote .mqf .mqf-row{gap:26px}
-#quote .mqf .mqf-check{font-weight:400;color:#333;font-size:1rem;margin-top:16px}
-#quote .mqf .mqf-check input{accent-color:#0a0a0b;width:20px;height:20px}
-#quote .mqf .mqf-addstop{color:#0a0a0b;text-decoration:underline;text-underline-offset:3px;font-size:1rem}
-#quote .mqf button[type=submit]{position:relative;overflow:hidden;background:#0a0a0b;color:#fff;border-radius:10px;padding:22px;font-family:'Jost',sans-serif;font-size:clamp(1.05rem,2vw,1.35rem);font-weight:600;letter-spacing:.08em;margin-top:28px;transition:transform .3s,box-shadow .3s}
-#quote .mqf button[type=submit]:hover{background:#0a0a0b;transform:translateY(-2px);box-shadow:0 18px 40px -14px rgba(0,0,0,.5),0 0 0 2px var(--gold)}
-#quote .mqf .mqf-err{color:#c62828}
-#quote .mqf .mqf-bad{border-color:#c62828!important}
-#quote .mqf .mqf-alert{background:#fdecec;border-color:#c62828;color:#8a1c1c}
-#quote .mqf .mqf-note{color:#666}
-#quote .mqf .mqf-ok h2{color:#0a0a0b;font-family:'Cormorant Garamond',serif;font-size:2.6rem}
-#quote .mqf .mqf-ok p{color:#333;font-size:1.1rem}
-#quote .mqf .mqf-ok a{color:#0a0a0b!important;font-weight:600}
+#quote .mqf .mqf-check{font-weight:300;color:#d8d2c6;font-size:1rem;margin-top:16px}
+#quote .mqf .mqf-check input{accent-color:var(--gold);width:20px;height:20px}
+#quote .mqf .mqf-addstop{color:var(--gold-bright);text-decoration:underline;text-underline-offset:3px;font-size:1rem}
+#quote .mqf button[type=submit]{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--ink);border-radius:10px;padding:22px;font-family:'Jost',sans-serif;font-size:clamp(1.05rem,2vw,1.3rem);font-weight:600;letter-spacing:.1em;margin-top:28px;transition:transform .3s,box-shadow .3s}
+#quote .mqf button[type=submit]::before{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-18deg)}
+#quote .mqf button[type=submit]:hover{background:linear-gradient(135deg,var(--gold),var(--gold-bright));transform:translateY(-2px);box-shadow:0 18px 40px -12px rgba(226,194,116,.55)}
+#quote .mqf button[type=submit]:hover::before{animation:sheen .9s ease}
+#quote .mqf .mqf-err{color:#ff8a80}
+#quote .mqf .mqf-bad{border-color:#ff8a80!important}
+#quote .mqf .mqf-alert{background:#3a1d1d;border-color:#ff8a80;color:#ffd0d0}
+#quote .mqf .mqf-note{color:var(--muted)}
+#quote .mqf .mqf-ok h2{color:var(--gold-bright);font-family:'Cormorant Garamond',serif;font-size:2.6rem}
+#quote .mqf .mqf-ok p{color:#d8d2c6;font-size:1.1rem}
+#quote .mqf .mqf-ok a{color:var(--gold-bright)!important;font-weight:500}
 
 /* faq */
 .faq-list{max-width:820px;margin:0 auto;border-top:1px solid var(--line)}
@@ -285,6 +295,11 @@ body.menu-open{overflow:hidden}
 body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.035;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .will-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .will-reveal.is-in{opacity:1;transform:none}
+.fleet-pop .car-img img{animation:none}
+.fleet-pop>.will-reveal{transform:translateY(90px) scale(.86);transition:opacity .6s ease,transform 1s cubic-bezier(.34,1.56,.64,1)}
+.fleet-pop>.will-reveal.is-in{transform:none}
+.fleet-pop>.will-reveal .car-img img{transform:scale(1.3);transition:transform 1.2s cubic-bezier(.2,.7,.2,1) .15s}
+.fleet-pop>.will-reveal.is-in .car-img img{transform:scale(1.05)}
 
 @media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
@@ -296,6 +311,12 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .mh section{padding:80px 0}.wrap{padding:0 22px}.mh-nav,.mh-nav.scrolled{padding:10px 22px}
 .brand img{height:46px}.mh-nav.scrolled .brand img{height:40px}
 .hero{min-height:0;padding:118px 0 44px}
+.hero.hero-v{padding:0 0 44px}
+.stage{height:56.25vw;margin-top:64px}
+.hero-v .hero-inner{margin-top:8px}
+.hero-aurora,.hero-overlay+.hero-aurora{display:none}
+body.mh::after{display:none}
+.car-img img,.hero-quote::after,.strip::before{animation:none}
 .hero-quote,.hero-links{display:none}
 .hero-mcta{display:flex;flex-direction:column;gap:12px;max-width:420px}
 .hero-mcta .btn{text-align:center;padding:17px 20px;font-size:.85rem;border-radius:10px}
@@ -372,13 +393,11 @@ echo wp_json_encode( array(
 </div>
 
 <?php if ( $is_home ) : ?>
-<header class="hero" id="top">
-	<div class="hero-slides" id="heroSlides" aria-hidden="true">
-		<img src="<?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-suburban-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="1064" alt="" fetchpriority="high">
-		<img data-src="<?php echo esc_url( $a( 'hero-sprinter.webp' ) ); ?>" width="1500" height="959" alt="">
-		<img data-src="<?php echo esc_url( $a( 'hero-sedan.webp' ) ); ?>" width="1400" height="1088" alt="">
+<header class="hero hero-v" id="top">
+	<div class="stage" aria-hidden="true">
+		<img src="<?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-fleet-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-fleet.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
+		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-fleet-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-fleet-480' ) ); ?>"></video>
 	</div>
-	<div class="hero-overlay" aria-hidden="true"></div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
 		<span class="eyebrow">Charleston, SC · Available 24/7</span>
@@ -417,17 +436,17 @@ echo wp_json_encode( array(
 			<h2>Black car and limo service in Charleston, SC.</h2>
 			<p>Late-model, professionally maintained and detailed before every ride. Choose the vehicle that fits your group and your occasion.</p>
 		</div>
-		<div class="grid3">
+		<div class="grid3 fleet-pop">
 			<div class="car">
-				<div class="car-img"><span class="car-tag">Sprinter</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter.webp' ) ); ?>" width="800" height="511" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
+				<div class="car-img"><span class="car-tag">Sprinter</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter.webp' ) ); ?>" width="800" height="450" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
 				<div class="car-body"><h3>Mercedes Sprinter</h3><div class="seats">Seats up to 14 with luggage</div><p>The choice for wedding parties, corporate groups and bachelorette weekends.</p></div>
 			</div>
 			<div class="car">
-				<div class="car-img"><span class="car-tag">SUV</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="532" alt="Black Chevrolet Suburban SUV limo in Charleston SC"></div>
-				<div class="car-body"><h3>Luxury SUV</h3><div class="seats">Seats up to 6 with luggage</div><p>Chevrolet Suburban and GMC Yukon Denali. Room for the group and every bag.</p></div>
+				<div class="car-img"><span class="car-tag">SUV</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="446" alt="Black Cadillac Escalade SUV limo in Charleston SC"></div>
+				<div class="car-body"><h3>Luxury SUV</h3><div class="seats">Seats up to 6 with luggage</div><p>Cadillac Escalade, Chevrolet Suburban and GMC Yukon Denali. Room for the group and every bag.</p></div>
 			</div>
 			<div class="car">
-				<div class="car-img"><span class="car-tag">Sedan</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" width="800" height="622" alt="Black executive sedan for airport and business travel in Charleston"></div>
+				<div class="car-img"><span class="car-tag">Sedan</span><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sedan.webp' ) ); ?>" width="800" height="437" alt="Black executive sedan for airport and business travel in Charleston"></div>
 				<div class="car-body"><h3>Executive Sedan</h3><div class="seats">Seats up to 3 with 2 bags</div><p>Quiet and private for airport runs and business travel. Always on time.</p></div>
 			</div>
 		</div>
@@ -549,6 +568,7 @@ echo wp_json_encode( array(
 				<a href="<?php echo esc_attr( $tel ); ?>"><?php echo esc_html( $phone ); ?></a>
 				<a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
 				<span>1914 Weeping Cypress Dr<br>Charleston, SC 29412</span>
+				<a href="https://www.google.com/maps/dir/?api=1&amp;destination=Mecca+Limo+1914+Weeping+Cypress+Dr+Charleston+SC+29412" target="_blank" rel="noopener">Get directions →</a>
 				<span>Open 24 hours, 7 days a week</span>
 				<a href="<?php echo esc_url( home_url( '/get-a-quote/' ) ); ?>">Get a quote</a>
 			</div>
@@ -563,7 +583,7 @@ echo wp_json_encode( array(
 	function onScroll(){var y=window.scrollY;nav.classList.toggle('scrolled',y>40);var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?y/h*100:0)+'%';sticky.classList.toggle('show',y>innerHeight*.7);}
 	addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-	addEventListener('load',function(){var w=document.getElementById('heroSlides');if(!w)return;w.querySelectorAll('img[data-src]').forEach(function(i){i.src=i.dataset.src;});setTimeout(function(){w.classList.add('run');},1500);});
+	addEventListener('load',function(){var v=document.getElementById('heroVideo');if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;setTimeout(function(){var ext=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?'.mp4':'.webm';v.src=(innerWidth<900?v.dataset.m:v.dataset.d)+ext;v.addEventListener('playing',function(){v.classList.add('on');},{once:true});var p=v.play();if(p&&p.catch)p.catch(function(){});},600);});
 
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
@@ -578,7 +598,7 @@ echo wp_json_encode( array(
 		['.sec-head','.rev-badge','.strip .wrap','.story-copy','.story-photo','.grid3','.svc-grid','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
 			document.querySelectorAll(sel).forEach(function(c){
 				var kids=c.matches('.grid3,.svc-grid,.strip .wrap')?[].slice.call(c.children):[c];
-				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(i%5*90)+'ms';io.observe(el);});
+				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(c.classList.contains('fleet-pop')?i*180:i%5*90)+'ms';io.observe(el);});
 			});
 		});
 	}
