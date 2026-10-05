@@ -60,7 +60,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-hq.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-hq-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'hero-hq.webp' ) ); ?> 1920w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
@@ -492,8 +492,8 @@ echo wp_json_encode( array(
 <?php if ( $is_home ) : ?>
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
-		<img class="stage-img" src="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
-		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-gold-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-gold-480' ) ); ?>"></video>
+		<img class="stage-img" src="<?php echo esc_url( $a( 'hero-hq.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-hq-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'hero-hq.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high">
+		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-hq-1080' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-hq-608' ) ); ?>"></video>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
