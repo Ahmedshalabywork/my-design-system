@@ -10,6 +10,8 @@ $phone = '(843) 804-1188';
 $tel   = 'tel:+18438041188';
 $email = antispambot( 'info@meccalimo.com' );
 $logo  = $a( 'logo.webp' );
+$is_home = is_front_page();
+$h     = $is_home ? '' : esc_url( home_url( '/' ) );
 
 $services = array(
 	array( 'Weddings', '/wedding/', 'On-time, on-theme rides for the couple, the wedding party and guests.' ),
@@ -52,7 +54,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-suburban-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high">
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-suburban-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap">
 <?php wp_head(); ?>
 <style>
@@ -77,6 +79,10 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 @keyframes sheen{from{left:-120%}to{left:150%}}
 
 /* nav */
+.mh-page .mh-nav{background:rgba(10,10,11,.97);border-bottom:1px solid var(--line)}
+.mh-page #quote{padding-top:150px}
+.mh-page main{display:flex;flex-direction:column}
+.mh-page main>#quote{order:-1}
 #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
 .mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:linear-gradient(to bottom,rgba(10,10,11,.92),rgba(10,10,11,0));transition:background .4s,padding .4s}
 .mh-nav.scrolled{background:rgba(10,10,11,.94);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
@@ -139,6 +145,7 @@ body.menu-open{overflow:hidden}
 @media(min-width:860px){.hero-quote{grid-template-columns:1.25fr 1.25fr 1fr .8fr auto;gap:12px;padding:18px}.hq-field:nth-child(1),.hq-field:nth-child(2),.hq-btn{grid-column:auto}}
 .hero-links{margin-top:18px;display:flex;gap:22px;flex-wrap:wrap;font-size:.86rem;color:#d8d2c6}
 .hero-links a:hover{color:var(--gold-bright)}
+.hero-mcta{display:none}
 
 /* strip */
 .strip{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-soft)}
@@ -220,7 +227,7 @@ body.menu-open{overflow:hidden}
 .mh section.quote-white{position:relative;background:#fff;color:#0a0a0b;padding:clamp(90px,12vw,150px) 0}
 .quote-eyebrow{display:flex;align-items:center;justify-content:center;gap:16px;font-size:.82rem;letter-spacing:.42em;text-transform:uppercase;color:rgba(10,10,11,.5);margin-bottom:20px}
 .quote-eyebrow::before,.quote-eyebrow::after{content:"";width:46px;height:1px;background:rgba(10,10,11,.28)}
-.mh h2.quote-title{font-weight:700;color:#0a0a0b;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px}
+.mh .quote-title{font-weight:700;color:#0a0a0b;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px}
 .quote-sub{text-align:center;max-width:560px;margin:0 auto 50px;color:rgba(10,10,11,.62);font-size:1.08rem;font-weight:400}
 #quote .mqf>h2,#quote .mqf>.mqf-sub{display:none}
 #quote .mqf-trust{max-width:920px;margin:0 auto 22px;gap:14px}
@@ -288,7 +295,17 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .foot-grid{grid-template-columns:1fr 1fr}
 .mh section{padding:80px 0}.wrap{padding:0 22px}.mh-nav,.mh-nav.scrolled{padding:10px 22px}
 .brand img{height:46px}.mh-nav.scrolled .brand img{height:40px}
-.hero{padding-bottom:7vh}
+.hero{min-height:0;padding:118px 0 44px}
+.hero-quote,.hero-links{display:none}
+.hero-mcta{display:flex;flex-direction:column;gap:12px;max-width:420px}
+.hero-mcta .btn{text-align:center;padding:17px 20px;font-size:.85rem;border-radius:10px}
+.hero-mcta .btn-ghost{background:rgba(10,10,11,.45)}
+.lede{margin-bottom:24px}
+.mh main{display:flex;flex-direction:column}
+.mh main>#quote{order:-1}
+.mh section.quote-white{padding:48px 0 60px}
+.mh-page #quote.quote-white{padding-top:104px}
+.quote-sub{margin-bottom:26px}
 }
 @media(max-width:560px){
 .wrap{padding:0 16px}
@@ -298,6 +315,11 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .strip .wrap{gap:18px 26px;padding:24px 16px}
 .stat b{font-size:1.8rem}
 #quote .mqf{padding:22px 18px;border-radius:12px}
+.mh .quote-title{font-size:3rem;margin-bottom:12px}
+#quote .mqf-trust{gap:8px;margin-bottom:16px}
+#quote .mqf-trust div{padding:12px 4px;font-size:.78rem}
+#quote .mqf-trust b{font-size:.9rem}
+#quote .mqf label{margin:16px 0 7px}
 #quote .mqf .mqf-row{gap:0}
 .rev-cta a{display:block;margin:0 auto 12px;max-width:320px}
 #stickyQuote{right:auto;left:14px;bottom:18px;padding:13px 20px}
@@ -320,7 +342,7 @@ echo wp_json_encode( array(
 ) );
 ?></script>
 </head>
-<body <?php body_class( 'mh' ); ?>>
+<body <?php body_class( $is_home ? 'mh' : 'mh mh-page' ); ?>>
 <?php wp_body_open(); ?>
 <a class="skip" href="#main">Skip to content</a>
 <div id="progress" aria-hidden="true"></div>
@@ -329,8 +351,8 @@ echo wp_json_encode( array(
 <nav class="mh-nav" id="nav" aria-label="Main">
 	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $logo ); ?>" width="240" height="114" alt="Mecca Limo Chauffeur Service"></a>
 	<div class="nav-links">
-		<a href="#fleet">Fleet</a>
-		<a href="#services">Services</a>
+		<a href="<?php echo $h; ?>#fleet">Fleet</a>
+		<a href="<?php echo $h; ?>#services">Services</a>
 		<a href="#reviews">Reviews</a>
 		<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
 		<a href="#quote">Get a Quote</a>
@@ -339,9 +361,9 @@ echo wp_json_encode( array(
 	<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-	<a href="#fleet">Fleet</a>
-	<a href="#services">Services</a>
-	<a href="#how">How it works</a>
+	<a href="<?php echo $h; ?>#fleet">Fleet</a>
+	<a href="<?php echo $h; ?>#services">Services</a>
+	<a href="<?php echo $h; ?>#how">How it works</a>
 	<a href="#reviews">Reviews</a>
 	<a href="#faq">FAQ</a>
 	<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
@@ -349,6 +371,7 @@ echo wp_json_encode( array(
 	<a href="<?php echo esc_attr( $tel ); ?>" class="mm-call">Call <?php echo esc_html( $phone ); ?> · 24/7</a>
 </div>
 
+<?php if ( $is_home ) : ?>
 <header class="hero" id="top">
 	<div class="hero-slides" id="heroSlides" aria-hidden="true">
 		<img src="<?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-suburban-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-suburban.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="1064" alt="" fetchpriority="high">
@@ -369,10 +392,12 @@ echo wp_json_encode( array(
 				<div class="hq-field"><label for="hqPax">Passengers</label><input id="hqPax" type="number" min="1" max="99" inputmode="numeric" placeholder="e.g. 4"></div>
 				<button class="hq-btn" type="submit">Get a Quote</button>
 			</form>
-			<div class="hero-links"><a href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a><a href="#fleet">View our fleet →</a></div>
+			<div class="hero-mcta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
+			<div class="hero-links"><a href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a><a href="<?php echo $h; ?>#fleet">View our fleet →</a></div>
 		</div>
 	</div>
 </header>
+<?php endif; ?>
 
 <main id="main">
 <div class="strip">
@@ -384,6 +409,7 @@ echo wp_json_encode( array(
 	</div>
 </div>
 
+<?php if ( $is_home ) : ?>
 <section id="fleet">
 	<div class="wrap">
 		<div class="sec-head">
@@ -449,6 +475,7 @@ echo wp_json_encode( array(
 		<div class="story-photo"><img loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'story.webp' ) ); ?>" width="900" height="700" alt="Mecca Limo branded Mercedes-Benz Sprinter at sunset"></div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section id="reviews">
 	<div class="wrap">
@@ -476,7 +503,7 @@ echo wp_json_encode( array(
 
 <section id="quote" class="quote-white">
 	<div class="wrap">
-		<h2 class="quote-title">Get a Quote</h2>
+		<?php if ( $is_home ) : ?><h2 class="quote-title">Get a Quote</h2><?php else : ?><h1 class="quote-title">Get a Quote</h1><?php endif; ?>
 		<p class="quote-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
 		<?php echo do_shortcode( '[mecca_quote_form]' ); ?>
 	</div>
@@ -536,9 +563,9 @@ echo wp_json_encode( array(
 	function onScroll(){var y=window.scrollY;nav.classList.toggle('scrolled',y>40);var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?y/h*100:0)+'%';sticky.classList.toggle('show',y>innerHeight*.7);}
 	addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-	addEventListener('load',function(){var w=document.getElementById('heroSlides');w.querySelectorAll('img[data-src]').forEach(function(i){i.src=i.dataset.src;});setTimeout(function(){w.classList.add('run');},1500);});
+	addEventListener('load',function(){var w=document.getElementById('heroSlides');if(!w)return;w.querySelectorAll('img[data-src]').forEach(function(i){i.src=i.dataset.src;});setTimeout(function(){w.classList.add('run');},1500);});
 
-	document.getElementById('heroQuote').addEventListener('submit',function(e){
+	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
 		var map={hqPickup:'mqf-pickup',hqDrop:'mqf-dropoff',hqDate:'mqf-date',hqPax:'mqf-pax'};
 		for(var k in map){var s=document.getElementById(k),t=document.getElementById(map[k]);if(s&&t&&s.value)t.value=s.value;}

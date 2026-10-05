@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function mecca_home_active() {
-	if ( ! is_front_page() ) {
+	if ( ! is_front_page() && ! is_page( 'get-a-quote' ) ) {
 		return false;
 	}
 	return get_option( 'mecca_home_v2_live' ) || isset( $_GET['mecca_v2'] );
