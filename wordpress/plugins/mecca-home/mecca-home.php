@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/seo.php';
+
 function mecca_home_active() {
 	if ( is_front_page() || is_page( 'get-a-quote' ) ) {
 		return get_option( 'mecca_home_v2_live' ) || isset( $_GET['mecca_v2'] );
@@ -94,7 +96,7 @@ function mecca_home_strip( $html ) {
 
 // Pages that use the new design instead of their Divi layout.
 function mecca_home_page_slugs() {
-	return array( 'about', 'airport', 'attractions', 'beach', 'contact', 'corporate', 'cruise-trips', 'events', 'golf-courses', 'hotels', 'night-out', 'policy', 'service', 'wedding' );
+	return array( 'about', 'airport', 'attractions', 'beach', 'contact', 'corporate', 'cruise-trips', 'events', 'golf-courses', 'hotels', 'night-out', 'policy', 'service', 'wedding', 'charleston-limo-fleet', 'kiawah-island-car-service', 'mount-pleasant-limo-service', 'reviews', 'charleston-hourly-limo-charter' );
 }
 
 function mecca_home_attr( $attrs, $name ) {
@@ -135,6 +137,22 @@ function mecca_home_parse_page( $content ) {
 		$html .= '</div>';
 		$cards = array();
 	};
+	if ( false === strpos( $content, '[et_pb_' ) ) {
+		$c = do_shortcode( mecca_home_clean( $content ) );
+		if ( preg_match( '#<h1[^>]*>(.*?)</h1>#s', $c, $h ) ) {
+			$out['h1'] = trim( wp_strip_all_tags( $h[1] ) );
+			$c         = str_replace( $h[0], '', $c );
+		}
+		if ( preg_match( '#<img[^>]+src="([^"]+)"[^>]*>#', $c, $im ) ) {
+			$out['hero'] = $im[1];
+			$c           = str_replace( $im[0], '', $c );
+		}
+		$c = preg_replace_callback( '#<img[^>]+src="([^"]+)"[^>]*?(?:alt="([^"]*)")?[^>]*>#', function ( $im ) {
+			return mecca_home_img( $im[1], isset( $im[2] ) ? html_entity_decode( $im[2] ) : '', array( 'loading' => 'lazy' ) );
+		}, $c );
+		$out['html'] = '<div class="pg-text">' . $c . '</div>';
+		return $out;
+	}
 	preg_match_all( '/\[(et_pb_[a-z_]+)((?:[^\]"]|"[^"]*")*)\]/', $content, $m, PREG_OFFSET_CAPTURE );
 	foreach ( $m[1] as $i => $t ) {
 		$tag = $t[0];
