@@ -60,7 +60,7 @@ $faqs = array(
 <meta name="theme-color" content="#0a0a0b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
+<?php if ( $is_home ) : ?><link rel="preload" as="image" href="<?php echo esc_url( $a( 'hero-new.webp' ) ); ?>" imagesrcset="<?php echo esc_url( $a( 'hero-new-m.webp' ) ); ?> 900w, <?php echo esc_url( $a( 'hero-new.webp' ) ); ?> 1676w" imagesizes="100vw" fetchpriority="high"><?php endif; ?>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap"></noscript>
 <?php wp_head(); ?>
@@ -137,10 +137,17 @@ body.menu-open{overflow:hidden}
 @keyframes aurora{0%{transform:translate3d(-4%,3%,0) scale(1)}50%{transform:translate3d(5%,-3%,0) scale(1.14)}100%{transform:translate3d(-2%,5%,0) scale(1.06)}}
 .hero-inner{position:relative;z-index:3;width:100%}
 .hero.hero-v{display:block;min-height:0;padding:0 0 64px}
-.stage{position:relative;height:min(56.25vw,80vh);overflow:hidden;background:#0a0a0b}
-.stage img,.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.stage video{opacity:0;transition:opacity .5s}
-.stage video.on{opacity:1}
+.stage{position:relative;height:min(38.3vw,80vh);min-height:380px;overflow:hidden;background:#0a0a0b}
+.stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%;transform-origin:50% 62%;animation:popcars 10s cubic-bezier(.22,.8,.25,1) infinite;will-change:transform,opacity,filter}
+@keyframes popcars{
+0%{opacity:0;transform:translateY(7%) scale(.9);filter:blur(6px) brightness(.6)}
+9%{opacity:1;transform:translateY(-1%) scale(1.02);filter:blur(0) brightness(1.08)}
+14%{transform:translateY(0) scale(1);filter:brightness(1)}
+55%{transform:scale(1.045) rotate(.4deg)}
+86%{opacity:1;transform:scale(1.07) rotate(-.3deg);filter:blur(0) brightness(1)}
+96%,100%{opacity:0;transform:scale(1.1);filter:blur(5px) brightness(.5)}}
+.stage-shine{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;background:linear-gradient(105deg,transparent 40%,rgba(255,236,170,.35) 50%,transparent 60%);background-size:250% 100%;animation:shinepass 10s ease-in-out infinite}
+@keyframes shinepass{0%,14%{background-position:130% 0}30%{background-position:-30% 0}100%{background-position:-30% 0}}
 .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(rgba(10,10,11,0),#0a0a0b);z-index:2}
 .hero-v .hero-inner{margin-top:-2vw}
 .mh .hero-v h1{font-size:clamp(2.4rem,4.6vw,4.2rem);max-width:20ch}
@@ -173,7 +180,12 @@ body.menu-open{overflow:hidden}
 .strip{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink-soft)}
 .strip::before{content:"";position:absolute;top:-1px;left:0;height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);background-size:50% 100%;background-repeat:no-repeat;animation:scan 6s linear infinite}
 @keyframes scan{0%{background-position:-60% 0}100%{background-position:160% 0}}
-.strip .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;padding:32px}
+.marquee{display:flex;overflow:hidden;padding:28px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;align-items:center;gap:56px;padding-right:56px;flex:none;animation:marquee 26s linear infinite}
+@keyframes marquee{to{transform:translateX(-100%)}}
+.marquee .stat{flex:none;text-align:left}
+.stat-sep{font-style:normal;color:var(--gold);font-size:.9rem;display:inline-block;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .stat b{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--gold);display:block;line-height:1;font-weight:600;transition:text-shadow .4s}
 .strip:hover .stat b{text-shadow:0 0 22px rgba(226,194,116,.45)}
 .stat span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -331,8 +343,7 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 .brand img{height:64px}.mh-nav.scrolled .brand img{height:52px}
 .hero{min-height:0;padding:118px 0 44px}
 .hero.hero-v{padding:0 0 44px}
-.stage{height:max(78vw,300px);margin-top:0}
-.stage img,.stage video{object-position:50% 40%}
+.stage{height:64vw;min-height:0;margin-top:78px}
 .hero-v .hero-inner{margin-top:8px}
 .hero-aurora,.hero-overlay+.hero-aurora{display:none}
 body.mh::after{display:none}
@@ -369,7 +380,7 @@ body.mh{font-size:17px}
 .mh section{padding:64px 0}
 .svc-grid{grid-template-columns:1fr}
 .foot-grid{grid-template-columns:1fr}
-.strip .wrap{gap:18px 26px;padding:24px 16px}
+.marquee{padding:20px 0}.marquee-track{gap:36px;padding-right:36px;animation-duration:20s}
 .stat b{font-size:1.8rem}
 #quote .mqf{padding:22px 18px;border-radius:12px}
 .mh .quote-title{font-size:3rem;margin-bottom:12px}
@@ -386,6 +397,7 @@ body.mh{font-size:17px}
 @media(prefers-reduced-motion:reduce){
 *,*::before,*::after{animation:none!important;transition:none!important}
 .will-reveal{opacity:1!important;transform:none!important}
+.stage-img{opacity:1!important}
 .hero h1 em{-webkit-text-fill-color:var(--gold-bright);color:var(--gold-bright)}
 }
 
@@ -469,8 +481,8 @@ echo wp_json_encode( array(
 <?php if ( $is_home ) : ?>
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
-		<img src="<?php echo esc_url( $a( 'hero-gold.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-gold-m.webp' ) ); ?> 800w, <?php echo esc_url( $a( 'hero-gold.webp' ) ); ?> 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high">
-		<video id="heroVideo" muted playsinline loop preload="none" data-d="<?php echo esc_url( $a( 'hero-gold-720' ) ); ?>" data-m="<?php echo esc_url( $a( 'hero-gold-480' ) ); ?>"></video>
+		<img class="stage-img" src="<?php echo esc_url( $a( 'hero-new.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'hero-new-m.webp' ) ); ?> 900w, <?php echo esc_url( $a( 'hero-new.webp' ) ); ?> 1676w" sizes="100vw" width="1676" height="642" alt="" fetchpriority="high">
+		<span class="stage-shine"></span>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
@@ -485,7 +497,7 @@ echo wp_json_encode( array(
 				<div class="hq-field"><label for="hqPax">Passengers</label><input id="hqPax" type="number" min="1" max="99" inputmode="numeric" placeholder="e.g. 4"></div>
 				<button class="hq-btn" type="submit">Get a Quote</button>
 			</form>
-			<div class="hero-mcta"><a href="#quote" class="btn btn-gold">Get a Quote</a><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
+			<div class="hero-mcta"><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
 			<div class="hero-links"><a href="<?php echo esc_attr( $tel ); ?>">Call <?php echo esc_html( $phone ); ?></a><a href="<?php echo $h; ?>#fleet">View our fleet →</a></div>
 		</div>
 	</div>
@@ -517,12 +529,7 @@ echo wp_json_encode( array(
 </section>
 <?php else : ?>
 <div class="strip">
-	<div class="wrap">
-		<div class="stat"><b>5.0 ★</b><span>Google rating</span></div>
-		<div class="stat"><b>24/7</b><span>Always available</span></div>
-		<div class="stat"><b>Family</b><span>Owned &amp; operated</span></div>
-		<div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div>
-	</div>
+	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always available</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always available</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
 </div>
 <?php endif; ?>
 
@@ -685,7 +692,6 @@ echo wp_json_encode( array(
 	function onScroll(){var y=window.scrollY;nav.classList.toggle('scrolled',y>40);var h=document.documentElement.scrollHeight-innerHeight;bar.style.width=(h>0?y/h*100:0)+'%';sticky.classList.toggle('show',y>innerHeight*.7);}
 	addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-	addEventListener('load',function(){var v=document.getElementById('heroVideo');if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;setTimeout(function(){var ext=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?'.mp4':'.webm';v.src=(innerWidth<900?v.dataset.m:v.dataset.d)+ext;v.addEventListener('playing',function(){v.classList.add('on');},{once:true});var p=v.play();if(p&&p.catch)p.catch(function(){});},600);});
 
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
@@ -697,9 +703,9 @@ echo wp_json_encode( array(
 
 	if('IntersectionObserver' in window){
 		var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-		['.sec-head','.rev-badge','.strip .wrap','.story-copy','.story-photo','.grid3','.svc-grid','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
+		['.sec-head','.rev-badge','.story-copy','.story-photo','.grid3','.svc-grid','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
 			document.querySelectorAll(sel).forEach(function(c){
-				var kids=c.matches('.grid3,.svc-grid,.strip .wrap')?[].slice.call(c.children):[c];
+				var kids=c.matches('.grid3,.svc-grid')?[].slice.call(c.children):[c];
 				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(c.classList.contains('fleet-pop')?i*180:i%5*90)+'ms';io.observe(el);});
 			});
 		});
