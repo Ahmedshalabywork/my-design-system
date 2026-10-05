@@ -85,10 +85,16 @@ body.mh{background:var(--ink);color:var(--paper);font-family:'Jost',sans-serif;f
 .mh-page main{display:flex;flex-direction:column}
 .mh-page main>#quote{order:-1}
 #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:100;background:linear-gradient(90deg,var(--gold),var(--gold-bright),#fff6df);box-shadow:0 0 12px rgba(226,194,116,.7)}
-.mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:linear-gradient(to bottom,rgba(10,10,11,.92),rgba(10,10,11,0));transition:background .4s,padding .4s}
+.mh-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;padding:14px 40px;background:linear-gradient(to bottom,rgba(10,10,11,.92),rgba(10,10,11,0));transition:background .4s,padding .4s}
 .mh-nav.scrolled{background:rgba(10,10,11,.94);backdrop-filter:blur(14px) saturate(120%);-webkit-backdrop-filter:blur(14px);padding:8px 40px;border-bottom:1px solid var(--line)}
-.brand img{height:56px;width:auto;transition:height .4s}
-.mh-nav.scrolled .brand img{height:44px}
+.brand{grid-column:2;justify-self:center}
+.brand img{height:62px;width:auto;transition:height .4s}
+.nav-left{grid-column:1;justify-self:start}
+.nav-right{grid-column:3;justify-self:end}
+.nav-tel{display:none;grid-column:1;justify-self:start;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;align-items:center;justify-content:center;color:var(--gold-bright)}
+.nav-tel svg{width:18px;height:18px;fill:currentColor}
+.burger{grid-column:3;justify-self:end}
+.mh-nav.scrolled .brand img{height:48px}
 .nav-links{display:flex;gap:30px;align-items:center}
 .nav-links a{position:relative;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#cfc9bc;transition:color .25s}
 .nav-links a:hover{color:var(--gold-bright)}
@@ -303,7 +309,7 @@ body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none
 
 @media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
-.nav-links{display:none}.burger{display:flex}
+.nav-links{display:none}.burger{display:flex}.nav-tel{display:flex}
 .grid3,.story-grid{grid-template-columns:1fr}
 .svc-grid{grid-template-columns:1fr 1fr}
 .story-photo{height:280px;order:-1}
@@ -370,12 +376,15 @@ echo wp_json_encode( array(
 <a href="#quote" id="stickyQuote">Get a Quote</a>
 
 <nav class="mh-nav" id="nav" aria-label="Main">
-	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $logo ); ?>" width="240" height="114" alt="Mecca Limo Chauffeur Service"></a>
-	<div class="nav-links">
+	<div class="nav-links nav-left">
 		<a href="<?php echo $h; ?>#fleet">Fleet</a>
 		<a href="<?php echo $h; ?>#services">Services</a>
 		<a href="#reviews">Reviews</a>
 		<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
+	</div>
+	<a href="<?php echo esc_attr( $tel ); ?>" class="nav-tel" aria-label="Call <?php echo esc_attr( $phone ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></a>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="brand"><img src="<?php echo esc_url( $logo ); ?>" width="240" height="114" alt="Mecca Limo Chauffeur Service"></a>
+	<div class="nav-links nav-right">
 		<a href="#quote">Get a Quote</a>
 		<a href="<?php echo esc_attr( $tel ); ?>" class="nav-call"><?php echo esc_html( $phone ); ?></a>
 	</div>
