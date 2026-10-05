@@ -152,7 +152,7 @@ body.menu-open{overflow:hidden}
 .stage{position:relative;height:min(56.25vw,82vh);overflow:hidden;background:#0a0a0b;margin-top:124px}
 .stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 50%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;transform-origin:50% 62%;transition:opacity 1s ease;will-change:transform,opacity,filter}
 .stage-img.pop{animation:popcars 7s cubic-bezier(.22,.8,.25,1) forwards}
-.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;opacity:0;transition:opacity .9s ease;z-index:1}
+.stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,transparent 0,#000 10%,#000 86%,transparent 100%),linear-gradient(to right,transparent 0,#000 6%,#000 94%,transparent 100%);mask-composite:intersect;opacity:0;transition:opacity .12s linear;z-index:1}
 .stage video.on{opacity:1}
 .stage-logo{position:absolute;left:50%;top:9%;z-index:3;width:clamp(150px,24vw,360px);height:auto;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 6px 24px rgba(0,0,0,.75)) drop-shadow(0 0 16px rgba(226,194,116,.35));animation:logoin 1s cubic-bezier(.34,1.56,.64,1) both,logoglow 4s ease-in-out 1s infinite}
 @keyframes logoin{from{opacity:0;transform:translate(-50%,-14px) scale(.85)}to{opacity:1;transform:translateX(-50%) scale(1)}}
@@ -519,7 +519,7 @@ echo wp_json_encode( array(
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
 		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-480.webp' ) ); ?> 480w, <?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-828.webp' ) ); ?> 828w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3-1440.webp' ) ); ?> 1440w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
-		<video id="heroVideo" muted playsinline preload="none" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video>
+		<video id="heroVideo" muted playsinline autoplay preload="auto" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video><script>(function(v){if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;v.addEventListener('playing',function(){v.classList.add('on');});v.addEventListener('ended',function(){var st=v.closest('.stage');if(st)st.classList.add('hold');});v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;var p=v.play();if(p&&p.catch)p.catch(function(){});})(document.getElementById('heroVideo'));</script>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
@@ -769,15 +769,7 @@ echo wp_json_encode( array(
 	(function(){
 		var v=document.getElementById('heroVideo'),st=document.querySelector('.stage');
 		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-		v.addEventListener('playing',function(){v.classList.add('on');});
-		v.addEventListener('ended',function(){if(st)st.classList.add('hold');});
-		// Start on the visitor's first touch, scroll or mouse move so the photo stays the first view.
-		var go=false,ev=['pointerdown','touchstart','scroll','wheel','mousemove','keydown'];
-		function start(){if(go)return;go=true;ev.forEach(function(e){removeEventListener(e,start);});
-			v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;
-			var p=v.play();if(p&&p.catch)p.catch(function(){});
-		}
-		ev.forEach(function(e){addEventListener(e,start,{passive:true});});
+		if(v.paused&&!v.ended&&v.readyState>2){var p=v.play();if(p&&p.catch)p.catch(function(){});}
 	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
