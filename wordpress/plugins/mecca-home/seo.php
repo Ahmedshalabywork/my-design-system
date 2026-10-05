@@ -88,7 +88,7 @@ function mecca_seo_faqs( $slug ) {
 			array( 'Which airports do you serve from Mount Pleasant?', 'Charleston International Airport (CHS) and Mount Pleasant Regional Airport (MPR), with flight tracking on airport pickups.' ),
 		),
 		'charleston-hourly-limo-charter' => array(
-			array( 'Is there a minimum number of hours?', 'Yes. Hourly minimums apply; for example, Sprinter charters have a 3-hour minimum. See our booking and cancellation policy for details. Your chauffeur stays with you for the whole booking and drives you to every stop.' ),
+			array( 'Is there a minimum number of hours?', 'Yes. Every vehicle has a 3-hour minimum: executive sedans, luxury SUVs and the Mercedes Sprinter. See our booking and cancellation policy for details. Your chauffeur stays with you for the whole booking and drives you to every stop.' ),
 			array( 'Which vehicles can I charter by the hour?', 'Executive sedans for up to 3, luxury SUVs for up to 6 and the Mercedes-Benz Sprinter for up to 14 passengers.' ),
 		),
 		'service'      => array(
