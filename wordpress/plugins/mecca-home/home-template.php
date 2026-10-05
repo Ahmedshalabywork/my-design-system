@@ -222,7 +222,11 @@ body.menu-open{overflow:hidden}
 .quote-eyebrow::before,.quote-eyebrow::after{content:"";width:46px;height:1px;background:rgba(10,10,11,.28)}
 .mh h2.quote-title{font-weight:700;color:#0a0a0b;text-align:center;font-size:clamp(3.2rem,9.5vw,7.4rem);line-height:.92;margin-bottom:18px}
 .quote-sub{text-align:center;max-width:560px;margin:0 auto 50px;color:rgba(10,10,11,.62);font-size:1.08rem;font-weight:400}
-#quote .mqf-trust,#quote .mqf>h2,#quote .mqf>.mqf-sub{display:none}
+#quote .mqf>h2,#quote .mqf>.mqf-sub{display:none}
+#quote .mqf-trust{max-width:920px;margin:0 auto 22px;gap:14px}
+#quote .mqf-trust div{background:#fff;border:2px solid #0a0a0b;border-radius:12px;color:#333;font-size:.95rem;padding:16px 8px}
+#quote .mqf-trust b{color:#0a0a0b;font-size:1.05rem;font-weight:600}
+#quote .mqf-trust svg{stroke:#c9a34e;width:30px;height:30px}
 #quote .mqf{max-width:920px;background:#fff;border:2px solid #0a0a0b;border-radius:14px;padding:clamp(26px,5vw,56px);color:#0a0a0b;box-shadow:0 34px 80px -34px rgba(0,0,0,.28);font-family:'Jost',sans-serif}
 #quote .mqf label{color:#0a0a0b;font-weight:600;font-size:clamp(1rem,1.6vw,1.15rem);margin:20px 0 9px}
 #quote .mqf input[type=number],#quote .mqf input[type=text],#quote .mqf input[type=email],#quote .mqf input[type=tel],#quote .mqf input[type=date],#quote .mqf input[type=time],#quote .mqf select,#quote .mqf textarea{background:#fff;color:#0a0a0b;border:2px solid #0a0a0b;border-radius:8px;padding:14px 16px;font-family:'Jost',sans-serif;font-size:1.05rem;font-weight:500}
@@ -472,9 +476,8 @@ echo wp_json_encode( array(
 
 <section id="quote" class="quote-white">
 	<div class="wrap">
-		<span class="quote-eyebrow">Reserve Your Ride</span>
-		<h2 class="quote-title">Get a Quick Quote</h2>
-		<p class="quote-sub">Tell us where you're headed and we'll send prices and availability right back. No obligation, no pressure.</p>
+		<h2 class="quote-title">Get a Quote</h2>
+		<p class="quote-sub">Tell us about your trip and we'll get back to you with prices and availability.</p>
 		<?php echo do_shortcode( '[mecca_quote_form]' ); ?>
 	</div>
 </section>
