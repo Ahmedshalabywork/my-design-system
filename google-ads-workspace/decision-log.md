@@ -8,4 +8,4 @@
 | 2026-10-06 | Budget $65/day, then $40/day | Owner cap $1,500/month all platforms | set_campaign_budget |
 | 2026-10-06 | Bidding Maximize Conversions -> Maximize Clicks, CPC ceiling $4.00 | 3,012 of 3,014 conversions are a GTM "Call" event (tel tap / any form submit), not real calls | switch back to maximize_conversions after tracking fix |
 | 2026-10-06 | Added 8 callouts, 6 sitelinks, 1 structured snippet | No extensions present; competitor gap: review count, free airport wait, private rides | remove assets |
-| Pending | Pause old broad ad group 156718849648 once new ads are approved | Avoid double-serving broad match | enable_ad_group |
+| 2026-10-06 19:20 | Paused old broad ad group 156718849648 | All 10 new RSAs APPROVED; all 5 new ad groups serving (first day: 297 impressions, 15 clicks) | enable_ad_group 156718849648 |
