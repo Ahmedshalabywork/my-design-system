@@ -288,6 +288,7 @@ body.menu-open{overflow:hidden}
 .mh .svc h3{font-size:1.25rem;line-height:1.1;color:#fff;margin:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .svc .go{display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
 @media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:701px) and (max-width:1100px){.svc-grid>.svc:nth-child(10){display:none}}
 .svc-hint{display:none;margin-top:10px;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 @media(max-width:700px){.svc-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;gap:12px;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.svc-grid::-webkit-scrollbar{display:none}.svc{flex:0 0 46%;aspect-ratio:auto;height:230px;scroll-snap-align:start;padding:14px}.svc .go{display:block}.mh .svc h3{font-size:1.2rem}.svc-hint{display:block}}
 /* steps: gold timeline */
