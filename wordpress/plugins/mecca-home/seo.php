@@ -77,26 +77,32 @@ function mecca_seo_faqs( $slug ) {
 		'events'       => array(
 			array( 'What events do you provide transportation for?', 'Proms, galas, birthdays, anniversaries, concerts and other celebrations across Charleston and the Lowcountry, in Sprinters, luxury SUVs and sedans with professional chauffeurs.' ),
 			array( 'How early should we book prom transportation?', 'Book as soon as you know the date. Prom nights and spring weekends are busy, and booking early gives your group the best choice of vehicles.' ),
+			array( 'How much does a prom limo cost in Charleston?', 'Most prom and event bookings are hourly: $85 per hour for a sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
 		),
 		'attractions'  => array(
 			array( 'Can you create a custom Charleston tour?', 'Yes. We build private sightseeing routes around what you want to see, such as the historic downtown, Patriots Point, plantations like Magnolia and Drayton Hall, and the beaches. Your chauffeur waits while you explore.' ),
 			array( 'How do I book a sightseeing car service?', "Tell us your start time, the places you want to visit and how many people are in your group through the quote form, or call $p. Hourly bookings work best for tours." ),
+			array( 'How much is a private sightseeing tour?', 'Tours are booked by the hour: $85 per hour for a sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
 		),
 		'beach'        => array(
 			array( 'Which beaches do you drive to?', "Folly Beach, Isle of Palms, Sullivan's Island, Kiawah Island and other Charleston-area beaches, from downtown, your hotel or the airport." ),
 			array( 'Can you pick us up at the end of the day?', 'Yes. Choose round trip on the quote form and add your return time, and your chauffeur will be back to bring your group home.' ),
+			array( 'How much is beach transportation from Charleston?', 'Point-to-point beach rides are quoted as a flat price. Hourly service starts at $100 per hour for a luxury SUV and $135 for the Sprinter, with a 3-hour minimum.' ),
 		),
 		'golf-courses' => array(
 			array( 'Do you drive to golf courses on Kiawah Island and around Charleston?', 'Yes. We take golfers to courses across the Charleston area, including Kiawah Island and Wild Dunes, from the airport, your hotel or your rental, and bring you back after your round.' ),
 			array( 'Will our golf bags fit?', 'Tell us how many players and bags you have on the quote form and we will send a vehicle with enough room, such as a luxury SUV or the Mercedes-Benz Sprinter for larger groups.' ),
+			array( 'How much is golf transportation?', 'Point-to-point and airport rides are quoted as a flat price. If your chauffeur waits, hourly rates start at $100 for a luxury SUV and $135 for the Sprinter, with a 3-hour minimum.' ),
 		),
 		'hotels'       => array(
 			array( 'Do you provide rides from the airport to downtown Charleston hotels?', 'Yes. We offer private rides between Charleston International Airport (CHS) and hotels across Charleston, 24 hours a day. Your chauffeur meets you on arrival and takes you straight to your hotel.' ),
 			array( 'Is this a shared shuttle?', 'No. Every ride is private for your group only, in a sedan, luxury SUV or Mercedes-Benz Sprinter.' ),
+			array( 'How much is a ride from CHS to my hotel?', 'Hotel transfers are quoted as a flat price based on your hotel, vehicle and time, and you know the price before you book.' ),
 		),
 		'cruise-trips' => array(
 			array( 'Do you drive to and from the Charleston cruise terminal?', 'Yes. We provide pickups and drop-offs at the Charleston cruise port from the airport, your hotel or your home, with room for your luggage.' ),
 			array( 'Can you meet us when the ship returns?', 'Yes. Book your return date and time on the quote form and your chauffeur will be waiting when you come off the ship.' ),
+			array( 'How much is a ride to the Charleston cruise terminal?', 'Cruise transfers are quoted as a flat price based on your pickup point, vehicle and time. Request a free quote with your sailing date.' ),
 		),
 		'kiawah-island-car-service' => array(
 			array( 'How long is the drive from Charleston airport to Kiawah Island?', 'Roughly an hour from Charleston International Airport (CHS), depending on traffic. Share your flight number and your chauffeur will track your arrival and meet you on time.' ),
