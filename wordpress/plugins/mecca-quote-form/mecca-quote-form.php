@@ -203,29 +203,29 @@ function mecca_qf_shortcode( $atts = array() ) {
 	ob_start();
 	?>
 	<style>
-	.mqf{max-width:640px;margin:0 auto;background:#1c1c1c;border:2px solid #DCAD4F;border-radius:14px;padding:28px;color:#fff;font-family:inherit;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-	.mqf h2{color:#DCAD4F;text-align:center;margin:0 0 6px;font-size:28px}
+	.mqf{max-width:640px;margin:0 auto;background:#1c1c1c;border:2px solid #e3b84f;border-radius:14px;padding:28px;color:#fff;font-family:inherit;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+	.mqf h2{color:#e3b84f;text-align:center;margin:0 0 6px;font-size:28px}
 	.mqf .mqf-sub{text-align:center;color:#ccc;margin:0 0 22px}
-	.mqf label{display:block;color:#DCAD4F;font-weight:600;margin:14px 0 6px}
+	.mqf label{display:block;color:#e3b84f;font-weight:600;margin:14px 0 6px}
 	.mqf input[type=number],.mqf input[type=text],.mqf input[type=email],.mqf input[type=tel],.mqf input[type=date],.mqf input[type=time],.mqf select,.mqf textarea{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:8px;border:1px solid #555;background:#fff;color:#111;font-size:16px;font-family:Arial,Helvetica,sans-serif}
-	.mqf input:focus,.mqf select:focus,.mqf textarea:focus{outline:none;border-color:#DCAD4F;box-shadow:0 0 0 3px rgba(220,173,79,.35)}
+	.mqf input:focus,.mqf select:focus,.mqf textarea:focus{outline:none;border-color:#e3b84f;box-shadow:0 0 0 3px rgba(227,184,79,.35)}
 	.mqf .mqf-row{display:flex;gap:14px}.mqf .mqf-row>div{flex:1}
 	.mqf .mqf-check{display:flex;align-items:flex-start;gap:10px;margin:14px 0 0;color:#fff;font-weight:400}
-	.mqf .mqf-check input{margin-top:4px;width:18px;height:18px;accent-color:#DCAD4F}
+	.mqf .mqf-check input{margin-top:4px;width:18px;height:18px;accent-color:#e3b84f}
 	.mqf .mqf-err{display:block;color:#ff7b7b;font-size:14px;margin-top:6px}
 	.mqf .mqf-bad{border-color:#ff7b7b!important}
-	.mqf button{display:block;width:100%;margin-top:24px;padding:16px;border:0;border-radius:30px;background:#DCAD4F;color:#111;font-size:18px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase}
-	.mqf button:hover{background:#e9c46a}
+	.mqf button{display:block;width:100%;margin-top:24px;padding:16px;border:0;border-radius:30px;background:#e3b84f;color:#111;font-size:18px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase}
+	.mqf button:hover{background:#f8da78}
 	.mqf .mqf-alert{background:#3a1d1d;border:1px solid #ff7b7b;color:#ffd0d0;padding:12px 14px;border-radius:8px;margin-bottom:12px}
 	.mqf .mqf-ok{text-align:center;padding:30px 10px}.mqf .mqf-ok h2{margin-bottom:12px}
 	.mqf .mqf-hp{position:absolute!important;left:-9999px!important}
 	.mqf-trust{max-width:640px;margin:0 auto 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 	.mqf-trust div{background:#1c1c1c;border:1px solid #3a3a3a;border-radius:10px;padding:12px 6px;text-align:center;color:#fff;font-size:13px;line-height:1.3}
-	.mqf-trust svg{display:block;margin:0 auto 6px;width:26px;height:26px;fill:none;stroke:#DCAD4F;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-	.mqf-trust b{display:block;color:#DCAD4F;font-size:14px}
+	.mqf-trust svg{display:block;margin:0 auto 6px;width:26px;height:26px;fill:none;stroke:#e3b84f;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+	.mqf-trust b{display:block;color:#e3b84f;font-size:14px}
 	.mqf [hidden]{display:none!important}
 	.mqf .mqf-cond{display:none}.mqf .mqf-cond.on{display:block}
-	.mqf .mqf-addstop{display:inline-block;margin-top:10px;color:#DCAD4F;cursor:pointer;font-size:15px;background:none;border:0;padding:0;width:auto;text-transform:none;letter-spacing:0;font-weight:600}
+	.mqf .mqf-addstop{display:inline-block;margin-top:10px;color:#e3b84f;cursor:pointer;font-size:15px;background:none;border:0;padding:0;width:auto;text-transform:none;letter-spacing:0;font-weight:600}
 	.mqf .mqf-addstop:hover{text-decoration:underline;background:none}
 	@media(max-width:600px){.mqf-trust{gap:6px}.mqf-trust div{font-size:11px;padding:10px 4px}.mqf-trust b{font-size:12px}}
 	.mqf .mqf-note{color:#aaa;font-size:13px;text-align:center;margin-top:14px}
@@ -240,7 +240,7 @@ function mecca_qf_shortcode( $atts = array() ) {
 	<?php endif; ?>
 	<div class="mqf" id="get-a-quote">
 	<?php if ( ! empty( $state['sent'] ) ) : ?>
-		<div class="mqf-ok"><h2>Thank you!</h2><p>We have received your request and will be in contact with you shortly.</p><p>Need us sooner? Call <a href="tel:+18438041188" style="color:#DCAD4F">(843) 804-1188</a>, available 24/7.</p></div>
+		<div class="mqf-ok"><h2>Thank you!</h2><p>We have received your request and will be in contact with you shortly.</p><p>Need us sooner? Call <a href="tel:+18438041188" style="color:#e3b84f">(843) 804-1188</a>, available 24/7.</p></div>
 	<?php else : ?>
 		<?php if ( '0' !== $atts['heading'] ) : ?>
 		<h2>Get a Quote</h2>
@@ -348,5 +348,5 @@ add_shortcode( 'mecca_quote_form', 'mecca_qf_shortcode' );
 
 // Gold "Get a Quote" button in the main menu.
 add_action( 'wp_head', function () {
-	echo '<style>.mecca-quote-menu>a{color:#DCAD4F!important;border:1px solid #DCAD4F;border-radius:20px;padding:6px 14px!important;line-height:1!important}.mecca-quote-menu>a:hover{background:#DCAD4F;color:#111!important;opacity:1!important}</style>';
+	echo '<style>.mecca-quote-menu>a{color:#e3b84f!important;border:1px solid #e3b84f;border-radius:20px;padding:6px 14px!important;line-height:1!important}.mecca-quote-menu>a:hover{background:#e3b84f;color:#111!important;opacity:1!important}</style>';
 } );
