@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_type": "media-plan",
+  "run_id": "2026-10-06-google-mecca-limo",
+  "created_at": "2026-10-06T19:30:00Z",
+  "objective": "More booked rides (calls and quote requests) from Charleston-area searches at a cost per real lead the owner accepts",
+  "currency": "USD",
+  "channels": [
+    {
+      "platform": "google",
+      "role": "Primary demand capture (Search only)",
+      "rationale": "High-intent local searches (airport, wedding, party bus, Kiawah, cruise, black car) drive bookings; Search-only keeps traffic clean.",
+      "budget_amount": 1800,
+      "prerequisites": [
+        "Clean conversion signal (G-CT1, G47)",
+        "Learning period completes"
+      ],
+      "exclusions": [
+        "Performance Max until real-lead conversions are clean",
+        "Display and Search Partners"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "P1-tracking",
+      "description": "Fix double counting: 'Call' tag on tel: clicks only; add website call conversion (forwarding number, 60s)",
+      "owner": "Owner (GTM + Ads UI), guided by Claude",
+      "timing": "Week of 2026-10-06",
+      "dependencies": [],
+      "evidence_refs": [
+        "gaql:conversion_action",
+        "gaql:campaign x segments.conversion_action:LAST_30_DAYS"
+      ],
+      "success_measure": "Quote and real-call conversions start appearing; no quote counts twice",
+      "rollback_or_exit": "Re-add the form trigger in GTM (version history)"
+    },
+    {
+      "id": "P2-brand-split",
+      "description": "Separate brand keywords into a Brand ad group (mutation draft M1)",
+      "owner": "Claude after owner approval",
+      "timing": "After approval",
+      "dependencies": [],
+      "evidence_refs": [
+        "gaql:ad_group_criterion:KEYWORD"
+      ],
+      "success_measure": "Brand and non-brand CPA reported separately",
+      "rollback_or_exit": "Re-enable the original brand keywords and pause the Brand ad group"
+    },
+    {
+      "id": "P3-learning-hold",
+      "description": "No budget, bid or goal changes while Maximize Conversions learns",
+      "owner": "Owner and Claude",
+      "timing": "2026-10-06 to 2026-10-20",
+      "dependencies": [
+        "P1-tracking"
+      ],
+      "evidence_refs": [
+        "gaql:campaign:settings"
+      ],
+      "success_measure": "Status leaves LEARNING; daily spend stable near $60",
+      "rollback_or_exit": "If spend runs away or leads stop for 5+ days, revert to Maximize Clicks with a $6 ceiling"
+    },
+    {
+      "id": "P4-budget-review",
+      "description": "Decide on raising the budget from $60 to $75/day",
+      "owner": "Owner decides; Claude prepares data",
+      "timing": "2026-10-20",
+      "dependencies": [
+        "P3-learning-hold"
+      ],
+      "evidence_refs": [
+        "gaql:campaign:LAST_7_DAYS"
+      ],
+      "success_measure": "Budget-lost share under 15% with an acceptable CPA on real leads",
+      "rollback_or_exit": "Return to $60/day"
+    },
+    {
+      "id": "P5-goal-cleanup",
+      "description": "Make tel-click 'Call' secondary once real calls + quotes reach about 15 in 30 days (mutation draft M2)",
+      "owner": "Claude after owner approval",
+      "timing": "Gated on data (likely November)",
+      "dependencies": [
+        "P1-tracking"
+      ],
+      "evidence_refs": [
+        "gaql:conversion_action"
+      ],
+      "success_measure": "Bidding optimizes to real leads; cost per real lead is stable or falling",
+      "rollback_or_exit": "Set 'Call' primary again"
+    },
+    {
+      "id": "P6-landing-speed",
+      "description": "Improve mobile landing speed (delay the Facebook pixel; remove the GoDaddy injected script)",
+      "owner": "Claude (site) + owner (GoDaddy support)",
+      "timing": "Within 2 weeks",
+      "dependencies": [],
+      "evidence_refs": [
+        "lighthouse-local:www.meccalimo.com:mobile:2026-10-05"
+      ],
+      "success_measure": "Mobile Lighthouse performance 80+",
+      "rollback_or_exit": "Revert the sandbox snippet"
+    }
+  ],
+  "assumptions": [
+    "About $1,800/month at $60/day",
+    "Phone calls are the main way customers book",
+    "The owner wants Google Ads only for now"
+  ],
+  "exclusions": [
+    "Meta, Microsoft and other platforms (not requested)",
+    "Permanent deletion of paused campaigns or ad groups"
+  ],
+  "status": "complete",
+  "data_lifecycle": {
+    "schema_version": "1.0.0",
+    "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",
+    "classification": "internal",
+    "retention": {
+      "minimum_seconds": 0,
+      "mode": "operator-defined",
+      "delete_after": "2027-10-06T00:00:00Z",
+      "purpose": "Owner-facing Google Ads audit history and before/after baseline for re-audits",
+      "exception_reason": null
+    },
+    "encryption": {
+      "at_rest": "verified",
+      "in_transit": "verified",
+      "evidence_refs": [
+        "github-repository-encryption-at-rest",
+        "google-ads-api-https-via-notfair"
+      ]
+    },
+    "access": {
+      "owner": "Mecca Limo owner",
+      "authorized_roles": [
+        "business-owner",
+        "claude-code-operator"
+      ],
+      "access_log_locator": null
+    },
+    "deletion": {
+      "status": "scheduled",
+      "method": "Remove the run directory from the repository on owner request or after delete_after",
+      "verification_required": true,
+      "verification_artifact_locator": null
+    },
+    "incident": {
+      "owner": "Mecca Limo owner",
+      "reporting_channel": "Claude Code session with the owner",
+      "status": "not-triggered",
+      "record_locator": null
+    }
+  }
+}

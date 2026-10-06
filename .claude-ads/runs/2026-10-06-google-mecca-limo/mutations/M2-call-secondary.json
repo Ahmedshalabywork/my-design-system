@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_type": "mutation-plan",
+  "run_id": "2026-10-06-google-mecca-limo",
+  "created_at": "2026-10-06T19:30:00Z",
+  "plan_id": "M2-call-secondary",
+  "platform": "google",
+  "account_id": "222-777-0856",
+  "object_id": "customers/2227770856/conversionActions/6562074192",
+  "operation": "update_conversion_action_primary_for_goal",
+  "before": {
+    "name": "Call",
+    "primary_for_goal": true,
+    "include_in_conversions_metric": true
+  },
+  "after": {
+    "name": "Call",
+    "primary_for_goal": false,
+    "include_in_conversions_metric": false
+  },
+  "reason": "G47: tel-link taps are a micro-conversion; once real calls and quotes exist, bidding should optimize to them.",
+  "blast_radius": "Changes the bidding signal for the whole Search campaign. GATED: apply only when 'Calls from a website' plus 'Quote form submitted' plus 'Calls from ads' total about 15 or more in 30 days. Restarts learning.",
+  "ceilings": [
+    {
+      "name": "min_real_lead_conversions_30d",
+      "value": 15,
+      "unit": "conversions before apply"
+    },
+    {
+      "name": "campaign_daily_budget",
+      "value": 60,
+      "unit": "USD/day (unchanged)"
+    }
+  ],
+  "approval": null,
+  "idempotency_key": "2026-10-06-google-mecca-limo:M2-call-secondary",
+  "audit_destination": "2026-10-06-google-mecca-limo/audit/M2-call-secondary.jsonl",
+  "verification_steps": [
+    "Readback: conversion_action 6562074192 primary_for_goal = false",
+    "Campaign Conversions column excludes 'Call' within 24h",
+    "Watch daily spend and lead count for 14 days"
+  ],
+  "rollback": {
+    "operation": "updateConversionAction 6562074192 primaryForGoal=true",
+    "expected_state": {
+      "primary_for_goal": true
+    },
+    "verification": [
+      "Readback of conversion_action.primary_for_goal"
+    ]
+  },
+  "remote_precondition_sha256": "1666ca36f840948cb047a6202d54bdf44c2a1c2b51a79194d989332343bdf843",
+  "status": "draft",
+  "data_lifecycle": {
+    "schema_version": "1.0.0",
+    "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",
+    "classification": "internal",
+    "retention": {
+      "minimum_seconds": 0,
+      "mode": "operator-defined",
+      "delete_after": "2027-10-06T00:00:00Z",
+      "purpose": "Owner-facing Google Ads audit history and before/after baseline for re-audits",
+      "exception_reason": null
+    },
+    "encryption": {
+      "at_rest": "verified",
+      "in_transit": "verified",
+      "evidence_refs": [
+        "github-repository-encryption-at-rest",
+        "google-ads-api-https-via-notfair"
+      ]
+    },
+    "access": {
+      "owner": "Mecca Limo owner",
+      "authorized_roles": [
+        "business-owner",
+        "claude-code-operator"
+      ],
+      "access_log_locator": null
+    },
+    "deletion": {
+      "status": "scheduled",
+      "method": "Remove the run directory from the repository on owner request or after delete_after",
+      "verification_required": true,
+      "verification_artifact_locator": null
+    },
+    "incident": {
+      "owner": "Mecca Limo owner",
+      "reporting_channel": "Claude Code session with the owner",
+      "status": "not-triggered",
+      "record_locator": null
+    }
+  }
+}

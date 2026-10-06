@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0.0",
+  "account": {
+    "platform": "google",
+    "account_id": "222-777-0856",
+    "name": "Mecca Limo Charleston car services"
+  },
+  "window": {
+    "start": "2026-09-06",
+    "end": "2026-10-06"
+  },
+  "currency": "USD",
+  "spend": 1346.13,
+  "timezone": "America/New_York",
+  "campaigns": [
+    {
+      "id": "20347533486",
+      "name": "Mecca Limo Charleston -Charleston Airport car service",
+      "status": "ENABLED",
+      "cost_usd": 1346.13,
+      "clicks": 600,
+      "impressions": 18424,
+      "conversions": 67,
+      "search_is": 0.228,
+      "rank_lost_is": 0.491,
+      "budget_lost_is": 0.281,
+      "top_is": 0.165
+    },
+    {
+      "id": "23494000473",
+      "name": "Performance Max-3",
+      "status": "PAUSED",
+      "cost_usd": 620.56
+    },
+    {
+      "id": "20346364217",
+      "name": "Smart campaign (kiawah island car service)",
+      "status": "PAUSED"
+    }
+  ],
+  "creatives": [
+    {
+      "type": "RSA",
+      "count": 12,
+      "status": "APPROVED",
+      "ad_strength": "PENDING"
+    }
+  ],
+  "conversions": [
+    {
+      "id": "6562074192",
+      "name": "Call",
+      "type": "WEBPAGE",
+      "category": "CONTACT",
+      "counting": "ONE_PER_CLICK",
+      "fires_on": "GTM: tel: link clicks AND any form submit"
+    },
+    {
+      "id": "7824071425",
+      "name": "Quote form submitted",
+      "type": "WEBPAGE",
+      "category": "SUBMIT_LEAD_FORM",
+      "counting": "ONE_PER_CLICK",
+      "fires_on": "quote-email success only (installed 2026-10-05)"
+    },
+    {
+      "id": "6575000075",
+      "name": "Calls from ads",
+      "type": "AD_CALL",
+      "category": "PHONE_CALL_LEAD",
+      "counting": "ONE_PER_CLICK"
+    },
+    {
+      "id": "6559826815",
+      "name": "Smart campaign ad clicks to call",
+      "type": "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+    },
+    {
+      "id": "6559828291",
+      "name": "Calls from Smart Campaign Ads",
+      "type": "SMART_CAMPAIGN_TRACKED_CALLS"
+    }
+  ],
+  "budgets": [
+    {
+      "campaign_id": "20347533486",
+      "daily_usd": 60,
+      "bidding": "MAXIMIZE_CONVERSIONS"
+    }
+  ]
+}

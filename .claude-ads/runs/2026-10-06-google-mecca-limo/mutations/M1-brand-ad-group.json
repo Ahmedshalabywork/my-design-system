@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_type": "mutation-plan",
+  "run_id": "2026-10-06-google-mecca-limo",
+  "created_at": "2026-10-06T19:30:00Z",
+  "plan_id": "M1-brand-ad-group",
+  "platform": "google",
+  "account_id": "222-777-0856",
+  "object_id": "customers/2227770856/adGroups/203721150471",
+  "operation": "create_ad_group_and_move_brand_keywords",
+  "before": {
+    "ad_group_203721150471": "Black Car & Corporate (ENABLED) contains the brand keywords (every keyword containing 'mecca', e.g. mecca limo); exact list to be read back before apply",
+    "brand_ad_group": null
+  },
+  "after": {
+    "new_ad_group": "Brand - Mecca Limo (ENABLED) with the brand keywords [exact]+\"phrase\" and 1 brand RSA (5.0 stars, 150+ reviews, family-owned, 24/7, final URL https://www.meccalimo.com/)",
+    "ad_group_203721150471": "brand keywords PAUSED (not removed)"
+  },
+  "reason": "G05: separate brand demand so non-brand performance is visible and Smart Bidding does not over-credit Black Car & Corporate.",
+  "blast_radius": "1 campaign (20347533486); adds 1 ad group, ~6 keywords, 1 RSA; pauses ~6 keywords. Expected minor learning impact; budget unchanged.",
+  "ceilings": [
+    {
+      "name": "campaign_daily_budget",
+      "value": 60,
+      "unit": "USD/day (unchanged)"
+    },
+    {
+      "name": "max_keywords_changed",
+      "value": 12,
+      "unit": "keywords"
+    }
+  ],
+  "approval": null,
+  "idempotency_key": "2026-10-06-google-mecca-limo:M1-brand-ad-group",
+  "audit_destination": "2026-10-06-google-mecca-limo/audit/M1-brand-ad-group.jsonl",
+  "verification_steps": [
+    "GAQL readback: new ad group ENABLED with keywords ELIGIBLE and RSA APPROVED",
+    "GAQL readback: original brand keywords PAUSED in 203721150471",
+    "Next day: brand impressions served by the new ad group"
+  ],
+  "rollback": {
+    "operation": "Pause the Brand ad group and re-enable the original brand keywords in 203721150471",
+    "expected_state": {
+      "brand_ad_group": "PAUSED",
+      "ad_group_203721150471_brand_keywords": "ENABLED"
+    },
+    "verification": [
+      "GAQL readback of both ad groups' keyword statuses"
+    ]
+  },
+  "remote_precondition_sha256": "7bbc4461270ae60bf6e13715e979ea32fd6a754afd1e7152cd03526e541a8fda",
+  "status": "draft",
+  "data_lifecycle": {
+    "schema_version": "1.0.0",
+    "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",
+    "classification": "internal",
+    "retention": {
+      "minimum_seconds": 0,
+      "mode": "operator-defined",
+      "delete_after": "2027-10-06T00:00:00Z",
+      "purpose": "Owner-facing Google Ads audit history and before/after baseline for re-audits",
+      "exception_reason": null
+    },
+    "encryption": {
+      "at_rest": "verified",
+      "in_transit": "verified",
+      "evidence_refs": [
+        "github-repository-encryption-at-rest",
+        "google-ads-api-https-via-notfair"
+      ]
+    },
+    "access": {
+      "owner": "Mecca Limo owner",
+      "authorized_roles": [
+        "business-owner",
+        "claude-code-operator"
+      ],
+      "access_log_locator": null
+    },
+    "deletion": {
+      "status": "scheduled",
+      "method": "Remove the run directory from the repository on owner request or after delete_after",
+      "verification_required": true,
+      "verification_artifact_locator": null
+    },
+    "incident": {
+      "owner": "Mecca Limo owner",
+      "reporting_channel": "Claude Code session with the owner",
+      "status": "not-triggered",
+      "record_locator": null
+    }
+  }
+}

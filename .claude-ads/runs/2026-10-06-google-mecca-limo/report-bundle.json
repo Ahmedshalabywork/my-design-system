@@ -1,0 +1,2644 @@
+{
+  "schema_version": "1.0.0",
+  "run_manifest": {
+    "schema_version": "1.0.0",
+    "run_id": "2026-10-06-google-mecca-limo",
+    "started_at": "2026-10-06T19:30:00Z",
+    "scopes": [
+      "audit:google",
+      "plan",
+      "monitor",
+      "optimize:draft"
+    ],
+    "adapters": [
+      {
+        "platform": "google",
+        "mode": "live_read",
+        "via": "NotFair google_ads_runScript (GAQL, read-only)"
+      },
+      {
+        "platform": "google",
+        "mode": "write_preview",
+        "via": "draft mutation plans only; nothing applied"
+      }
+    ],
+    "sources": [
+      "google-ads-gaql-2026-10-06",
+      "lighthouse-local-2026-10-05",
+      "site-quote-tag-test-2026-10-05",
+      "owner-ui-confirmation-2026-10-05"
+    ],
+    "privacy_class": "internal",
+    "data_lifecycle": {
+      "schema_version": "1.0.0",
+      "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",
+      "classification": "internal",
+      "retention": {
+        "minimum_seconds": 0,
+        "mode": "operator-defined",
+        "delete_after": "2027-10-06T00:00:00Z",
+        "purpose": "Owner-facing Google Ads audit history and before/after baseline for re-audits",
+        "exception_reason": null
+      },
+      "encryption": {
+        "at_rest": "verified",
+        "in_transit": "verified",
+        "evidence_refs": [
+          "github-repository-encryption-at-rest",
+          "google-ads-api-https-via-notfair"
+        ]
+      },
+      "access": {
+        "owner": "Mecca Limo owner",
+        "authorized_roles": [
+          "business-owner",
+          "claude-code-operator"
+        ],
+        "access_log_locator": null
+      },
+      "deletion": {
+        "status": "scheduled",
+        "method": "Remove the run directory from the repository on owner request or after delete_after",
+        "verification_required": true,
+        "verification_artifact_locator": null
+      },
+      "incident": {
+        "owner": "Mecca Limo owner",
+        "reporting_channel": "Claude Code session with the owner",
+        "status": "not-triggered",
+        "record_locator": null
+      }
+    },
+    "worker_status": {
+      "audit-google": "completed",
+      "audit-tracking": "completed",
+      "audit-budget": "completed",
+      "audit-creative": "completed",
+      "plan": "completed",
+      "monitor": "completed",
+      "optimize-draft": "completed",
+      "other-platforms": "skipped"
+    },
+    "completeness": "partial",
+    "completeness_note": "Google Ads only (owner request). Several controls are unknown (windows, attribution, GA4 link, audiences). The Google scoring profile is disabled, so no health score."
+  },
+  "account_snapshot": {
+    "schema_version": "1.0.0",
+    "account": {
+      "platform": "google",
+      "account_id": "222-777-0856",
+      "name": "Mecca Limo Charleston car services"
+    },
+    "window": {
+      "start": "2026-09-06",
+      "end": "2026-10-06"
+    },
+    "currency": "USD",
+    "spend": 1346.13,
+    "timezone": "America/New_York",
+    "campaigns": [
+      {
+        "id": "20347533486",
+        "name": "Mecca Limo Charleston -Charleston Airport car service",
+        "status": "ENABLED",
+        "cost_usd": 1346.13,
+        "clicks": 600,
+        "impressions": 18424,
+        "conversions": 67,
+        "search_is": 0.228,
+        "rank_lost_is": 0.491,
+        "budget_lost_is": 0.281,
+        "top_is": 0.165
+      },
+      {
+        "id": "23494000473",
+        "name": "Performance Max-3",
+        "status": "PAUSED",
+        "cost_usd": 620.56
+      },
+      {
+        "id": "20346364217",
+        "name": "Smart campaign (kiawah island car service)",
+        "status": "PAUSED"
+      }
+    ],
+    "creatives": [
+      {
+        "type": "RSA",
+        "count": 12,
+        "status": "APPROVED",
+        "ad_strength": "PENDING"
+      }
+    ],
+    "conversions": [
+      {
+        "id": "6562074192",
+        "name": "Call",
+        "type": "WEBPAGE",
+        "category": "CONTACT",
+        "counting": "ONE_PER_CLICK",
+        "fires_on": "GTM: tel: link clicks AND any form submit"
+      },
+      {
+        "id": "7824071425",
+        "name": "Quote form submitted",
+        "type": "WEBPAGE",
+        "category": "SUBMIT_LEAD_FORM",
+        "counting": "ONE_PER_CLICK",
+        "fires_on": "quote-email success only (installed 2026-10-05)"
+      },
+      {
+        "id": "6575000075",
+        "name": "Calls from ads",
+        "type": "AD_CALL",
+        "category": "PHONE_CALL_LEAD",
+        "counting": "ONE_PER_CLICK"
+      },
+      {
+        "id": "6559826815",
+        "name": "Smart campaign ad clicks to call",
+        "type": "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+      },
+      {
+        "id": "6559828291",
+        "name": "Calls from Smart Campaign Ads",
+        "type": "SMART_CAMPAIGN_TRACKED_CALLS"
+      }
+    ],
+    "budgets": [
+      {
+        "campaign_id": "20347533486",
+        "daily_usd": 60,
+        "bidding": "MAXIMIZE_CONVERSIONS"
+      }
+    ]
+  },
+  "control_definitions": [
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT1",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G47",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G42",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [
+        "google-ads-conversion-goals-official"
+      ],
+      "maturity": "source-grounded",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G43",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [
+        "google-ads-enhanced-conversions-official"
+      ],
+      "maturity": "source-grounded",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT3",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G49",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G46",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G48",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT2",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G45",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G44",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G13",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G14",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G16",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G17",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-WS1",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G03",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G04",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G05",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G06",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G07",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G08",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G39",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G38",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G36",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G37",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G40",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G41",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G10",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G11",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G12",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G20",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G21",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-KW1",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G26",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G27",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G28",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G29",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G30",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G35",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-AD1",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G50",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G51",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G52",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G53",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G54",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G55",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G56",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G59",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G60",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [],
+      "maturity": "inventory-baselined",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G97",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [
+        "google-ads-keyword-prioritization-official"
+      ],
+      "maturity": "source-grounded",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G96",
+      "category": "unclassified",
+      "severity": "informational",
+      "required_inputs": [
+        "applicability_context",
+        "current_account_evidence",
+        "current_source_support"
+      ],
+      "source_ids": [
+        "google-ads-dsa-ad-rank-official",
+        "google-ads-keyword-prioritization-official"
+      ],
+      "maturity": "source-grounded",
+      "geographies": [
+        "account-configured"
+      ],
+      "scoring_behavior": "watchlist",
+      "stability": "experimental"
+    }
+  ],
+  "findings": [
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT1",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "gaql:conversion_action",
+          "primary_in_conversions": [
+            {
+              "id": "6562074192",
+              "name": "Call",
+              "type": "WEBPAGE",
+              "category": "CONTACT",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "GTM: tel: link clicks AND any form submit"
+            },
+            {
+              "id": "7824071425",
+              "name": "Quote form submitted",
+              "type": "WEBPAGE",
+              "category": "SUBMIT_LEAD_FORM",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "quote-email success only (installed 2026-10-05)"
+            },
+            {
+              "id": "6575000075",
+              "name": "Calls from ads",
+              "type": "AD_CALL",
+              "category": "PHONE_CALL_LEAD",
+              "counting": "ONE_PER_CLICK"
+            },
+            {
+              "id": "6559826815",
+              "name": "Smart campaign ad clicks to call",
+              "type": "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+            },
+            {
+              "id": "6559828291",
+              "name": "Calls from Smart Campaign Ads",
+              "type": "SMART_CAMPAIGN_TRACKED_CALLS"
+            }
+          ],
+          "biddable_goals": [
+            "PHONE_CALL_LEAD/CALL_FROM_ADS",
+            "SUBMIT_LEAD_FORM/WEBSITE",
+            "CONTACT/WEBSITE",
+            "CONTACT/CALL_FROM_ADS"
+          ]
+        },
+        {
+          "ref": "site:wp-content/novamira-sandbox/mecca-ads-quote-conversion.php",
+          "event": "AW-11250744864/WbwNCIG255IdEKD84vQp",
+          "user_data": "hashed-by-Google email/phone via gtag set user_data",
+          "tested": "fires only after a real quote email"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "The 'Call' website conversion (primary) fires on every tel: click AND on every form submit; 'Quote form submitted' (primary) also fires on the quote form.",
+      "diagnosis": "Once quotes start recording, one quote request counts as two primary conversions, and a tap on the phone number counts the same as a booked lead.",
+      "recommendation": "In Google Tag Manager, restrict the 'Call' tag trigger to tel: link clicks only (remove the form-submit trigger). Leave 'Quote form submitted' as the only form conversion.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G47",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "gaql:campaign x segments.conversion_action:LAST_30_DAYS",
+          "rows": [
+            {
+              "action": "Call",
+              "conversions": 67,
+              "all_conversions": 67
+            }
+          ],
+          "note": "No other action recorded a conversion in 30 days (Quote form submitted: 0, Calls from ads: 0)"
+        },
+        {
+          "ref": "gaql:conversion_action",
+          "primary_in_conversions": [
+            {
+              "id": "6562074192",
+              "name": "Call",
+              "type": "WEBPAGE",
+              "category": "CONTACT",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "GTM: tel: link clicks AND any form submit"
+            },
+            {
+              "id": "7824071425",
+              "name": "Quote form submitted",
+              "type": "WEBPAGE",
+              "category": "SUBMIT_LEAD_FORM",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "quote-email success only (installed 2026-10-05)"
+            },
+            {
+              "id": "6575000075",
+              "name": "Calls from ads",
+              "type": "AD_CALL",
+              "category": "PHONE_CALL_LEAD",
+              "counting": "ONE_PER_CLICK"
+            },
+            {
+              "id": "6559826815",
+              "name": "Smart campaign ad clicks to call",
+              "type": "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+            },
+            {
+              "id": "6559828291",
+              "name": "Calls from Smart Campaign Ads",
+              "type": "SMART_CAMPAIGN_TRACKED_CALLS"
+            }
+          ],
+          "biddable_goals": [
+            "PHONE_CALL_LEAD/CALL_FROM_ADS",
+            "SUBMIT_LEAD_FORM/WEBSITE",
+            "CONTACT/WEBSITE",
+            "CONTACT/CALL_FROM_ADS"
+          ]
+        },
+        {
+          "ref": "gaql:change_event:CAMPAIGN",
+          "latest": "2026-10-06 13:15 UTC, GOOGLE_ADS_WEB_CLIENT, target_spend.cpc_bid_ceiling_micros (bid strategy switched in the UI to Maximize Conversions)"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "All 67 conversions in the last 30 days came from 'Call' (tel-link tap / form submit). Calls from ads and Quote form submitted recorded 0. The campaign switched to Maximize Conversions today, so this tag is now the only thing Google optimizes toward.",
+      "diagnosis": "A tap on the phone number is a micro-conversion (not a completed call). Smart Bidding will chase cheap taps, including accidental ones, rather than real bookings. Reported CPA (~$20) is overstated in quality.",
+      "recommendation": "Add a real call conversion: 'Calls from a website' using a Google forwarding number with a 60-second minimum. When real calls plus quotes reach roughly 15 in 30 days, make the tel-click 'Call' secondary (draft mutation M2). Until then, keep the current setup so bidding has some signal.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G42",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:conversion_action",
+          "primary_in_conversions": [
+            {
+              "id": "6562074192",
+              "name": "Call",
+              "type": "WEBPAGE",
+              "category": "CONTACT",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "GTM: tel: link clicks AND any form submit"
+            },
+            {
+              "id": "7824071425",
+              "name": "Quote form submitted",
+              "type": "WEBPAGE",
+              "category": "SUBMIT_LEAD_FORM",
+              "counting": "ONE_PER_CLICK",
+              "fires_on": "quote-email success only (installed 2026-10-05)"
+            },
+            {
+              "id": "6575000075",
+              "name": "Calls from ads",
+              "type": "AD_CALL",
+              "category": "PHONE_CALL_LEAD",
+              "counting": "ONE_PER_CLICK"
+            },
+            {
+              "id": "6559826815",
+              "name": "Smart campaign ad clicks to call",
+              "type": "SMART_CAMPAIGN_AD_CLICKS_TO_CALL"
+            },
+            {
+              "id": "6559828291",
+              "name": "Calls from Smart Campaign Ads",
+              "type": "SMART_CAMPAIGN_TRACKED_CALLS"
+            }
+          ],
+          "biddable_goals": [
+            "PHONE_CALL_LEAD/CALL_FROM_ADS",
+            "SUBMIT_LEAD_FORM/WEBSITE",
+            "CONTACT/WEBSITE",
+            "CONTACT/CALL_FROM_ADS"
+          ]
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "Lead conversion actions exist for website quote forms, calls from ads and website contact taps.",
+      "diagnosis": "Coverage of lead types is adequate; quality and duplication are covered by G-CT1 and G47.",
+      "recommendation": "No change.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G43",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "owner-ui-confirmation:2026-10-05",
+          "status": "Enhanced conversions for web enabled via Google tag"
+        },
+        {
+          "ref": "site:wp-content/novamira-sandbox/mecca-ads-quote-conversion.php",
+          "event": "AW-11250744864/WbwNCIG255IdEKD84vQp",
+          "user_data": "hashed-by-Google email/phone via gtag set user_data",
+          "tested": "fires only after a real quote email"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Enhanced conversions for web were enabled in the UI by the owner (Google tag method). The quote tag sends email and phone via gtag user_data.",
+      "diagnosis": "Applicable and configured. Diagnostics take several days to populate.",
+      "recommendation": "Check Goals > Conversions > Diagnostics for 'Quote form submitted' after 7 days.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT3",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign x segments.conversion_action:LAST_30_DAYS",
+          "rows": [
+            {
+              "action": "Call",
+              "conversions": 67,
+              "all_conversions": 67
+            }
+          ],
+          "note": "No other action recorded a conversion in 30 days (Quote form submitted: 0, Calls from ads: 0)"
+        },
+        {
+          "ref": "site:wp-content/novamira-sandbox/mecca-ads-quote-conversion.php",
+          "event": "AW-11250744864/WbwNCIG255IdEKD84vQp",
+          "user_data": "hashed-by-Google email/phone via gtag set user_data",
+          "tested": "fires only after a real quote email"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "The 'Call' tag records conversions. The quote conversion tag was tested and fires only on a successful quote email.",
+      "diagnosis": "The tags are working. 'Quote form submitted' has not recorded yet because no real quote has come through since install.",
+      "recommendation": "Confirm the first real quote shows up as a conversion within 24 hours.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G49",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "No conversion values are assigned to any lead action.",
+      "diagnosis": "Values would let bidding favor quotes and calls over taps, but the average booking value has not been confirmed by the owner.",
+      "recommendation": "Provide the average booking value (airport transfer vs wedding/party bus). Then assign relative values, e.g. quote = 1.0x, real call = 1.0x, tel tap = 0.1x.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G46",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "none",
+      "source_classification": "practitioner",
+      "observation": "Conversion windows were not read in this run.",
+      "diagnosis": "Not evaluated.",
+      "recommendation": "Read click-through windows in the next run; 30 days is typical for event bookings.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G48",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "none",
+      "source_classification": "practitioner",
+      "observation": "Attribution model was not read in this run.",
+      "diagnosis": "Not evaluated.",
+      "recommendation": "Confirm data-driven attribution on the primary actions.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-CT2",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "none",
+      "source_classification": "practitioner",
+      "observation": "GA4 link status was not checked.",
+      "diagnosis": "Not evaluated.",
+      "recommendation": "Confirm the GA4 property is linked so landing-page engagement can be compared by ad group.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G45",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "US-only targeting (South Carolina). No consent-mode evidence was collected.",
+      "diagnosis": "Lower exposure for US-only traffic; still unverified.",
+      "recommendation": "No action unless EU/UK traffic is targeted.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G44",
+      "status": "not_applicable",
+      "evidence": [],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Small single-site lead-gen account with web and call conversions.",
+      "diagnosis": "Server-side tagging is not needed at this scale.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G13",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:search_term_view:LAST_7_DAYS",
+          "terms": 43,
+          "visible_cost_usd": 14.47,
+          "examples": [
+            "competitor names (aaa royal coach charleston, atlantic limo of charleston, blacklane)",
+            "cab/taxi terms",
+            "black truck"
+          ]
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "The last-7-day search terms were reviewed on 2026-10-06.",
+      "diagnosis": "Recent.",
+      "recommendation": "Re-review on 2026-10-13 once the new ad groups have a week of traffic.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G14",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:search_term_view:LAST_7_DAYS",
+          "terms": 43,
+          "visible_cost_usd": 14.47,
+          "examples": [
+            "competitor names (aaa royal coach charleston, atlantic limo of charleston, blacklane)",
+            "cab/taxi terms",
+            "black truck"
+          ]
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "80+ campaign negatives were added from search-term evidence (rental, u-haul, equipment, etc.). Overblocking terms ('rental', 'myrtle beach') were removed.",
+      "diagnosis": "Governed and evidence-based.",
+      "recommendation": "Keep adding only from search-term evidence; do not add competitor names, because those searchers are in-market.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G16",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:search_term_view:LAST_7_DAYS",
+          "terms": 43,
+          "visible_cost_usd": 14.47,
+          "examples": [
+            "competitor names (aaa royal coach charleston, atlantic limo of charleston, blacklane)",
+            "cab/taxi terms",
+            "black truck"
+          ]
+        },
+        {
+          "ref": "gaql:campaign:LAST_7_DAYS",
+          "cost_usd": 310.75,
+          "clicks": 187,
+          "impressions": 7526,
+          "conversions": 12,
+          "search_is": 0.238,
+          "rank_lost_is": 0.528,
+          "budget_lost_is": 0.234
+        }
+      ],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "The 7-day search-term pull showed only $14.47 of $310.75 spend. The visible terms are mostly relevant (competitor brands, cab/taxi).",
+      "diagnosis": "Not enough visible spend to judge waste.",
+      "recommendation": "Re-pull a full 14-day search term report on 2026-10-13 covering only the new ad groups.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G17",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_criterion:KEYWORD",
+          "total_positive": 121,
+          "exact": 58,
+          "phrase": 63,
+          "broad": 0,
+          "with_quality_score": 2,
+          "avg_qs": 3.0,
+          "rarely_served": "14 in sampled rows (Party Bus 8, Wedding 6)"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "0 broad-match keywords (58 exact, 63 phrase).",
+      "diagnosis": "Match types are controlled.",
+      "recommendation": "No change.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-WS1",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group:2026-10-01..06",
+          "enabled": {
+            "209278444748": "Airport - CHS",
+            "200715740053": "Wedding",
+            "199546322383": "Party Bus & Bachelorette",
+            "206477164768": "Kiawah & Seabrook",
+            "203721150471": "Black Car & Corporate (+ brand keywords)",
+            "203915984314": "Cruise Port Transportation"
+          },
+          "first_serving_day": "2026-10-06",
+          "old_catch_all_156718849648": "paused; carried all traffic through 2026-10-05",
+          "2026-10-06": {
+            "Black Car & Corporate": {
+              "impr": 184,
+              "clicks": 9,
+              "cost": 22.99
+            },
+            "Airport - CHS": {
+              "impr": 65,
+              "clicks": 1,
+              "cost": 3.37
+            },
+            "Kiawah & Seabrook": {
+              "impr": 26,
+              "clicks": 3,
+              "cost": 9.06
+            },
+            "Party Bus & Bachelorette": {
+              "impr": 21,
+              "clicks": 2,
+              "cost": 8.81
+            },
+            "Wedding": {
+              "impr": 1
+            },
+            "Cruise Port Transportation": {
+              "impr": 0
+            }
+          }
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "The new keywords started serving on 2026-10-06.",
+      "diagnosis": "Too new to judge zero-conversion keywords.",
+      "recommendation": "Evaluate on 2026-10-20.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G03",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group:2026-10-01..06",
+          "enabled": {
+            "209278444748": "Airport - CHS",
+            "200715740053": "Wedding",
+            "199546322383": "Party Bus & Bachelorette",
+            "206477164768": "Kiawah & Seabrook",
+            "203721150471": "Black Car & Corporate (+ brand keywords)",
+            "203915984314": "Cruise Port Transportation"
+          },
+          "first_serving_day": "2026-10-06",
+          "old_catch_all_156718849648": "paused; carried all traffic through 2026-10-05",
+          "2026-10-06": {
+            "Black Car & Corporate": {
+              "impr": 184,
+              "clicks": 9,
+              "cost": 22.99
+            },
+            "Airport - CHS": {
+              "impr": 65,
+              "clicks": 1,
+              "cost": 3.37
+            },
+            "Kiawah & Seabrook": {
+              "impr": 26,
+              "clicks": 3,
+              "cost": 9.06
+            },
+            "Party Bus & Bachelorette": {
+              "impr": 21,
+              "clicks": 2,
+              "cost": 8.81
+            },
+            "Wedding": {
+              "impr": 1
+            },
+            "Cruise Port Transportation": {
+              "impr": 0
+            }
+          }
+        },
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "Six themed ad groups: Airport, Wedding, Party Bus, Kiawah/Seabrook, Black Car/Corporate, Cruise.",
+      "diagnosis": "Coherent themes with matching RSAs.",
+      "recommendation": "No change.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G04",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "One Search campaign holds all the budget.",
+      "diagnosis": "Not fragmented; good for the learning signal.",
+      "recommendation": "No change.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G05",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_criterion:KEYWORD",
+          "total_positive": 121,
+          "exact": 58,
+          "phrase": 63,
+          "broad": 0,
+          "with_quality_score": 2,
+          "avg_qs": 3.0,
+          "rarely_served": "14 in sampled rows (Party Bus 8, Wedding 6)"
+        },
+        {
+          "ref": "gaql:ad_group:2026-10-01..06",
+          "enabled": {
+            "209278444748": "Airport - CHS",
+            "200715740053": "Wedding",
+            "199546322383": "Party Bus & Bachelorette",
+            "206477164768": "Kiawah & Seabrook",
+            "203721150471": "Black Car & Corporate (+ brand keywords)",
+            "203915984314": "Cruise Port Transportation"
+          },
+          "first_serving_day": "2026-10-06",
+          "old_catch_all_156718849648": "paused; carried all traffic through 2026-10-05",
+          "2026-10-06": {
+            "Black Car & Corporate": {
+              "impr": 184,
+              "clicks": 9,
+              "cost": 22.99
+            },
+            "Airport - CHS": {
+              "impr": 65,
+              "clicks": 1,
+              "cost": 3.37
+            },
+            "Kiawah & Seabrook": {
+              "impr": 26,
+              "clicks": 3,
+              "cost": 9.06
+            },
+            "Party Bus & Bachelorette": {
+              "impr": 21,
+              "clicks": 2,
+              "cost": 8.81
+            },
+            "Wedding": {
+              "impr": 1
+            },
+            "Cruise Port Transportation": {
+              "impr": 0
+            }
+          }
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Brand keywords (mecca limo, etc.) sit in the 'Black Car & Corporate' ad group with non-brand terms, under Maximize Conversions.",
+      "diagnosis": "Cheap brand conversions blend into non-brand performance and can make the ad group look better than it is.",
+      "recommendation": "Move brand keywords into their own 'Brand - Mecca Limo' ad group with a brand RSA (draft mutation M1).",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G06",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:23494000473:LAST_30_DAYS",
+          "status": "PAUSED",
+          "cost_usd": 620.56,
+          "clicks": 11882,
+          "conversions": 311,
+          "note": "avg CPC about $0.05; paused 2026-10-05 as low-quality traffic"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "PMax-3 is paused. It spent $620.56 on 11,882 clicks (~$0.05 CPC) and reported 311 conversions.",
+      "diagnosis": "Its traffic pattern matched junk placements, so pausing it was correct.",
+      "recommendation": "Keep PMax paused until real-lead conversions are clean (G47). If relaunched, use a lead-only goal and brand exclusions.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G07",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:23494000473:LAST_30_DAYS",
+          "status": "PAUSED",
+          "cost_usd": 620.56,
+          "clicks": 11882,
+          "conversions": 311,
+          "note": "avg CPC about $0.05; paused 2026-10-05 as low-quality traffic"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "PMax is paused.",
+      "diagnosis": "No overlap.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G08",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "Single active campaign.",
+      "diagnosis": "Allocation is trivially aligned.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G39",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:LAST_7_DAYS",
+          "cost_usd": 310.75,
+          "clicks": 187,
+          "impressions": 7526,
+          "conversions": 12,
+          "search_is": 0.238,
+          "rank_lost_is": 0.528,
+          "budget_lost_is": 0.234
+        },
+        {
+          "ref": "gaql:campaign:LAST_30_DAYS",
+          "cost_usd": 1346.13,
+          "clicks": 600,
+          "impressions": 18424,
+          "conversions": 67,
+          "search_is": 0.228,
+          "rank_lost_is": 0.491,
+          "budget_lost_is": 0.281,
+          "top_is": 0.165
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "23.4% of impression share was lost to budget in the last 7 days (28.1% over 30 days) and 52.8% was lost to rank.",
+      "diagnosis": "The account is limited by both budget and rank, but rank is the larger constraint, so a budget raise alone buys little.",
+      "recommendation": "Do not raise the budget during learning. Re-evaluate on 2026-10-20: if budget-lost share stays above 15% with a CPA on real leads that you accept, raise $60 to $75/day.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G38",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        },
+        {
+          "ref": "gaql:change_event:CAMPAIGN",
+          "latest": "2026-10-06 13:15 UTC, GOOGLE_ADS_WEB_CLIENT, target_spend.cpc_bid_ceiling_micros (bid strategy switched in the UI to Maximize Conversions)"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "The campaign is LEARNING (BIDDING_STRATEGY_LEARNING) after the switch to Maximize Conversions on 2026-10-06.",
+      "diagnosis": "Expected after a strategy change.",
+      "recommendation": "Avoid budget, bidding or conversion-goal edits for 7 to 14 days except the tracking fixes in G-CT1.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G36",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Maximize Conversions is active.",
+      "diagnosis": "Appropriate, but the strategy is only as good as its conversion signal (root cause recorded under G47, not double-counted here).",
+      "recommendation": "Keep it, and fix the signal per G47.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G37",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "No target CPA is set on the Search campaign.",
+      "diagnosis": "None.",
+      "recommendation": "Consider a tCPA only after 30+ real-lead conversions.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G40",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "Not manual CPC.",
+      "diagnosis": "None.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G41",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "No portfolio strategies are used.",
+      "diagnosis": "None.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G10",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Ads run 06:00 to 23:00 daily.",
+      "diagnosis": "Reasonable. Early airport pickups (before 06:00) are not covered.",
+      "recommendation": "Review hour-of-day call data after 30 days before widening the schedule.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G11",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Geo targets the Charleston area with PRESENCE_OR_INTEREST.",
+      "diagnosis": "Interest targeting deliberately captures out-of-town travellers who book airport and wedding transport in advance.",
+      "recommendation": "Check location reports on 2026-10-20 for far-away clicks that did not convert.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G12",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "Search Partners and Display are off.",
+      "diagnosis": "Clean Search-only delivery.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G20",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_criterion:KEYWORD",
+          "total_positive": 121,
+          "exact": 58,
+          "phrase": 63,
+          "broad": 0,
+          "with_quality_score": 2,
+          "avg_qs": 3.0,
+          "rarely_served": "14 in sampled rows (Party Bus 8, Wedding 6)"
+        }
+      ],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "Only 2 keywords have a Quality Score (avg 3.0); the rest are too new.",
+      "diagnosis": "Insufficient data.",
+      "recommendation": "Read Quality Scores on 2026-10-20.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G21",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_criterion:KEYWORD",
+          "total_positive": 121,
+          "exact": 58,
+          "phrase": 63,
+          "broad": 0,
+          "with_quality_score": 2,
+          "avg_qs": 3.0,
+          "rarely_served": "14 in sampled rows (Party Bus 8, Wedding 6)"
+        },
+        {
+          "ref": "gaql:campaign:LAST_7_DAYS",
+          "cost_usd": 310.75,
+          "clicks": 187,
+          "impressions": 7526,
+          "conversions": 12,
+          "search_is": 0.238,
+          "rank_lost_is": 0.528,
+          "budget_lost_is": 0.234
+        }
+      ],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "Both scored keywords are at 4 or below. They likely belong to the previous structure.",
+      "diagnosis": "Insufficient data. The high rank-lost share (52.8%) suggests ad rank is weak.",
+      "recommendation": "If Quality Scores stay at 4 or below after 14 days, inspect expected CTR and landing-page components per ad group.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-KW1",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_criterion:KEYWORD",
+          "total_positive": 121,
+          "exact": 58,
+          "phrase": 63,
+          "broad": 0,
+          "with_quality_score": 2,
+          "avg_qs": 3.0,
+          "rarely_served": "14 in sampled rows (Party Bus 8, Wedding 6)"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "About 14 keywords are RARELY_SERVED (low search volume) in the Wedding and Party Bus groups.",
+      "diagnosis": "Harmless clutter. They do not spend.",
+      "recommendation": "Leave them for now. Pause any still rarely served on 2026-10-20.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G26",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "2 RSAs per ad group.",
+      "diagnosis": "Meets the guidance.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G27",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "15 headlines per RSA (one Cruise RSA has 12).",
+      "diagnosis": "Sufficient.",
+      "recommendation": "Optionally add 3 headlines to the 12-headline Cruise RSA.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G28",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "4 descriptions per RSA.",
+      "diagnosis": "Sufficient.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G29",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Ad Strength is PENDING (new ads).",
+      "diagnosis": "Not yet rated.",
+      "recommendation": "Re-check in 3 to 5 days.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G30",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "No pins.",
+      "diagnosis": "Full rotation flexibility.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G35",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Each ad group's RSAs are written to its theme.",
+      "diagnosis": "Relevant.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G-AD1",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "All RSAs were created 2026-10-05/06.",
+      "diagnosis": "Fresh.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G50",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "20 sitelinks (the campaign limit).",
+      "diagnosis": "Full.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G51",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "15 callouts.",
+      "diagnosis": "Full.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G52",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "3 structured snippets.",
+      "diagnosis": "Good.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G53",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "18 images plus logo and business name.",
+      "diagnosis": "Good.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G54",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        },
+        {
+          "ref": "gaql:campaign x segments.conversion_action:LAST_30_DAYS",
+          "rows": [
+            {
+              "action": "Call",
+              "conversions": 67,
+              "all_conversions": 67
+            }
+          ],
+          "note": "No other action recorded a conversion in 30 days (Quote form submitted: 0, Calls from ads: 0)"
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Call assets are present (2), but 'Calls from ads' recorded 0 conversions in 30 days.",
+      "diagnosis": "The asset is present; check call reporting and the minimum call length.",
+      "recommendation": "In Settings > Call reporting, confirm call reporting is ON and the 'Calls from ads' minimum length is 60s.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G55",
+      "status": "unknown",
+      "evidence": [
+        {
+          "ref": "gaql:campaign_asset+customer_asset",
+          "sitelinks": 20,
+          "callouts": 15,
+          "structured_snippets": 3,
+          "call": 2,
+          "images": 18,
+          "logo": true,
+          "business_name": true,
+          "location": "GBP-linked location asset"
+        }
+      ],
+      "confidence": "low",
+      "source_classification": "practitioner",
+      "observation": "No lead form asset.",
+      "diagnosis": "Optional for this business.",
+      "recommendation": "Consider testing one only after website conversions are clean.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G56",
+      "status": "unknown",
+      "evidence": [],
+      "confidence": "none",
+      "source_classification": "practitioner",
+      "observation": "Audience observation segments were not read.",
+      "diagnosis": "Not evaluated.",
+      "recommendation": "Add observation audiences (in-market: wedding services, travel) to learn bid signals without restricting reach.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G59",
+      "status": "fail",
+      "evidence": [
+        {
+          "ref": "lighthouse-local:www.meccalimo.com:mobile:2026-10-05",
+          "performance": 65,
+          "seo": 100,
+          "accessibility": 100,
+          "best_practices": 79,
+          "main_cost": "Facebook pixel ~600 ms total blocking time; host-injected GoDaddy script"
+        },
+        {
+          "ref": "gaql:campaign x device:LAST_30_DAYS",
+          "mobile": {
+            "cost": 1036.58,
+            "conv": 55
+          },
+          "desktop": {
+            "cost": 286.13,
+            "conv": 10
+          },
+          "tablet": {
+            "cost": 23.14,
+            "conv": 1
+          }
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Mobile Lighthouse performance score is 65; the Facebook pixel adds about 600 ms of blocking time.",
+      "diagnosis": "A slow mobile landing page affects Quality Score and conversion rate (82% of spend is mobile).",
+      "recommendation": "Delay-load the Facebook pixel until user interaction, and opt out of the host-injected GoDaddy script.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G60",
+      "status": "pass",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "medium",
+      "source_classification": "practitioner",
+      "observation": "Ad groups link to matching service pages on meccalimo.com.",
+      "diagnosis": "Relevant.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G97",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:campaign:settings",
+          "budget_usd_day": 60,
+          "bidding": "MAXIMIZE_CONVERSIONS",
+          "target_cpa": null,
+          "primary_status": "LEARNING",
+          "primary_status_reason": "BIDDING_STRATEGY_LEARNING",
+          "search_partners": false,
+          "display": false,
+          "geo": "Charleston DMA area (200519), PRESENCE_OR_INTEREST",
+          "schedule": "06:00-23:00 daily (7 windows)",
+          "tablet_bid_modifier": "-100%"
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "One active Search campaign.",
+      "diagnosis": "No cross-campaign duplication possible.",
+      "recommendation": "None.",
+      "score_contribution": null
+    },
+    {
+      "schema_version": "1.0.0",
+      "control_id": "G96",
+      "status": "not_applicable",
+      "evidence": [
+        {
+          "ref": "gaql:ad_group_ad",
+          "rsas_enabled": 12,
+          "per_ad_group": 2,
+          "approval": "all APPROVED",
+          "ad_strength": "PENDING (new)",
+          "headlines": "15 (one Cruise ad 12)",
+          "descriptions": 4,
+          "pins": 0
+        }
+      ],
+      "confidence": "high",
+      "source_classification": "practitioner",
+      "observation": "No DSA ad groups.",
+      "diagnosis": "None.",
+      "recommendation": "None.",
+      "score_contribution": null
+    }
+  ],
+  "scoring": {
+    "health_score": null,
+    "evidence_coverage": 0,
+    "status": "insufficient_evidence",
+    "categories": [],
+    "note": "google-health-v1 scoring profile is disabled in the control registry; no health score is published. Control results: pass 26, fail 6, unknown 12, not_applicable 8"
+  },
+  "actions": [
+    {
+      "action": "Narrow the GTM 'Call' tag to tel: clicks only (remove form-submit trigger)",
+      "owner": "Owner in GTM (Claude can guide step by step)",
+      "timing": "This week",
+      "control_id": "G-CT1",
+      "confidence": "high"
+    },
+    {
+      "action": "Turn on website call tracking (Google forwarding number, 60s minimum) and confirm call reporting is on",
+      "owner": "Owner in Google Ads UI",
+      "timing": "This week",
+      "control_id": "G47 / G54",
+      "confidence": "high"
+    },
+    {
+      "action": "Approve draft M1: split brand keywords into their own ad group",
+      "owner": "Owner approves; Claude applies",
+      "timing": "After approval (low learning impact)",
+      "control_id": "G05",
+      "confidence": "medium"
+    },
+    {
+      "action": "Hold budget, bids and goals steady while the campaign is LEARNING",
+      "owner": "Everyone",
+      "timing": "Until 2026-10-20",
+      "control_id": "G38",
+      "confidence": "high"
+    },
+    {
+      "action": "Delay-load the Facebook pixel and remove the GoDaddy injected script",
+      "owner": "Claude (site) + owner (GoDaddy)",
+      "timing": "Next 2 weeks",
+      "control_id": "G59",
+      "confidence": "medium"
+    },
+    {
+      "action": "Re-audit: search terms, Quality Score, budget-lost share, Calls from ads volume",
+      "owner": "Claude",
+      "timing": "2026-10-13 and 2026-10-20",
+      "control_id": "G13 / G20 / G39",
+      "confidence": "high"
+    },
+    {
+      "action": "Approve draft M2 (make tel-click 'Call' secondary) once real calls + quotes reach about 15 in 30 days",
+      "owner": "Owner approves; Claude applies",
+      "timing": "Gated on data",
+      "control_id": "G47",
+      "confidence": "medium"
+    }
+  ],
+  "contradictions": [
+    "Earlier session notes said the 'Call' action was secondary. Live data on 2026-10-06 shows it is primary, included in Conversions, and the only source of conversions.",
+    "Earlier notes recorded Maximize Clicks with a $6 CPC ceiling. Live data shows Maximize Conversions, changed in the web UI on 2026-10-06 13:15 UTC.",
+    "PMax-3 reported 311 conversions at ~$0.05 CPC. Those conversions are not trusted because the traffic pattern matched junk placements."
+  ]
+}

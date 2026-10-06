@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "2026-10-06-google-mecca-limo",
+  "started_at": "2026-10-06T19:30:00Z",
+  "scopes": [
+    "audit:google",
+    "plan",
+    "monitor",
+    "optimize:draft"
+  ],
+  "adapters": [
+    {
+      "platform": "google",
+      "mode": "live_read",
+      "via": "NotFair google_ads_runScript (GAQL, read-only)"
+    },
+    {
+      "platform": "google",
+      "mode": "write_preview",
+      "via": "draft mutation plans only; nothing applied"
+    }
+  ],
+  "sources": [
+    "google-ads-gaql-2026-10-06",
+    "lighthouse-local-2026-10-05",
+    "site-quote-tag-test-2026-10-05",
+    "owner-ui-confirmation-2026-10-05"
+  ],
+  "privacy_class": "internal",
+  "data_lifecycle": {
+    "schema_version": "1.0.0",
+    "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",
+    "classification": "internal",
+    "retention": {
+      "minimum_seconds": 0,
+      "mode": "operator-defined",
+      "delete_after": "2027-10-06T00:00:00Z",
+      "purpose": "Owner-facing Google Ads audit history and before/after baseline for re-audits",
+      "exception_reason": null
+    },
+    "encryption": {
+      "at_rest": "verified",
+      "in_transit": "verified",
+      "evidence_refs": [
+        "github-repository-encryption-at-rest",
+        "google-ads-api-https-via-notfair"
+      ]
+    },
+    "access": {
+      "owner": "Mecca Limo owner",
+      "authorized_roles": [
+        "business-owner",
+        "claude-code-operator"
+      ],
+      "access_log_locator": null
+    },
+    "deletion": {
+      "status": "scheduled",
+      "method": "Remove the run directory from the repository on owner request or after delete_after",
+      "verification_required": true,
+      "verification_artifact_locator": null
+    },
+    "incident": {
+      "owner": "Mecca Limo owner",
+      "reporting_channel": "Claude Code session with the owner",
+      "status": "not-triggered",
+      "record_locator": null
+    }
+  },
+  "worker_status": {
+    "audit-google": "completed",
+    "audit-tracking": "completed",
+    "audit-budget": "completed",
+    "audit-creative": "completed",
+    "plan": "completed",
+    "monitor": "completed",
+    "optimize-draft": "completed",
+    "other-platforms": "skipped"
+  },
+  "completeness": "partial",
+  "completeness_note": "Google Ads only (owner request). Several controls are unknown (windows, attribution, GA4 link, audiences). The Google scoring profile is disabled, so no health score."
+}
