@@ -92,8 +92,14 @@ function mecca_seo_faqs( $slug ) {
 			array( 'Which vehicles can I charter by the hour?', 'Executive sedans for up to 3, luxury SUVs for up to 6 and the Mercedes-Benz Sprinter for up to 14 passengers.' ),
 		),
 		'service'      => array(
-			array( 'What is a black car service?', 'A black car service is a private, pre-booked ride in a professionally maintained luxury vehicle with a professional chauffeur. Mecca Limo provides black car service in Charleston, SC 24/7 for airport transfers, weddings, corporate travel and nights out.' ),
-			array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
+			array( 'What is a black car service?', 'A black car service is private, pre-booked transportation in a luxury vehicle with a professional chauffeur. The ride is reserved for you alone and the price is agreed before you get in. Mecca Limo provides black car service in Charleston, SC 24/7 for airport transfers, weddings, corporate travel and nights out.' ),
+			array( 'Can I book a black car from Charleston International Airport (CHS)?', "Yes. We pick up and drop off at CHS, Mount Pleasant Regional (LRO) and Charleston Executive Airport (JZI) 24/7. Share your flight number and your chauffeur tracks your arrival; 20 minutes of wait time from landing is included. Call or text $p to book." ),
+			array( 'How much does black car service cost in Charleston?', 'Hourly rates start at $85 per hour for an executive sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum. Airport and point-to-point rides are quoted as a flat price. Request a free quote for your exact trip.' ),
+			array( 'Which vehicle should I book?', 'An executive sedan fits up to 3 passengers with 2 bags, a luxury SUV fits up to 6 with luggage, and the Mercedes-Benz Sprinter fits up to 14. Tell us your group size and luggage and we will match the right vehicle.' ),
+			array( 'Do you offer corporate black car service?', 'Yes. We handle executive airport pickups, rides between meetings, client dinners and group shuttles for conferences and events, with one point of contact for every ride.' ),
+			array( 'Can I use a black car for a wedding or event?', 'Yes. We transport couples, wedding parties and guests between hotels, ceremonies and receptions, plus proms, birthdays, concerts and nights out.' ),
+			array( 'How far in advance should I book?', 'As early as possible for weddings, holidays and busy Charleston weekends. A few days ahead is ideal for airport and business rides. We also take same-day requests when a vehicle is free.' ),
+			array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown, plus longer trips such as Edisto Beach, Pawleys Island, Bluffton and out of town.' ),
 		),
 	);
 	return isset( $f[ $slug ] ) ? $f[ $slug ] : array();
@@ -216,6 +222,29 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			}, mecca_seo_areas() ),
 			'availableChannel' => array( '@type' => 'ServiceChannel', 'servicePhone' => '+1-843-804-1188', 'serviceUrl' => home_url( '/get-a-quote/' ) ),
 		);
+		// Published hourly rates (policy page), 3-hour minimum.
+		if ( in_array( $slug, array( 'service', 'charleston-hourly-limo-charter', 'charleston-limo-fleet' ), true ) ) {
+			$data['MeccaService']['hasOfferCatalog'] = array(
+				'@type'           => 'OfferCatalog',
+				'name'            => 'Hourly chauffeur rates',
+				'itemListElement' => array_map( function ( $r ) {
+					return array(
+						'@type'              => 'Offer',
+						'itemOffered'        => array( '@type' => 'Service', 'name' => $r[0] . ' hourly charter' ),
+						'priceSpecification' => array( '@type' => 'UnitPriceSpecification', 'price' => $r[1], 'priceCurrency' => 'USD', 'unitCode' => 'HUR', 'eligibleQuantity' => array( '@type' => 'QuantitativeValue', 'minValue' => 3, 'unitCode' => 'HUR' ) ),
+					);
+				}, array( array( 'Executive sedan', 85 ), array( 'Luxury SUV', 100 ), array( 'Mercedes-Benz Sprinter', 135 ) ) ),
+			);
+		}
+	}
+	// Freshness signal on the page entity.
+	if ( is_page() ) {
+		foreach ( $data as $k => $e ) {
+			if ( is_array( $e ) && isset( $e['@type'] ) && array_intersect( (array) $e['@type'], array( 'WebPage', 'AboutPage', 'ContactPage' ) ) ) {
+				$data[ $k ]['datePublished'] = get_the_date( 'c' );
+				$data[ $k ]['dateModified']  = get_the_modified_date( 'c' );
+			}
+		}
 	}
 	$faqs = mecca_seo_faqs( $slug );
 	if ( is_page() && $faqs ) {
