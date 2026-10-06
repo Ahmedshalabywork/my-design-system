@@ -45,6 +45,20 @@ $svc_icons = array(
 	'/cruise-trips/' => '<path d="M2 19c2 1.2 4 1.2 6 0s4-1.2 6 0 4 1.2 6 0M4 15.5 5 10h14l1 5.5M12 3v7M9 6h6"/>',
 );
 
+$svc_imgs = array(
+	'/wedding/' => 'e245e19a02c15876987ef60899ab2adb',
+	'/airport/' => '86883af875361aeffb86fd99af01a01d',
+	'/night-out/' => '2755b06a0cd8e5028fc072ddb34278a1',
+	'/corporate/' => '23d95377a7dc6fc13c0b518eeece80ff',
+	'/events/' => '228a2b491cffcaf59639b987953ea9b3',
+	'/attractions/' => 'b2095bcfff4222eb944e4d3464e3f7cb',
+	'/beach/' => '293e005a37083a6f852b579ca5878412',
+	'/golf-courses/' => 'a5e7cc10d55a592bac4d03770fbf7b1d',
+	'/hotels/' => '2b5a252430437b5e73424d4be8058c36',
+	'/cruise-trips/' => 'b7db10a0ee9496bb87fbc312637b3aff',
+);
+$up_url = trailingslashit( wp_upload_dir()['baseurl'] ) . 'mecca-webp/';
+
 $reviews = array(
 	array( 'Tiffany Clark', 'Group Night Out', 'Mecca provided exceptional service at a price that blew the competition out of the water for our group of 10\'s trip into Charleston for dinner and dancing! Thank you, Mecca team!' ),
 	array( 'Susan Gorsline', 'Medical Transport', 'When I unexpectedly needed a ride to Roper St. Francis after surgery, Mecca came to my aid! Richard was outstanding. He made sure I got there safely, waited with me, and even called later to see how things went.' ),
@@ -260,23 +274,32 @@ body.menu-open{overflow:hidden}
 .car-body p,.step p{font-size:.95rem;color:var(--muted)}
 
 /* services */
-.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.svc{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;align-content:start;padding:20px 20px 18px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#1c1c20 0%,#141417 100%);border:1px solid rgba(255,255,255,.06);transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .45s,box-shadow .45s}
-.svc:hover{transform:translateY(-6px);border-color:rgba(227,184,79,.55);box-shadow:0 22px 50px -22px rgba(0,0,0,.8),0 0 40px -14px rgba(227,184,79,.35)}
-.svc::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-grad);transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
-.svc:hover::before{transform:scaleX(1)}
-.svc::after{content:attr(data-n);position:absolute;right:12px;bottom:2px;font-family:'Cormorant Garamond',serif;font-size:2.6rem;line-height:1;font-weight:600;color:rgba(227,184,79,.07);transition:color .45s}
-.svc:hover::after{color:rgba(227,184,79,.16)}
-.svc-ico{width:42px;height:42px;border-radius:50%;border:1px solid rgba(227,184,79,.35);display:flex;align-items:center;justify-content:center;margin:0;color:var(--gold-bright);background:rgba(227,184,79,.06);transition:background .45s,color .45s,box-shadow .45s,border-color .45s}
-.svc-ico svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.svc:hover .svc-ico{background:var(--gold-grad);color:#141416;border-color:transparent;box-shadow:0 0 26px rgba(248,218,120,.4)}
-.mh .svc h3{font-size:1.18rem;line-height:1.15;color:var(--paper);position:relative;z-index:1;text-align:left;margin:0}
-.mh .svc p{font-size:.9rem}
-@media(min-width:1101px){.svc-grid{gap:14px}.svc{padding:18px 16px 16px;column-gap:12px}}
-.svc p{grid-column:1/-1}.svc .go{display:none}
-.svc p{color:var(--muted);font-size:.9rem;line-height:1.5;margin-top:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.svc .go{display:none}
 
+/* services: photo tiles (desktop) / swipe strip (phone) */
+.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.svc{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;aspect-ratio:16/11;padding:14px;border-radius:14px;overflow:hidden;background:#141417;border:1px solid rgba(227,184,79,.22);isolation:isolate;transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .45s,box-shadow .45s}
+.svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.svc::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.88))}
+.svc:hover{transform:translateY(-5px);border-color:rgba(248,218,120,.75);box-shadow:0 22px 50px -22px rgba(0,0,0,.8),0 0 36px -12px rgba(227,184,79,.45)}
+.svc:hover img{transform:scale(1.07)}
+.svc-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(14,14,16,.55);border:1px solid rgba(248,218,120,.6);color:var(--gold-bright);transition:background .45s,color .45s}
+.svc-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.svc:hover .svc-ico{background:var(--gold-grad);color:#141416;border-color:transparent}
+.mh .svc h3{font-size:1.25rem;line-height:1.1;color:#fff;margin:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.svc .go{display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
+@media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+.svc-hint{display:none;margin-top:10px;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.svc-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;gap:12px;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.svc-grid::-webkit-scrollbar{display:none}.svc{flex:0 0 46%;aspect-ratio:auto;height:230px;scroll-snap-align:start;padding:14px}.svc .go{display:block}.mh .svc h3{font-size:1.2rem}.svc-hint{display:block}}
+/* steps: gold timeline */
+.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;text-align:center}
+.tl::before{content:"";position:absolute;top:36px;left:16%;right:16%;height:2px;background:linear-gradient(90deg,transparent,#e3b84f 15%,#fff0a8 50%,#e3b84f 85%,transparent)}
+.tl-m{position:relative;width:72px;height:72px;margin:0 auto 16px;border-radius:50%;background:#141417;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);box-shadow:0 0 30px rgba(227,184,79,.3)}
+.tl-m svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tl-m i{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;background:var(--gold-grad);color:#111;font-style:normal;font-size:.8rem;font-weight:500;display:flex;align-items:center;justify-content:center}
+.mh .tl h3{font-size:1.5rem;color:var(--paper);margin:0 0 4px}
+.mh .tl p{color:var(--muted);font-size:1rem;line-height:1.55;max-width:300px;margin:0 auto}
+.tl-cta{text-align:center;margin-top:30px}
+@media(max-width:700px){.tl{grid-template-columns:1fr;text-align:left;gap:20px}.tl::before{left:35px;right:auto;top:20px;bottom:20px;width:2px;height:auto;background:linear-gradient(180deg,#e3b84f,#fff0a8,#e3b84f)}.tl-s{display:grid;grid-template-columns:72px 1fr;column-gap:16px;align-items:center}.tl-m{margin:0;grid-row:span 2}.mh .tl p{margin:0}}
 /* steps */
 .step{padding:40px 34px}
 .step-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--gold);background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:16px}
@@ -415,12 +438,9 @@ body.mh{font-size:17px}
 .quote-sub{font-size:1.12rem}
 #quote .mqf-trust div{font-size:.86rem}
 #quote .mqf-trust b{font-size:.98rem}
-@media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
-.svc:hover .go{letter-spacing:.24em}
 @media(max-width:900px){
 .nav-links{display:none}.burger{display:flex}.nav-actions{display:flex}
 .grid3,.story-grid{grid-template-columns:1fr}
-.svc-grid{grid-template-columns:1fr 1fr}
 .story-photo{order:-1}
 .foot-grid{grid-template-columns:1fr 1fr}
 .mh section{padding:80px 0}.wrap{padding:0 22px}.mh-nav,.mh-nav.scrolled{padding:10px 22px}
@@ -443,7 +463,6 @@ body.mh::after{display:none}
 @media(max-width:560px){
 .wrap{padding:0 16px}
 .mh section{padding:64px 0}
-.svc-grid{grid-template-columns:1fr 1fr;gap:10px}.svc{padding:14px 12px;border-radius:12px;column-gap:10px}.svc-ico{width:34px;height:34px}.svc-ico svg{width:16px;height:16px}.svc::after{font-size:2rem}.mh .svc h3{font-size:1.12rem;line-height:1.2}.mh .svc p{font-size:.84rem;line-height:1.5;margin-top:6px}.svc .go{display:none}
 .foot-grid{grid-template-columns:1fr 1fr;gap:30px 20px}.mh footer{padding-bottom:92px}.foot-brand,.foot-grid>.foot-col:last-child{grid-column:1/-1}
 .marquee{padding:20px 0}.marquee-track{gap:36px;padding-right:36px;animation-duration:20s}
 .rev-track{animation-duration:55s}.rev-track .rev-card{width:280px;margin-right:14px;padding:20px}
@@ -617,9 +636,10 @@ echo wp_json_encode( array(
 		<div class="sec-head"><span class="eyebrow">Our Services</span><h2>More ways to ride with Mecca Limo.</h2></div>
 		<div class="svc-grid">
 			<?php foreach ( $services as $i => $s ) : ?>
-			<a class="svc" data-n="<?php echo sprintf( '%02d', $i + 1 ); ?>" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p></a>
+			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
 		</div>
+		<span class="svc-hint" aria-hidden="true">Swipe for more →</span>
 	</div>
 </section>
 <?php else : ?>
@@ -661,9 +681,10 @@ echo wp_json_encode( array(
 		</div>
 		<div class="svc-grid">
 			<?php foreach ( $services as $i => $s ) : ?>
-			<a class="svc" data-n="<?php echo sprintf( '%02d', $i + 1 ); ?>" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><p><?php echo esc_html( $s[2] ); ?></p></a>
+			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
 		</div>
+		<span class="svc-hint" aria-hidden="true">Swipe for more →</span>
 	</div>
 </section>
 
@@ -673,11 +694,12 @@ echo wp_json_encode( array(
 			<span class="eyebrow">How it works</span>
 			<h2>Booked in three easy steps.</h2>
 		</div>
-		<div class="grid3">
-			<div class="step"><span class="step-num">01</span><h3>Request a quote</h3><p>Tell us your pickup, destination, date and group size. It takes under a minute.</p></div>
-			<div class="step"><span class="step-num">02</span><h3>We confirm your booking</h3><p>We reply quickly with pricing, the right vehicle for your group, and your professional chauffeur.</p></div>
-			<div class="step"><span class="step-num">03</span><h3>Arrive in style</h3><p>Your chauffeur arrives early, tracks your flight when needed, and gets you there safely and on time.</p></div>
+		<div class="tl">
+			<div class="tl-s"><div class="tl-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2z"/><path d="M8 9h8M8 12h5"/></svg><i>1</i></div><h3>Request a quote</h3><p>Pickup, destination, date and group size. It takes under a minute.</p></div>
+			<div class="tl-s"><div class="tl-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><i>2</i></div><h3>We confirm your booking</h3><p>Your price, the right vehicle and your professional chauffeur, fast.</p></div>
+			<div class="tl-s"><div class="tl-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-1.5-5h-11z"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/><path d="M7 12l1.5-4h7l1.5 4"/></svg><i>3</i></div><h3>Arrive in style</h3><p>Early pickup, flight tracking and a safe, on-time arrival.</p></div>
 		</div>
+		<div class="tl-cta"><a class="btn btn-gold" href="#quote">Get a free quote</a></div>
 	</div>
 </section>
 
@@ -820,9 +842,9 @@ echo wp_json_encode( array(
 
 	if('IntersectionObserver' in window){
 		var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-		['.sec-head','.rev-badge','.story-copy','.story-photo','.grid3','.svc-grid','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
+		['.sec-head','.rev-badge','.story-copy','.story-photo','.grid3','.svc-grid','.tl','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
 			document.querySelectorAll(sel).forEach(function(c){
-				var kids=c.matches('.grid3,.svc-grid')?[].slice.call(c.children):[c];
+				var kids=c.matches('.grid3,.svc-grid,.tl')?[].slice.call(c.children):[c];
 				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(c.classList.contains('fleet-pop')?i*180:i%5*90)+'ms';io.observe(el);});
 			});
 		});
