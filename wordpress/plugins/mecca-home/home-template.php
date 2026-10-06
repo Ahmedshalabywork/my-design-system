@@ -681,7 +681,7 @@ echo wp_json_encode( array(
 		<div class="rev-cta">
 			<a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="btn btn-ghost">More client reviews</a>
 			<a href="https://www.google.com/maps/place/?q=place_id:ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener" class="btn btn-gold">Read all reviews on Google</a>
-			<a href="https://search.google.com/local/writereview?placeid=ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener" class="btn btn-ghost">Leave a review</a>
+			<a href="https://g.page/r/CVZ-S5mh4wd7EBM/review" target="_blank" rel="noopener" class="btn btn-ghost">Leave a review</a>
 		</div>
 	</div>
 </section>
