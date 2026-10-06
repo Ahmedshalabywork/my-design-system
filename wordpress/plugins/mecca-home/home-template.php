@@ -277,11 +277,12 @@ body.menu-open{overflow:hidden}
 
 /* services: photo tiles (desktop) / swipe strip (phone) */
 .svc-marquee{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);padding:8px 0 14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.svc-track,.svc-dup{display:flex;width:max-content}
+.svc-track{display:flex;width:max-content}
 .svc-track{animation:revscroll 60s linear infinite}
+.rev-track:not(.dup),.svc-track:not(.dup){animation:none}
 .svc-marquee:hover .svc-track,.svc-marquee:focus-within .svc-track{animation-play-state:paused}
 .svc-track .svc{flex:none;width:280px;margin-right:16px}
-@media (prefers-reduced-motion:reduce){.svc-track{animation:none}.svc-marquee{overflow-x:auto}.svc-dup{display:none}}
+@media (prefers-reduced-motion:reduce){.svc-track{animation:none}.svc-marquee{overflow-x:auto}.svc-track>[aria-hidden],.rev-track>[aria-hidden]{display:none}}
 .svc{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;aspect-ratio:16/11;padding:14px;border-radius:14px;overflow:hidden;background:#141417;border:1px solid rgba(227,184,79,.22);isolation:isolate;transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .45s,box-shadow .45s}
 .svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .svc::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.88))}
@@ -290,7 +291,7 @@ body.menu-open{overflow:hidden}
 .svc-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(14,14,16,.55);border:1px solid rgba(248,218,120,.6);color:var(--gold-bright);transition:background .45s,color .45s}
 .svc-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .svc:hover .svc-ico{background:var(--gold-grad);color:#141416;border-color:transparent}
-.mh .svc h3{font-size:1.25rem;line-height:1.1;color:#fff;margin:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.mh .svc h3,.mh .svc .h3{font-size:1.25rem;line-height:1.1;color:#fff;margin:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .svc .go{display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
 @media(max-width:700px){.svc-track{animation-duration:45s}.svc-track .svc{width:200px;margin-right:12px;aspect-ratio:auto;height:230px}.svc .go{display:block}.mh .svc h3{font-size:1.2rem}}
 /* steps: gold timeline */
@@ -579,7 +580,7 @@ echo wp_json_encode( array(
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
 		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-480.webp' ) ); ?> 480w, <?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-828.webp' ) ); ?> 828w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3-1440.webp' ) ); ?> 1440w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
-		<video id="heroVideo" muted playsinline autoplay preload="auto" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video><script>(function(v){if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;v.addEventListener('playing',function(){v.classList.add('on');});v.addEventListener('ended',function(){var st=v.closest('.stage');if(st)st.classList.add('hold');});v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;var p=v.play();if(p&&p.catch)p.catch(function(){});})(document.getElementById('heroVideo'));</script>
+		<video id="heroVideo" muted playsinline autoplay preload="auto" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video><script>(function(v){var c=navigator.connection;if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches||(c&&(c.saveData||/2g|3g/.test(c.effectiveType||''))))return;var cut=setTimeout(function(){if(!v.classList.contains('on')){v.dataset.off='1';v.pause();v.removeAttribute('src');v.load();}},2500);v.addEventListener('playing',function(){if(v.dataset.off)return;clearTimeout(cut);v.classList.add('on');});v.addEventListener('ended',function(){var st=v.closest('.stage');if(st)st.classList.add('hold');});v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;var p=v.play();if(p&&p.catch)p.catch(function(){});})(document.getElementById('heroVideo'));</script>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
@@ -644,9 +645,6 @@ echo wp_json_encode( array(
 			<?php foreach ( $services as $i => $s ) : ?>
 			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
-			<div class="svc-dup" aria-hidden="true"><?php foreach ( $services as $i => $s ) : ?>
-			<a class="svc" tabindex="-1" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt=""><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
-			<?php endforeach; ?></div>
 		</div>
 		</div>
 	</div>
@@ -693,9 +691,6 @@ echo wp_json_encode( array(
 			<?php foreach ( $services as $i => $s ) : ?>
 			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
-			<div class="svc-dup" aria-hidden="true"><?php foreach ( $services as $i => $s ) : ?>
-			<a class="svc" tabindex="-1" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt=""><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
-			<?php endforeach; ?></div>
 		</div>
 		</div>
 	</div>
@@ -740,15 +735,15 @@ echo wp_json_encode( array(
 		<div class="rev-badge"><span class="g-stars">★★★★★</span><span><b>5.0</b> from <b>140+</b> Google reviews</span></div>
 		<div class="rev-marquee" aria-label="Client reviews">
 			<div class="rev-track">
-			<?php foreach ( array( false, true ) as $dup ) : foreach ( $reviews as $r ) :
+			<?php foreach ( $reviews as $r ) :
 				$ini = implode( '', array_map( function ( $w ) { return mb_substr( $w, 0, 1 ); }, explode( ' ', $r[0] ) ) );
 				?>
-			<div class="rev-card"<?php echo $dup ? ' aria-hidden="true"' : ''; ?>>
+			<div class="rev-card">
 				<div class="rev-stars" aria-label="5 out of 5 stars">★★★★★</div>
 				<p class="rev-text">“<?php echo esc_html( $r[2] ); ?>”</p>
 				<div class="rev-person"><div class="rev-avatar" aria-hidden="true"><?php echo esc_html( $ini ); ?></div><div><div class="rev-name"><?php echo esc_html( $r[0] ); ?></div><div class="rev-tag"><?php echo esc_html( $r[1] ); ?></div></div></div>
 			</div>
-			<?php endforeach; endforeach; ?>
+			<?php endforeach; ?>
 			</div>
 		</div>
 		<div class="rev-cta">
@@ -843,7 +838,7 @@ echo wp_json_encode( array(
 	(function(){
 		var v=document.getElementById('heroVideo'),st=document.querySelector('.stage');
 		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-		if(v.paused&&!v.ended&&v.readyState>2){var p=v.play();if(p&&p.catch)p.catch(function(){});}
+		if(v.paused&&!v.ended&&!v.dataset.off&&v.readyState>2){var p=v.play();if(p&&p.catch)p.catch(function(){});}
 	})();
 	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
 		e.preventDefault();
@@ -862,6 +857,12 @@ echo wp_json_encode( array(
 			});
 		});
 	}
+
+	(function(){
+		function dupe(t){if(t.getAttribute('data-d'))return;t.setAttribute('data-d','1');[].slice.call(t.children).forEach(function(c){var k=c.cloneNode(true);k.setAttribute('aria-hidden','true');k.setAttribute('inert','');if(k.tagName==='A')k.tabIndex=-1;[].slice.call(k.querySelectorAll('h3')).forEach(function(h){var d=document.createElement('div');d.className=(h.className?h.className+' ':'')+'h3';d.innerHTML=h.innerHTML;h.parentNode.replaceChild(d,h);});t.appendChild(k);});t.classList.add('dup');}
+		var ts=[].slice.call(document.querySelectorAll('.rev-track,.svc-track'));
+		if('IntersectionObserver' in window){var dio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){dupe(e.target);dio.unobserve(e.target);}});},{rootMargin:'200px'});ts.forEach(function(t){dio.observe(t);});}else{ts.forEach(dupe);}
+	})();
 
 	if('IntersectionObserver' in window){
 		var po=new IntersectionObserver(function(es){es.forEach(function(en){en.target.classList.toggle('anim-off',!en.isIntersecting);});});

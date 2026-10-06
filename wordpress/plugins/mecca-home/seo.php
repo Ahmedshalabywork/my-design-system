@@ -332,7 +332,8 @@ add_filter( 'robots_txt', function ( $out ) {
 }, 99 );
 
 // Meta (Facebook) Pixel. Set the ID with update_option( 'mecca_fb_pixel_id', '...' ).
-// fbevents.js loads on the first interaction so it never slows the first paint.
+// fbevents.js loads on the first interaction, or shortly after the page has loaded,
+// so it never slows the first paint but every visit is still counted.
 add_action( 'wp_head', function () {
 	$id = preg_replace( '/\D/', '', (string) get_option( 'mecca_fb_pixel_id' ) );
 	if ( ! $id || is_admin() ) {
@@ -341,13 +342,15 @@ add_action( 'wp_head', function () {
 	?>
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
-var go=function(){if(t)return;t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);};
+var load=function(){if(t)return;t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s);},go=function(){setTimeout(function(){(f.requestIdleCallback||setTimeout)(load,{timeout:3000});},800);};
 ['scroll','touchstart','pointerdown','mousemove','keydown','click','wheel'].forEach(function(x){f.addEventListener(x,go,{once:true,passive:true});});
+f.addEventListener('load',function(){setTimeout(load,7000);});
 }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','<?php echo esc_js( $id ); ?>');fbq('track','PageView');
 document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[href^="tel:"],a[href^="sms:"]');if(a)fbq('track','Contact');});
 document.addEventListener('submit',function(ev){if(ev.target.closest&&ev.target.closest('.mqf,form[id*="quote"],#mqf'))fbq('track','Lead');});
 </script>
+<noscript><img height="1" width="1" alt="Meta Pixel" src="https://www.facebook.com/tr?id=<?php echo esc_attr( $id ); ?>&amp;ev=PageView&amp;noscript=1"></noscript>
 	<?php
 }, 20 );
 
