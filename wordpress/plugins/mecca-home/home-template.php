@@ -248,13 +248,13 @@ body.menu-open{overflow:hidden}
 
 /* services */
 .svc-grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(255,255,255,.05);border-left:1px solid rgba(255,255,255,.05)}
-.svc{position:relative;display:block;padding:30px 26px;border-right:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);transition:background .35s}
+.svc{position:relative;display:flex;flex-direction:column;padding:30px 26px;border-right:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);transition:background .35s}
 .svc:hover{background:var(--panel)}
 .svc::before{content:"";position:absolute;left:0;top:0;width:2px;height:0;background:linear-gradient(var(--gold),var(--gold-bright));transition:height .4s ease}
 .svc:hover::before{height:100%}
 .mh .svc h3{font-size:1.4rem;color:var(--paper)}
 .svc p{color:var(--muted);font-size:.96rem;margin-top:8px}
-.svc .go{display:inline-block;margin-top:12px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-bright)}
+.svc .go{display:inline-block;align-self:flex-start;margin-top:auto;padding-top:14px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-bright)}
 
 /* steps */
 .step{padding:40px 34px}
@@ -283,8 +283,19 @@ body.menu-open{overflow:hidden}
 .rev-card:hover .rev-avatar{transform:scale(1.08);box-shadow:0 0 22px rgba(226,194,116,.5)}
 .rev-name{color:var(--paper);font-size:.94rem}
 .rev-tag{color:var(--gold);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
-.rev-cta{text-align:center;margin-top:50px}
-.rev-cta a{margin:0 8px}
+.rev-cta{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 16px;margin-top:34px}
+.mh .rev-cta a.btn{margin:0;flex:0 0 auto;padding:15px 30px}
+.mh .rev-more{flex-basis:100%;text-align:center;color:var(--gold);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;margin-top:4px}
+.rev-more:hover{color:var(--gold-bright)}
+.rev-marquee{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);padding:14px 0 18px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.rev-track{display:flex;width:max-content;animation:revscroll 70s linear infinite}
+.rev-marquee:hover .rev-track,.rev-marquee:focus-within .rev-track{animation-play-state:paused}
+@keyframes revscroll{to{transform:translateX(-50%)}}
+.rev-track .rev-card{flex:none;width:340px;margin-right:20px;padding:24px 24px 22px}
+.rev-track .rev-card:hover{transform:translateY(-4px)}
+.rev-track .rev-text{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:.95rem;line-height:1.6;margin-bottom:18px;flex:none}
+.rev-track .rev-stars{margin-bottom:10px}
+@media (prefers-reduced-motion:reduce){.rev-track{animation:none}.rev-marquee{overflow-x:auto}}
 
 /* quote (white) */
 .mh section.quote-white{position:relative;background:radial-gradient(900px 520px at 50% 0%,rgba(201,163,78,.10),transparent 65%),var(--ink-soft);color:var(--paper);padding:clamp(90px,12vw,150px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -410,9 +421,10 @@ body.mh::after{display:none}
 @media(max-width:560px){
 .wrap{padding:0 16px}
 .mh section{padding:64px 0}
-.svc-grid{grid-template-columns:1fr}
-.foot-grid{grid-template-columns:1fr}
+.svc-grid{grid-template-columns:1fr 1fr}.svc{padding:18px 14px}.mh .svc h3{font-size:1.12rem;line-height:1.2}.svc p{font-size:.84rem;line-height:1.5;margin-top:6px}.svc .go{display:none}
+.foot-grid{grid-template-columns:1fr 1fr;gap:30px 20px}.mh footer{padding-bottom:92px}.foot-brand,.foot-grid>.foot-col:last-child{grid-column:1/-1}
 .marquee{padding:20px 0}.marquee-track{gap:36px;padding-right:36px;animation-duration:20s}
+.rev-track{animation-duration:55s}.rev-track .rev-card{width:280px;margin-right:14px;padding:20px}
 .stat b{font-size:1.8rem}
 #quote .mqf{padding:22px 18px;border-radius:12px}
 .mh .quote-title{font-size:3rem;margin-bottom:12px}
@@ -421,7 +433,7 @@ body.mh::after{display:none}
 #quote .mqf-trust b{font-size:.9rem}
 #quote .mqf label{margin:16px 0 7px}
 #quote .mqf .mqf-row{gap:0}
-.rev-cta a{display:block;margin:0 auto 12px;max-width:320px}
+.rev-cta{align-items:stretch}.mh .rev-cta a.btn{flex:1 1 0;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 10px;font-size:.72rem;letter-spacing:.12em;line-height:1.35;max-width:220px;min-height:54px}
 #stickyQuote{right:auto;left:14px;bottom:18px;padding:13px 20px}
 .eyebrow{letter-spacing:.22em;font-size:.66rem}
 .eyebrow::before{width:28px}
@@ -667,21 +679,23 @@ echo wp_json_encode( array(
 			<h2>What our clients say</h2>
 		</div>
 		<div class="rev-badge"><span class="g-stars">★★★★★</span><span><b>5.0</b> from <b>140+</b> Google reviews</span></div>
-		<div class="grid3">
-			<?php foreach ( $reviews as $r ) :
+		<div class="rev-marquee" aria-label="Client reviews">
+			<div class="rev-track">
+			<?php foreach ( array( false, true ) as $dup ) : foreach ( $reviews as $r ) :
 				$ini = implode( '', array_map( function ( $w ) { return mb_substr( $w, 0, 1 ); }, explode( ' ', $r[0] ) ) );
 				?>
-			<div class="rev-card">
+			<div class="rev-card"<?php echo $dup ? ' aria-hidden="true"' : ''; ?>>
 				<div class="rev-stars" aria-label="5 out of 5 stars">★★★★★</div>
 				<p class="rev-text">“<?php echo esc_html( $r[2] ); ?>”</p>
 				<div class="rev-person"><div class="rev-avatar" aria-hidden="true"><?php echo esc_html( $ini ); ?></div><div><div class="rev-name"><?php echo esc_html( $r[0] ); ?></div><div class="rev-tag"><?php echo esc_html( $r[1] ); ?></div></div></div>
 			</div>
-			<?php endforeach; ?>
+			<?php endforeach; endforeach; ?>
+			</div>
 		</div>
 		<div class="rev-cta">
-			<a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="btn btn-ghost">More client reviews</a>
 			<a href="https://www.google.com/maps/place/?q=place_id:ChIJBZcVgzl5_ogRVn5LmaHjB3s" target="_blank" rel="noopener" class="btn btn-gold">Read all reviews on Google</a>
 			<a href="https://g.page/r/CVZ-S5mh4wd7EBM/review" target="_blank" rel="noopener" class="btn btn-ghost">Leave a review</a>
+			<a href="<?php echo esc_url( home_url( '/reviews/' ) ); ?>" class="rev-more">More client stories →</a>
 		</div>
 	</div>
 </section>
@@ -792,7 +806,7 @@ echo wp_json_encode( array(
 
 	if('IntersectionObserver' in window){
 		var po=new IntersectionObserver(function(es){es.forEach(function(en){en.target.classList.toggle('anim-off',!en.isIntersecting);});});
-		document.querySelectorAll('.strip,.marquee,.story-photo,.pg-hero-photo,.hero-quote,.stats').forEach(function(el){po.observe(el);});
+		document.querySelectorAll('.strip,.marquee,.rev-marquee,.story-photo,.pg-hero-photo,.hero-quote,.stats').forEach(function(el){po.observe(el);});
 	}
 
 	var burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu');
