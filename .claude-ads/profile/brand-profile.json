@@ -12,20 +12,53 @@
   },
   "objective": "Booked rides at a sustainable cost per booking",
   "conversion_taxonomy": {
-    "primary": ["phone_call_from_ad_or_site", "quote_form_submission", "confirmed_booking"],
-    "not_counted": ["text_message", "page_view", "click_to_call_button_tap_without_call"],
+    "primary": [
+      "phone_call_from_ad_or_site",
+      "quote_form_submission",
+      "confirmed_booking"
+    ],
+    "not_counted": [
+      "text_message",
+      "page_view",
+      "click_to_call_button_tap_without_call"
+    ],
     "status": "provisional: Google Ads 'Call' action over-counts and must be reviewed (screenshot of Goals > Conversions pending)"
   },
   "economics": {
     "monthly_budget_cap_usd_all_platforms": 1500,
-    "allocation_2026_10": {"google_search_daily_usd": 40, "local_services_ads_monthly_usd_target": 285, "meta_ads": 0},
-    "target_cpa": "not set (needs booking value data)"
+    "allocation_2026_10": {
+      "google_search_daily_usd": 40,
+      "local_services_ads_monthly_usd_target": "under 300 (operator-confirmed)",
+      "meta_ads": 0
+    },
+    "target_cpa": "keep cost per booking well under $50; do not set Target CPA bidding until conversion tracking is fixed",
+    "average_booking_value_usd": "under 200"
   },
-  "priority_services": ["weddings", "sprinter_groups", "airport", "corporate"],
+  "priority_services": [
+    "weddings",
+    "sprinter_groups",
+    "airport",
+    "corporate"
+  ],
   "platforms": {
-    "google_ads": {"account_id": "222-777-0856", "data_source": "Windsor.ai connector", "credentials": {"configured": true, "source": "connector", "secret_ref": "windsor_ai_oauth"}},
-    "google_local_services_ads": {"active": true, "data_source": "none (screenshots only)"},
-    "meta": {"pixel_id": "1131776946198160", "ads_active": false}
+    "google_ads": {
+      "account_id": "222-777-0856",
+      "data_source": "Windsor.ai connector",
+      "credentials": {
+        "configured": true,
+        "source": "connector",
+        "secret_ref": "windsor_ai_oauth"
+      }
+    },
+    "google_local_services_ads": {
+      "active": true,
+      "data_source": "none (screenshots only)"
+    },
+    "meta": {
+      "pixel_id": "1131776946198160",
+      "ads_active": false,
+      "plan": "retarget pixel audience later; $0 for now (operator decision)"
+    }
   },
   "mutation_authority": {
     "mode": "operator_delegated",
@@ -34,5 +67,9 @@
     "approver": "account owner",
     "rollback_owner": "Claude session that made the change, via reverse action (enable/pause/budget restore)"
   },
-  "reporting": {"audience": "owner, plain English", "timezone": "America/New_York", "currency": "USD"}
+  "reporting": {
+    "audience": "owner, plain English",
+    "timezone": "America/New_York",
+    "currency": "USD"
+  }
 }
