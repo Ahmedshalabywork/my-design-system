@@ -412,6 +412,8 @@ body.menu-open{overflow:hidden}
 
 #stickyQuote{position:fixed;left:24px;bottom:24px;z-index:60;background:var(--gold-grad);color:var(--ink);border-radius:50px;padding:15px 26px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.65);opacity:0;transform:translateY(24px);pointer-events:none;transition:opacity .4s,transform .4s}
 #stickyQuote.show{opacity:1;transform:none;pointer-events:auto}
+#stickyText{display:none}
+@media(max-width:900px){#stickyText{display:flex;align-items:center;gap:8px;position:fixed;right:14px;bottom:18px;z-index:60;padding:12px 20px;border-radius:50px;background:rgba(14,14,16,.92);border:1px solid var(--gold);color:var(--gold-bright);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;box-shadow:0 14px 34px -10px rgba(0,0,0,.65);opacity:0;transform:translateY(24px);pointer-events:none;transition:opacity .4s,transform .4s}#stickyText svg{width:16px;height:16px;fill:currentColor}#stickyText.show{opacity:1;transform:none;pointer-events:auto}}
 body.mh::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.035;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .will-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .will-reveal.is-in{opacity:1;transform:none}
@@ -542,7 +544,7 @@ echo wp_json_encode( array(
 <?php wp_body_open(); ?>
 <a class="skip" href="#main">Skip to content</a>
 <div id="progress" aria-hidden="true"></div>
-<a href="#quote" id="stickyQuote">Get a Quote</a>
+<a href="#quote" id="stickyQuote">Get a Quote</a><a href="sms:+18438041188" id="stickyText" aria-label="Text us at (843) 804-1188"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Z"/></svg>Text us</a>
 
 <nav class="mh-nav" id="nav" aria-label="Main">
 	<div class="nav-links nav-left">
@@ -820,9 +822,9 @@ echo wp_json_encode( array(
 
 <script>
 (function(){
-	var nav=document.getElementById('nav'),bar=document.getElementById('progress'),sticky=document.getElementById('stickyQuote');
+	var nav=document.getElementById('nav'),bar=document.getElementById('progress'),sticky=document.getElementById('stickyQuote'),stx=document.getElementById('stickyText');
 	var docH=0,tick=false;function measure(){docH=document.documentElement.scrollHeight-innerHeight;}
-	function onScroll(){tick=false;var y=window.scrollY;nav.classList.toggle('scrolled',y>40);bar.style.transform='scaleX('+(docH>0?Math.min(y/docH,1):0)+')';sticky.classList.toggle('show',y>innerHeight*.7);}
+	function onScroll(){tick=false;var y=window.scrollY;nav.classList.toggle('scrolled',y>40);bar.style.transform='scaleX('+(docH>0?Math.min(y/docH,1):0)+')';sticky.classList.toggle('show',y>innerHeight*.7);stx.classList.toggle('show',y>innerHeight*.7);}
 	function req(){if(!tick){tick=true;requestAnimationFrame(onScroll);}}
 	addEventListener('scroll',req,{passive:true});addEventListener('resize',function(){measure();req();},{passive:true});addEventListener('load',function(){measure();req();});measure();onScroll();
 

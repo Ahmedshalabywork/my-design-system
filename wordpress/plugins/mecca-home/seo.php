@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function mecca_seo_areas() {
-	return array( 'Charleston', 'Mount Pleasant', 'North Charleston', 'Kiawah Island', 'Seabrook Island', 'Isle of Palms', 'Folly Beach', "Sullivan's Island", 'Summerville', 'Georgetown' );
+	return array( 'Charleston', 'Mount Pleasant', 'North Charleston', 'Daniel Island', 'Kiawah Island', 'Seabrook Island', 'Isle of Palms', 'Folly Beach', "Sullivan's Island", 'Summerville', 'Georgetown' );
 }
 
 // Service name and type for each service page.
@@ -29,6 +29,9 @@ function mecca_seo_services() {
 		'kiawah-island-car-service'      => array( 'Kiawah Island Car Service', 'Car service' ),
 		'mount-pleasant-limo-service'    => array( 'Mount Pleasant Limo Service', 'Limo service' ),
 		'charleston-bachelorette-party-transportation' => array( 'Bachelorette Party Transportation', 'Party bus rental' ),
+		'daniel-island-car-service'      => array( 'Daniel Island Car Service', 'Car service' ),
+		'summerville-limo-service'       => array( 'Summerville Limo Service', 'Limo service' ),
+		'charleston-airport-pickup-guide' => array( 'Charleston Airport Pickup', 'Airport transfer' ),
 	);
 }
 
@@ -111,6 +114,19 @@ function mecca_seo_faqs( $slug ) {
 		'mount-pleasant-limo-service' => array(
 			array( 'Do you serve Mount Pleasant, SC 24/7?', "Yes. Mecca Limo serves Mount Pleasant 24 hours a day, 7 days a week, including airport rides, weddings, nights out on Shem Creek and trips downtown. Call or text $p." ),
 			array( 'Which airports do you serve from Mount Pleasant?', 'Charleston International Airport (CHS) and Mount Pleasant Regional Airport (LRO), with flight tracking on airport pickups.' ),
+		),
+		'daniel-island-car-service' => array(
+			array( 'How far is Daniel Island from Charleston airport?', 'Usually about 15 to 20 minutes from Charleston International Airport (CHS) by I-526, depending on traffic. Share your flight number and your chauffeur will track your arrival.' ),
+			array( 'Can you drive us to a concert or tennis event on Daniel Island?', "Yes. We drop your group at the stadium and pick you up when the event ends, in a sedan, luxury SUV or a Mercedes-Benz Sprinter for up to 14. Call or text $p to book." ),
+		),
+		'summerville-limo-service' => array(
+			array( 'Do you serve Summerville, SC 24/7?', "Yes. Mecca Limo serves Summerville, Nexton and Cane Bay 24 hours a day, 7 days a week, including airport rides, weddings, prom and nights out in downtown Charleston. Call or text $p." ),
+			array( 'How long is the drive from Summerville to Charleston airport?', 'Usually about 25 to 35 minutes to Charleston International Airport (CHS), depending on traffic.' ),
+		),
+		'charleston-airport-pickup-guide' => array(
+			array( 'Where will my chauffeur meet me at CHS?', 'Your chauffeur contacts you when your flight lands and tells you exactly where to meet. Share your flight number when you book so we can track your arrival.' ),
+			array( 'How much wait time is included on airport pickups?', 'Airport pickups include 20 minutes of wait time from landing, enough time for most baggage claims.' ),
+			array( 'How long is the drive from Charleston airport to downtown?', 'About 20 to 25 minutes by car, depending on traffic. Kiawah Island is about 50 to 60 minutes and Mount Pleasant about 25 to 30 minutes.' ),
 		),
 		'charleston-hourly-limo-charter' => array(
 			array( 'Is there a minimum number of hours?', 'Yes. Every vehicle has a 3-hour minimum: executive sedans, luxury SUVs and the Mercedes Sprinter. See our booking and cancellation policy for details. Your chauffeur stays with you for the whole booking and drives you to every stop.' ),
@@ -294,7 +310,10 @@ add_action( 'init', function () {
 		. "- [Hourly Charter]({$u}charleston-hourly-limo-charter/): Sprinters, SUVs and sedans by the hour\n"
 		. "- [Bachelorette Party Transportation]({$u}charleston-bachelorette-party-transportation/): party bus guide, itinerary and pricing\n"
 		. "- [Kiawah Island Car Service]({$u}kiawah-island-car-service/)\n"
-		. "- [Mount Pleasant Limo Service]({$u}mount-pleasant-limo-service/)\n\n"
+		. "- [Mount Pleasant Limo Service]({$u}mount-pleasant-limo-service/)\n"
+		. "- [Daniel Island Car Service]({$u}daniel-island-car-service/)\n"
+		. "- [Summerville Limo Service]({$u}summerville-limo-service/)\n"
+		. "- [Charleston Airport (CHS) Pickup Guide]({$u}charleston-airport-pickup-guide/): how pickups work and drive times\n\n"
 		. "## Company\n"
 		. "- [All Services]({$u}service/)\n- [About]({$u}about/): our family-owned Charleston chauffeur company\n- [Reviews]({$u}reviews/): 5.0 rating on Google\n- [Contact]({$u}contact/)\n- [Get a Quote]({$u}get-a-quote/)\n- [Booking & Cancellation Policy]({$u}policy/)\n";
 	status_header( 200 );
