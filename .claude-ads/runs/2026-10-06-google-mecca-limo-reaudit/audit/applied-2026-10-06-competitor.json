@@ -34,9 +34,16 @@
       "what": "8 core services first, with descriptions; removed Limo Anywhere, Dance Clubs, Stag Party and an all-caps combo item; taxi items moved last; 124 items",
       "verified": "Windsor action result",
       "rollback": "Previous list recorded in the session transcript (128 items)"
+    },
+    {
+      "id": "G2",
+      "object": "GBP locations/158256245226647269 categories",
+      "op": "update",
+      "what": "Primary: Airport shuttle service -> Limousine service. Additional: airport_shuttle_service, car_service, transportation_service, taxi_service, minibus_taxi_service. Removed the wrong 'Airport' category.",
+      "approval": "Owner: 'fix' / 'do it' (2026-10-06)",
+      "verified": "Windsor action accepted; read-back pending (Google may review)",
+      "rollback": "Primary gcid:airport_shuttle_service; additional gcid:airport, taxi_service, car_service, limousine_service, minibus_taxi_service, transportation_service"
     }
   ],
-  "not_done": [
-    "GBP primary category change (Airport shuttle service -> Limousine service) and removal of the 'Airport' category: risk of re-verification; left for the owner to decide"
-  ]
+  "not_done": []
 }
