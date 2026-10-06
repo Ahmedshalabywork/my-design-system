@@ -30,7 +30,12 @@
       "unit": "keywords"
     }
   ],
-  "approval": null,
+  "approval": {
+    "status": "approved",
+    "approver_id": "business-owner (chat: 'ok fix all the issues')",
+    "approved_plan_sha256": "6c7b2dfe415dbb97f88b954141ee26bf63a60f1fe269c18bef24591567fd94d8",
+    "approved_at": "2026-10-06T19:45:00Z"
+  },
   "idempotency_key": "2026-10-06-google-mecca-limo:M1-brand-ad-group",
   "audit_destination": "2026-10-06-google-mecca-limo/audit/M1-brand-ad-group.jsonl",
   "verification_steps": [
@@ -49,7 +54,7 @@
     ]
   },
   "remote_precondition_sha256": "7bbc4461270ae60bf6e13715e979ea32fd6a754afd1e7152cd03526e541a8fda",
-  "status": "draft",
+  "status": "verified",
   "data_lifecycle": {
     "schema_version": "1.0.0",
     "lifecycle_id": "2026-10-06-google-mecca-limo-lifecycle",

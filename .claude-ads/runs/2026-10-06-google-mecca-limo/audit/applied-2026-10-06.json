@@ -1,0 +1,84 @@
+{
+  "run_id": "2026-10-06-google-mecca-limo",
+  "recorded_at": "2026-10-06T19:45:00Z",
+  "approval": "Owner instruction 'ok fix all the issues' (2026-10-06)",
+  "changes": [
+    {
+      "id": "C1",
+      "object": "conversionActions/7825674138",
+      "op": "create",
+      "what": "'Phone number tap (website)' WEBPAGE/CONTACT, primary; fired by site code on tel:/sms: taps only",
+      "verified": "GAQL readback + browser test (label R5yzCJqfyZMdEKD84vQp fires on tap, not on load)",
+      "rollback": "Set primary_for_goal=false"
+    },
+    {
+      "id": "C2",
+      "object": "conversionActions/7825674141",
+      "op": "create",
+      "what": "'Website calls 60s+' WEBSITE_CALL/PHONE_CALL_LEAD, secondary; forwarding-number swap via gtag phone_conversion_number",
+      "verified": "GAQL readback",
+      "rollback": "Set status HIDDEN or remove the config line from mecca-ads-call-tracking.php"
+    },
+    {
+      "id": "C3",
+      "object": "conversionActions/6562074192 ('Call', GTM)",
+      "op": "update",
+      "what": "primary_for_goal true -> false (it also fired on form submits, double-counting quotes)",
+      "verified": "changeId 1399744",
+      "rollback": "primary_for_goal=true"
+    },
+    {
+      "id": "C4",
+      "object": "customer call_reporting_setting + assets 91095633162, 92343123135",
+      "op": "update",
+      "what": "call conversions -> conversionActions/6575000075 'Calls from ads' (previously 179 / Smart-campaign action)",
+      "verified": "GAQL readback",
+      "rollback": "Restore previous call_conversion_action values"
+    },
+    {
+      "id": "C5",
+      "object": "adGroups/202405291802 'Brand - Mecca Limo'",
+      "op": "create (M1)",
+      "what": "7 brand keywords + 1 RSA; same 7 paused in adGroups/203721150471",
+      "verified": "GAQL readback; RSA in policy review",
+      "rollback": "Pause brand ad group, re-enable the 7 keywords"
+    },
+    {
+      "id": "C6",
+      "object": "ads/827069461159 (Cruise RSA)",
+      "op": "update",
+      "what": "12 -> 15 headlines",
+      "verified": "changeId 1399798",
+      "rollback": "Restore the 12 original headlines"
+    },
+    {
+      "id": "S1",
+      "object": "site option mecca_fb_pixel_id",
+      "op": "update",
+      "what": "Meta pixel off (ID kept in mecca_fb_pixel_id_backup)",
+      "verified": "pages contain no fbevents",
+      "rollback": "Copy mecca_fb_pixel_id_backup back"
+    },
+    {
+      "id": "S2",
+      "object": "wp-content/novamira-sandbox/mecca-ads-call-tracking.php (+ quote tag shares gtag)",
+      "op": "create",
+      "what": "tel-tap conversion + website call forwarding config, lazy gtag",
+      "verified": "Playwright on /, airport, cruise pages",
+      "rollback": "Disable the file"
+    },
+    {
+      "id": "S3",
+      "object": "wp-content/novamira-sandbox/mecca-host-script-optout.php",
+      "op": "create",
+      "what": "GoDaddy tccl script neutralised (lands inside an HTML comment)",
+      "verified": "No tccl request; Lighthouse mobile 99 (was 65-68); WP Super Cache still caching",
+      "rollback": "Disable the file"
+    }
+  ],
+  "not_done": [
+    "M2 (make tap secondary) - gated on ~15 real calls+quotes in 30 days",
+    "Budget change - hold during learning until 2026-10-20",
+    "Conversion values - need average booking value from owner"
+  ]
+}

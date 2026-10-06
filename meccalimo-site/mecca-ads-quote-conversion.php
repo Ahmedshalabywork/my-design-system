@@ -1,7 +1,7 @@
 <?php
 /**
  * Mecca Limo: fire the Google Ads "Quote form submitted" conversion only after a
- * genuine quote request. The quote form (mecca-quote-form) emails the office a
+ * genuine quote request (gtag and its config come from mecca-ads-call-tracking.php). The quote form (mecca-quote-form) emails the office a
  * "New Quote Request:" message only after validation and spam checks pass, so
  * that email is the signal. The tag is printed in the footer of that same page view.
  */
@@ -34,14 +34,12 @@ add_action( 'wp_footer', function () {
 	?>
 <script>
 window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'AW-11250744864');
+window.gtag = window.gtag || function(){dataLayer.push(arguments);};
 <?php if ( ! empty( $GLOBALS['mecca_ads_quote_user'] ) ) : ?>
 gtag('set', 'user_data', <?php echo wp_json_encode( $GLOBALS['mecca_ads_quote_user'] ); ?>);
 <?php endif; ?>
 gtag('event', 'conversion', {'send_to': 'AW-11250744864/WbwNCIG255IdEKD84vQp'});
-(function(d){var s=d.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=AW-11250744864';d.head.appendChild(s);})(document);
+(function(w,d){if(w.meccaGtagLoaded)return;w.meccaGtagLoaded=true;var s=d.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=AW-11250744864';d.head.appendChild(s);})(window,document);
 </script>
 	<?php
 }, 99 );
