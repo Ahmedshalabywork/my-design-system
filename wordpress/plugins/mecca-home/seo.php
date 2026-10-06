@@ -49,7 +49,7 @@ function mecca_seo_faqs( $slug ) {
 			array( 'How many wedding guests fit in one vehicle?', 'Our Mercedes-Benz Sprinter carries up to 14 passengers, which suits most wedding parties. Luxury SUVs carry up to 6, and our sedans are ideal for the couple. Many weddings book a mix so everyone arrives together.' ),
 			array( 'How far ahead should we book wedding transportation?', 'As early as possible. Spring and fall weekends in Charleston fill quickly, so reserve as soon as you have your date, then send your timeline, pickup times and venues through our quote form.' ),
 			array( 'Can you shuttle guests between the ceremony and reception?', 'Yes. We handle pickup and drop-off for the couple, wedding party and guests, rides between the ceremony and reception, the send-off at the end of the night, and airport rides for out-of-town guests.' ),
-			array( 'How much does a wedding limo cost in Charleston?', 'Most weddings book by the hour. Rates start at $85 per hour for a sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum. Single rides can be quoted as a flat price.' ),
+			array( 'How much does a wedding limo cost in Charleston?', 'Most weddings book by the hour. Single rides can be quoted as a flat price. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 			array( 'Which wedding venues do you drive to?', 'Venues across the Lowcountry, from downtown Charleston churches and historic houses to plantations on the Ashley River, Mount Pleasant waterfront venues and resorts on Kiawah, Seabrook, Wild Dunes and Isle of Palms.' ),
 			array( 'Do you handle bachelor and bachelorette parties too?', 'Yes. We drive bachelor and bachelorette nights, rehearsal dinners and welcome parties, so the whole wedding weekend is covered.' ),
 		),
@@ -57,42 +57,42 @@ function mecca_seo_faqs( $slug ) {
 			array( 'Can we make several stops during the night?', 'Yes. For a night out with several stops, an hourly booking is usually the best value. Your chauffeur stays with your group and is ready whenever you are, from dinner to rooftop bars and the ride home.' ),
 			array( 'How many people fit in the party bus?', 'Our Mercedes-Benz Sprinter carries up to 14 passengers, ideal for birthdays, bachelor and bachelorette parties, and concerts. Smaller groups can ride in a luxury SUV for up to 6.' ),
 			array( 'Do you drive late at night?', "Yes. Mecca Limo runs 24/7, so late pickups and early-morning rides home are no problem. Call or text $p to book." ),
-			array( 'How much does a party bus cost in Charleston?', 'Our Mercedes-Benz Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. Your quote is confirmed before you book.' ),
-			array( 'Is there a cleaning fee?', 'Yes. If the vehicle needs unusual cleaning, such as spills, food or sickness, a cleaning fee of at least $300 applies.' ),
+			array( 'How much does a party bus cost in Charleston?', 'Most nights out are booked by the hour with a 3-hour minimum. You get your price before you book; request a free quote or call (843) 804-1188.' ),
+			array( 'Is there a cleaning fee?', 'Yes. If the vehicle needs unusual cleaning, such as spills, food or sickness, a cleaning fee applies. See our booking policy for details.' ),
 			array( 'Do you do bachelorette parties?', 'Yes. Bachelorette weekends are one of our most popular bookings. See our Charleston bachelorette transportation guide for a sample itinerary and pricing.' ),
 		),
 		'corporate'    => array(
 			array( 'Do you handle conventions and multi-day events?', 'Yes. We move executives, clients and event guests for meetings, conventions and multi-day events, including coordinating airport arrivals from flight itineraries so guests are met on time.' ),
 			array( 'Which airports do you serve for business travel?', 'Charleston International Airport (CHS), Charleston Executive Airport (JZI) and Mount Pleasant Regional Airport (LRO), with chauffeured sedans, SUVs and Sprinters available 24/7.' ),
 			array( 'How do I get a corporate quote?', "Send your dates, pickup points and group size through our quote form, or call $p. We reply with pricing and availability." ),
-			array( 'How much does corporate car service cost?', 'Airport and point-to-point rides are quoted as a flat price. Hourly service starts at $85 per hour for an executive sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
+			array( 'How much does corporate car service cost?', 'Airport and point-to-point rides are quoted as a flat price. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 			array( 'Can a chauffeur wait between meetings?', 'Yes. Book by the hour and your chauffeur stays with you between appointments across downtown, North Charleston, Daniel Island and Mount Pleasant.' ),
 		),
 		'charleston-bachelorette-party-transportation' => array(
 			array( 'How many people fit in your bachelorette party bus?', 'Our Mercedes-Benz Sprinter seats up to 14 passengers. Smaller groups of up to 6 can ride in a luxury SUV.' ),
 			array( 'How many hours should we book for a bachelorette night?', 'Most bachelorette nights run four to six hours from the first pickup to the last drop-off. Hourly bookings have a 3-hour minimum and you can add time on the night.' ),
 			array( 'Can you pick our group up from the airport?', 'Yes. We pick up groups at Charleston International Airport (CHS) and drop everyone at their rental or hotel, then handle departures at the end of the weekend.' ),
-			array( 'How much does a bachelorette party bus cost in Charleston?', 'The Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. A cleaning fee of at least $300 applies if the vehicle needs unusual cleaning.' ),
+			array( 'How much does a bachelorette party bus cost in Charleston?', 'Most bachelorette nights are booked by the hour with a 3-hour minimum. You get your price before you book; request a free quote or call (843) 804-1188. A cleaning fee applies if the vehicle needs unusual cleaning.' ),
 		),
 		'events'       => array(
 			array( 'What events do you provide transportation for?', 'Proms, galas, birthdays, anniversaries, concerts and other celebrations across Charleston and the Lowcountry, in Sprinters, luxury SUVs and sedans with professional chauffeurs.' ),
 			array( 'How early should we book prom transportation?', 'Book as soon as you know the date. Prom nights and spring weekends are busy, and booking early gives your group the best choice of vehicles.' ),
-			array( 'How much does a prom limo cost in Charleston?', 'Most prom and event bookings are hourly: $85 per hour for a sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
+			array( 'How much does a prom limo cost in Charleston?', 'Most prom and event bookings are by the hour with a 3-hour minimum. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 		),
 		'attractions'  => array(
 			array( 'Can you create a custom Charleston tour?', 'Yes. We build private sightseeing routes around what you want to see, such as the historic downtown, Patriots Point, plantations like Magnolia and Drayton Hall, and the beaches. Your chauffeur waits while you explore.' ),
 			array( 'How do I book a sightseeing car service?', "Tell us your start time, the places you want to visit and how many people are in your group through the quote form, or call $p. Hourly bookings work best for tours." ),
-			array( 'How much is a private sightseeing tour?', 'Tours are booked by the hour: $85 per hour for a sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
+			array( 'How much is a private sightseeing tour?', 'Tours are booked by the hour with a 3-hour minimum. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 		),
 		'beach'        => array(
 			array( 'Which beaches do you drive to?', "Folly Beach, Isle of Palms, Sullivan's Island, Kiawah Island and other Charleston-area beaches, from downtown, your hotel or the airport." ),
 			array( 'Can you pick us up at the end of the day?', 'Yes. Choose round trip on the quote form and add your return time, and your chauffeur will be back to bring your group home.' ),
-			array( 'How much is beach transportation from Charleston?', 'Point-to-point beach rides are quoted as a flat price. Hourly service starts at $100 per hour for a luxury SUV and $135 for the Sprinter, with a 3-hour minimum.' ),
+			array( 'How much is beach transportation from Charleston?', 'Point-to-point beach rides are quoted as a flat price. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 		),
 		'golf-courses' => array(
 			array( 'Do you drive to golf courses on Kiawah Island and around Charleston?', 'Yes. We take golfers to courses across the Charleston area, including Kiawah Island and Wild Dunes, from the airport, your hotel or your rental, and bring you back after your round.' ),
 			array( 'Will our golf bags fit?', 'Tell us how many players and bags you have on the quote form and we will send a vehicle with enough room, such as a luxury SUV or the Mercedes-Benz Sprinter for larger groups.' ),
-			array( 'How much is golf transportation?', 'Point-to-point and airport rides are quoted as a flat price. If your chauffeur waits, hourly rates start at $100 for a luxury SUV and $135 for the Sprinter, with a 3-hour minimum.' ),
+			array( 'How much is golf transportation?', 'Point-to-point and airport rides are quoted as a flat price. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 		),
 		'hotels'       => array(
 			array( 'Do you provide rides from the airport to downtown Charleston hotels?', 'Yes. We offer private rides between Charleston International Airport (CHS) and hotels across Charleston, 24 hours a day. Your chauffeur meets you on arrival and takes you straight to your hotel.' ),
@@ -119,7 +119,7 @@ function mecca_seo_faqs( $slug ) {
 		'service'      => array(
 			array( 'What is a black car service?', 'A black car service is private, pre-booked transportation in a luxury vehicle with a professional chauffeur. The ride is reserved for you alone and the price is agreed before you get in. Mecca Limo provides black car service in Charleston, SC 24/7 for airport transfers, weddings, corporate travel and nights out.' ),
 			array( 'Can I book a black car from Charleston International Airport (CHS)?', "Yes. We pick up and drop off at CHS, Mount Pleasant Regional (LRO) and Charleston Executive Airport (JZI) 24/7. Share your flight number and your chauffeur tracks your arrival; 20 minutes of wait time from landing is included. Call or text $p to book." ),
-			array( 'How much does black car service cost in Charleston?', 'Hourly rates start at $85 per hour for an executive sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum. Airport and point-to-point rides are quoted as a flat price. Request a free quote for your exact trip.' ),
+			array( 'How much does black car service cost in Charleston?', 'Airport and point-to-point rides are quoted as a flat price, and hourly bookings have a 3-hour minimum. You get your price before you book; request a free quote or call (843) 804-1188.' ),
 			array( 'Which vehicle should I book?', 'An executive sedan fits up to 3 passengers with 2 bags, a luxury SUV fits up to 6 with luggage, and the Mercedes-Benz Sprinter fits up to 14. Tell us your group size and luggage and we will match the right vehicle.' ),
 			array( 'Do you offer corporate black car service?', 'Yes. We handle executive airport pickups, rides between meetings, client dinners and group shuttles for conferences and events, with one point of contact for every ride.' ),
 			array( 'Can I use a black car for a wedding or event?', 'Yes. We transport couples, wedding parties and guests between hotels, ceremonies and receptions, plus proms, birthdays, concerts and nights out.' ),
@@ -247,20 +247,6 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
 			}, mecca_seo_areas() ),
 			'availableChannel' => array( '@type' => 'ServiceChannel', 'servicePhone' => '+1-843-804-1188', 'serviceUrl' => home_url( '/get-a-quote/' ) ),
 		);
-		// Published hourly rates (policy page), 3-hour minimum.
-		if ( in_array( $slug, array( 'service', 'charleston-hourly-limo-charter', 'charleston-limo-fleet' ), true ) ) {
-			$data['MeccaService']['hasOfferCatalog'] = array(
-				'@type'           => 'OfferCatalog',
-				'name'            => 'Hourly chauffeur rates',
-				'itemListElement' => array_map( function ( $r ) {
-					return array(
-						'@type'              => 'Offer',
-						'itemOffered'        => array( '@type' => 'Service', 'name' => $r[0] . ' hourly charter' ),
-						'priceSpecification' => array( '@type' => 'UnitPriceSpecification', 'price' => $r[1], 'priceCurrency' => 'USD', 'unitCode' => 'HUR', 'eligibleQuantity' => array( '@type' => 'QuantitativeValue', 'minValue' => 3, 'unitCode' => 'HUR' ) ),
-					);
-				}, array( array( 'Executive sedan', 85 ), array( 'Luxury SUV', 100 ), array( 'Mercedes-Benz Sprinter', 135 ) ) ),
-			);
-		}
 	}
 	// Freshness signal on the page entity.
 	if ( is_page() ) {
