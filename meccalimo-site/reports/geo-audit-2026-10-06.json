@@ -1,0 +1,556 @@
+{
+  "url": "https://www.meccalimo.com",
+  "timestamp": "2026-10-06T23:15:56.836529+00:00",
+  "score": 83,
+  "band": "good",
+  "error": null,
+  "checks": {
+    "robots_txt": {
+      "score": 15,
+      "max": 18,
+      "passed": true,
+      "details": {
+        "found": true,
+        "bots_allowed": [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-SearchBot",
+          "Claude-User",
+          "PerplexityBot",
+          "Perplexity-User",
+          "Googlebot",
+          "Google-Extended",
+          "Google-CloudVertexBot",
+          "Bingbot",
+          "Applebot-Extended",
+          "cohere-ai",
+          "DuckAssistBot",
+          "Bytespider",
+          "meta-externalagent",
+          "Meta-ExternalFetcher",
+          "facebookexternalhit",
+          "Amazonbot",
+          "AI2Bot",
+          "AI2Bot-Dolma",
+          "xAI-Bot",
+          "Applebot",
+          "PetalBot",
+          "YouBot",
+          "CCBot"
+        ],
+        "bots_missing": [],
+        "bots_blocked": [],
+        "bots_partial": [],
+        "citation_bots_ok": true,
+        "crawl_delay": null,
+        "citation_bots_explicit": false
+      }
+    },
+    "llms_txt": {
+      "score": 14,
+      "max": 18,
+      "passed": true,
+      "details": {
+        "found": true,
+        "has_h1": true,
+        "has_description": true,
+        "has_sections": true,
+        "has_links": true,
+        "word_count": 376,
+        "has_full": true,
+        "sections_count": 4,
+        "links_count": 26,
+        "has_blockquote": true,
+        "has_optional_section": true,
+        "companion_files_hint": false,
+        "validation_warnings": [],
+        "blocked_by_cdn": false
+      }
+    },
+    "schema_jsonld": {
+      "score": 13,
+      "max": 16,
+      "passed": true,
+      "details": {
+        "has_website": true,
+        "has_webapp": false,
+        "has_faq": true,
+        "found_types": [
+          "Place",
+          "LocalBusiness",
+          "WebSite",
+          "ImageObject",
+          "WebPage",
+          "Product",
+          "FAQPage"
+        ]
+      }
+    },
+    "meta_tags": {
+      "score": 14,
+      "max": 14,
+      "passed": true,
+      "details": {
+        "has_title": true,
+        "has_description": true,
+        "has_canonical": true,
+        "has_og_title": true,
+        "has_og_description": true,
+        "has_og_image": true,
+        "title_text": "Charleston Limo Service: CHS Airport & Weddings | Mecca Limo",
+        "description_text": "Mecca Limo is a family-owned Charleston limo service: CHS airport transfers, weddings, corporate travel and party buses, 24/7, with upfront prices.",
+        "description_length": 147,
+        "title_length": 60,
+        "canonical_url": "https://www.meccalimo.com/",
+        "x_robots_noindex": false,
+        "x_robots_tag": "",
+        "has_noai": false,
+        "noai_value": ""
+      }
+    },
+    "content": {
+      "score": 10,
+      "max": 12,
+      "passed": true,
+      "details": {
+        "has_h1": true,
+        "heading_count": 38,
+        "has_numbers": true,
+        "has_links": true,
+        "word_count": 1277,
+        "h1_text": "Charleston limo service with comfort, safety & luxury.",
+        "numbers_count": 24,
+        "external_links_count": 9,
+        "has_heading_hierarchy": true,
+        "has_lists_or_tables": false,
+        "has_front_loading": true
+      }
+    },
+    "signals": {
+      "score": 6,
+      "max": 6,
+      "passed": true,
+      "details": {
+        "has_lang": true,
+        "lang_value": "en",
+        "has_rss": true,
+        "rss_url": "https://www.meccalimo.com/feed/",
+        "has_freshness": true,
+        "freshness_date": "2026-10-05T18:47:18+00:00"
+      }
+    },
+    "ai_discovery": {
+      "score": 5,
+      "max": 6,
+      "passed": true,
+      "details": {
+        "has_well_known_ai": true,
+        "has_summary": true,
+        "has_faq": true,
+        "has_service": false,
+        "summary_valid": true,
+        "faq_count": 67,
+        "endpoints_found": 3,
+        "has_webmcp_declaration": false,
+        "webmcp_declared_tool_count": 0
+      }
+    },
+    "brand_entity": {
+      "score": 7,
+      "max": 10,
+      "passed": true,
+      "details": {
+        "brand_name_consistent": true,
+        "names_found": [
+          "Charleston limo service with comfort, safety &luxury.",
+          "Charleston Limo Service: CHS Airport & Weddings",
+          "Charleston Limo Service: CHS Airport & Weddings",
+          "Mecca Limo of Charleston, SC"
+        ],
+        "primary_name": "Mecca Limo of Charleston, SC",
+        "schema_desc_matches_meta": false,
+        "kg_pillar_count": 1,
+        "kg_pillar_urls": [
+          "https://www.linkedin.com/in/moe-shalaby-60a8602aa/"
+        ],
+        "has_wikipedia": false,
+        "has_wikidata": false,
+        "has_linkedin": true,
+        "has_crunchbase": false,
+        "has_about_link": true,
+        "has_contact_info": true,
+        "has_geo_schema": true,
+        "has_hreflang": false,
+        "hreflang_count": 0,
+        "faq_depth": 6,
+        "has_recent_articles": false
+      }
+    }
+  },
+  "score_breakdown": {
+    "robots": 15,
+    "llms": 14,
+    "schema": 13,
+    "meta": 14,
+    "content": 10,
+    "signals": 6,
+    "ai_discovery": 5,
+    "brand_entity": 7,
+    "negative_penalty": -1
+  },
+  "recommendations": [
+    "Add more sameAs links to Knowledge Graph pillars (currently 1/4: Wikipedia, Wikidata, LinkedIn, Crunchbase)",
+    "Complete Product schema: missing has_price, has_availability. Rich Product schema improves AI shopping visibility.",
+    "This page exposes user-generated content ('reviews' region). It is an injection surface \u2014 a third party can place text there that AI crawlers read. Keep it moderated and mark its links rel=\"ugc\".",
+    "Create /ai/service.json to describe service capabilities for AI",
+    "Consider adding WebMCP toolname/tooldescription attributes to interactive elements for Chrome AI agent support",
+    "Video detected without VideoObject schema \u2014 add name, description, thumbnailUrl, and uploadDate so AI engines can cite your video content",
+    "Video without captions or transcript \u2014 add <track kind=\"captions\"> or a text transcript: AI engines index the transcript, not the pixels"
+  ],
+  "webmcp": {
+    "readiness_level": "ready",
+    "agent_ready": true,
+    "has_register_tool": false,
+    "has_tool_attributes": false,
+    "tool_count": 0,
+    "has_potential_action": true,
+    "potential_actions": [
+      "SearchAction"
+    ],
+    "has_labeled_forms": true,
+    "labeled_forms_count": 1,
+    "has_openapi": false,
+    "has_webmcp_declaration": false,
+    "declared_tool_count": 0
+  },
+  "negative_signals": {
+    "severity": "low",
+    "signals_found": 1,
+    "cta_density_high": false,
+    "cta_count": 0,
+    "has_popup_signals": false,
+    "is_thin_content": false,
+    "broken_links_count": 0,
+    "has_keyword_stuffing": false,
+    "has_author_signal": false,
+    "boilerplate_ratio": 0.16,
+    "has_mixed_signals": false
+  },
+  "cdn_check": {
+    "checked": true,
+    "browser_status": 200,
+    "browser_content_length": 110869,
+    "bot_results": [
+      {
+        "bot": "GPTBot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "OAI-SearchBot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "PerplexityBot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Claude-SearchBot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Googlebot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      },
+      {
+        "bot": "Applebot",
+        "status": 200,
+        "content_length": 110869,
+        "blocked": false,
+        "challenge_detected": false
+      }
+    ],
+    "any_blocked": false,
+    "cdn_detected": "",
+    "cdn_headers": {
+      "server": "Apache"
+    },
+    "error": ""
+  },
+  "js_rendering": {
+    "checked": true,
+    "raw_word_count": 1267,
+    "raw_heading_count": 40,
+    "has_empty_root": false,
+    "has_noscript_content": false,
+    "framework_detected": "",
+    "js_dependent": false,
+    "details": "1267 words and 40 headings found in raw HTML. Content is accessible without JavaScript."
+  },
+  "multimodal": {
+    "checked": true,
+    "total_images": 20,
+    "images_with_alt": 20,
+    "alt_coverage": 1.0,
+    "caption_count": 0,
+    "has_video": true,
+    "video_count": 1,
+    "has_video_schema": false,
+    "has_video_captions": false,
+    "has_audio": false,
+    "has_audio_schema": false,
+    "has_transcript": false,
+    "readiness_level": "basic"
+  },
+  "trust_stack": {
+    "checked": true,
+    "technical": {
+      "name": "technical",
+      "label": "Technical Trust",
+      "score": 4,
+      "max_score": 5,
+      "signals_found": [
+        "HTTPS",
+        "HSTS",
+        "X-Frame-Options"
+      ],
+      "signals_missing": [
+        "Content-Security-Policy header missing"
+      ],
+      "details": {}
+    },
+    "identity": {
+      "name": "identity",
+      "label": "Identity Trust",
+      "score": 4,
+      "max_score": 5,
+      "signals_found": [
+        "Brand name consistent",
+        "About page",
+        "Contact info",
+        "Organization schema"
+      ],
+      "signals_missing": [
+        "No author attribution found"
+      ],
+      "details": {}
+    },
+    "social": {
+      "name": "social",
+      "label": "Social Trust",
+      "score": 4,
+      "max_score": 5,
+      "signals_found": [
+        "sameAs links (7)",
+        "Multiple sameAs (3+)",
+        "KG pillars (1/4)",
+        "Social profiles (facebook.com, instagram.com, x.com)"
+      ],
+      "signals_missing": [
+        "No reviews or testimonials found"
+      ],
+      "details": {}
+    },
+    "academic": {
+      "name": "academic",
+      "label": "Academic Trust",
+      "score": 2,
+      "max_score": 5,
+      "signals_found": [
+        "Numbers cited (24)",
+        "External sources (3 non-social links)"
+      ],
+      "signals_missing": [
+        "No links to authoritative sources (DOI, PubMed, Scholar)",
+        "No References/Sources section",
+        "No original research data patterns"
+      ],
+      "details": {
+        "authoritative_domains": [],
+        "statistics_count": 0,
+        "numbers_count": 24
+      }
+    },
+    "consistency": {
+      "name": "consistency",
+      "label": "Consistency Trust",
+      "score": 4,
+      "max_score": 5,
+      "signals_found": [
+        "Brand name consistent across title/H1/schema",
+        "No mixed signals",
+        "dateModified present"
+      ],
+      "signals_missing": [
+        "Schema description differs from meta description"
+      ],
+      "details": {}
+    },
+    "composite_score": 18,
+    "grade": "B",
+    "trust_level": "high"
+  },
+  "prompt_injection": {
+    "checked": true,
+    "hidden_text_found": false,
+    "hidden_text_count": 0,
+    "hidden_text_samples": [],
+    "invisible_unicode_found": false,
+    "invisible_unicode_count": 0,
+    "llm_instruction_found": false,
+    "llm_instruction_count": 0,
+    "llm_instruction_samples": [],
+    "html_comment_injection_found": false,
+    "html_comment_injection_count": 0,
+    "html_comment_samples": [],
+    "monochrome_text_found": false,
+    "monochrome_text_count": 0,
+    "microfont_found": false,
+    "microfont_count": 0,
+    "data_attr_injection_found": false,
+    "data_attr_injection_count": 0,
+    "data_attr_samples": [],
+    "aria_hidden_injection_found": false,
+    "aria_hidden_injection_count": 0,
+    "aria_hidden_samples": [],
+    "ugc_surface_found": true,
+    "ugc_surface_samples": [
+      "'reviews' region"
+    ],
+    "ugc_injection_risk": false,
+    "patterns_found": 0,
+    "severity": "clean",
+    "risk_level": "none"
+  },
+  "rag_chunk": {
+    "checked": true,
+    "total_sections": 26,
+    "sections_in_range": 0,
+    "avg_section_words": 17.1,
+    "has_definition_opening": false,
+    "heading_as_boundary_ratio": 1.54,
+    "anchor_sentences": 45,
+    "chunk_readiness_score": 45
+  },
+  "embedding_proximity": {
+    "checked": true,
+    "skipped_reason": "sentence-transformers not installed (pip install geo-optimizer-skill[embedding])",
+    "model_name": "",
+    "query_scores": [],
+    "avg_similarity": 0.0,
+    "top_similarity": 0.0,
+    "retrievable_chunks": 0,
+    "total_chunks": 0
+  },
+  "content_decay": {
+    "checked": true,
+    "signals": [
+      {
+        "decay_type": "temporal",
+        "text": "et directions \u2192 Get a quote \u00a9 2026 Mecca Limo Chauffeur Service.",
+        "estimated_stale_days": 365,
+        "suggestion": "Use relative time or add dateModified schema for freshness signals"
+      }
+    ],
+    "earliest_decay_days": 365,
+    "decay_risk": "medium",
+    "evergreen_score": 92
+  },
+  "platform_citation": {
+    "checked": true,
+    "platforms": [
+      {
+        "platform": "chatgpt",
+        "score": 73,
+        "strengths": [
+          "GPTBot allowed in robots.txt",
+          "llms.txt present",
+          "FAQ schema present",
+          "Well-structured content",
+          "Organization schema present"
+        ],
+        "recommendations": []
+      },
+      {
+        "platform": "perplexity",
+        "score": 87,
+        "strengths": [
+          "PerplexityBot allowed",
+          "llms.txt with links",
+          "Content freshness signals present",
+          "Substantial content depth",
+          "External links for source diversity",
+          "RSS feed available"
+        ],
+        "recommendations": []
+      },
+      {
+        "platform": "google_ai",
+        "score": 83,
+        "strengths": [
+          "Google-Extended allowed",
+          "Complete meta tags",
+          "Open Graph tags present",
+          "Quality content structure",
+          "Content freshness signals present",
+          "Content available without JS (SSR-safe)",
+          "Descriptive image alt text",
+          "sameAs links for authority signals"
+        ],
+        "recommendations": [
+          "Add more schema types for richer structured data"
+        ]
+      }
+    ]
+  },
+  "context_window": {
+    "checked": true,
+    "total_words": 1267,
+    "total_tokens_estimate": 1647,
+    "front_loaded_ratio": 0.33,
+    "key_info_tokens": 292,
+    "filler_ratio": 0.01,
+    "optimal_for": [
+      "perplexity",
+      "chatgpt",
+      "claude"
+    ],
+    "truncation_risk": "low",
+    "context_efficiency_score": 72
+  },
+  "instruction_readiness": {
+    "checked": true,
+    "labeled_buttons": 10,
+    "unlabeled_buttons": 0,
+    "action_clarity_score": 100,
+    "total_inputs": 23,
+    "labeled_inputs": 23,
+    "typed_inputs": 23,
+    "form_readability_score": 100,
+    "nav_links": 63,
+    "stateful_urls": true,
+    "has_aria_live": false,
+    "has_error_roles": false,
+    "readiness_score": 75,
+    "readiness_level": "ready"
+  },
+  "http_status": 200,
+  "page_size": 110869,
+  "audit_duration_ms": 10529
+}
