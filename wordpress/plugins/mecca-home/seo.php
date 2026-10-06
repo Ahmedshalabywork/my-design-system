@@ -28,6 +28,8 @@ function mecca_seo_services() {
 		'charleston-hourly-limo-charter' => array( 'Hourly Limo and Sprinter Charter', 'Hourly charter' ),
 		'kiawah-island-car-service'      => array( 'Kiawah Island Car Service', 'Car service' ),
 		'mount-pleasant-limo-service'    => array( 'Mount Pleasant Limo Service', 'Limo service' ),
+		'charleston-bachelorette-party-transportation' => array( 'Bachelorette Party Transportation', 'Party bus rental' ),
+		'charleston-brewery-tour-transportation'       => array( 'Brewery Tour Transportation', 'Brewery tour transportation' ),
 	);
 }
 
@@ -56,11 +58,27 @@ function mecca_seo_faqs( $slug ) {
 			array( 'Can we make several stops during the night?', 'Yes. For a night out with several stops, an hourly booking is usually the best value. Your chauffeur stays with your group and is ready whenever you are, from dinner to rooftop bars and the ride home.' ),
 			array( 'How many people fit in the party bus?', 'Our Mercedes-Benz Sprinter carries up to 14 passengers, ideal for birthdays, bachelor and bachelorette parties, and concerts. Smaller groups can ride in a luxury SUV for up to 6.' ),
 			array( 'Do you drive late at night?', "Yes. Mecca Limo runs 24/7, so late pickups and early-morning rides home are no problem. Call or text $p to book." ),
+			array( 'How much does a party bus cost in Charleston?', 'Our Mercedes-Benz Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. Your quote is confirmed before you book.' ),
+			array( 'Is there a cleaning fee?', 'Yes. If the vehicle needs unusual cleaning, such as spills, food or sickness, a cleaning fee of at least $300 applies.' ),
+			array( 'Do you do bachelorette parties and brewery tours?', 'Yes. Both are among our most popular bookings. See our Charleston bachelorette transportation guide and brewery tour guide for ideas and pricing.' ),
 		),
 		'corporate'    => array(
 			array( 'Do you handle conventions and multi-day events?', 'Yes. We move executives, clients and event guests for meetings, conventions and multi-day events, including coordinating airport arrivals from flight itineraries so guests are met on time.' ),
-			array( 'Which airports do you serve for business travel?', 'Charleston International Airport (CHS), Charleston Executive Airport (JZI) and Mount Pleasant Regional Airport (MPR), with chauffeured sedans, SUVs and Sprinters available 24/7.' ),
+			array( 'Which airports do you serve for business travel?', 'Charleston International Airport (CHS), Charleston Executive Airport (JZI) and Mount Pleasant Regional Airport (LRO), with chauffeured sedans, SUVs and Sprinters available 24/7.' ),
 			array( 'How do I get a corporate quote?', "Send your dates, pickup points and group size through our quote form, or call $p. We reply with pricing and availability." ),
+			array( 'How much does corporate car service cost?', 'Airport and point-to-point rides are quoted as a flat price. Hourly service starts at $85 per hour for an executive sedan, $100 for a luxury SUV and $135 for the Mercedes-Benz Sprinter, with a 3-hour minimum.' ),
+			array( 'Can a chauffeur wait between meetings?', 'Yes. Book by the hour and your chauffeur stays with you between appointments across downtown, North Charleston, Daniel Island and Mount Pleasant.' ),
+		),
+		'charleston-bachelorette-party-transportation' => array(
+			array( 'How many people fit in your bachelorette party bus?', 'Our Mercedes-Benz Sprinter seats up to 14 passengers. Smaller groups of up to 6 can ride in a luxury SUV.' ),
+			array( 'How many hours should we book for a bachelorette night?', 'Most bachelorette nights run four to six hours from the first pickup to the last drop-off. Hourly bookings have a 3-hour minimum and you can add time on the night.' ),
+			array( 'Can you pick our group up from the airport?', 'Yes. We pick up groups at Charleston International Airport (CHS) and drop everyone at their rental or hotel, then handle departures at the end of the weekend.' ),
+			array( 'How much does a bachelorette party bus cost in Charleston?', 'The Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. A cleaning fee of at least $300 applies if the vehicle needs unusual cleaning.' ),
+		),
+		'charleston-brewery-tour-transportation' => array(
+			array( 'How many breweries can we visit in one booking?', 'Three to four breweries in about four hours is a comfortable pace for most groups. Hourly bookings have a 3-hour minimum.' ),
+			array( 'Do you pick up from hotels and rentals?', 'Yes. We pick up anywhere in Charleston, Mount Pleasant, North Charleston, James Island, Folly Beach and the islands, and drop everyone off at the end.' ),
+			array( 'How much is brewery tour transportation?', 'A luxury SUV for up to 6 starts at $100 per hour and the Mercedes-Benz Sprinter for up to 14 starts at $135 per hour, both with a 3-hour minimum.' ),
 		),
 		'events'       => array(
 			array( 'What events do you provide transportation for?', 'Proms, galas, birthdays, anniversaries, concerts and other celebrations across Charleston and the Lowcountry, in Sprinters, luxury SUVs and sedans with professional chauffeurs.' ),
@@ -92,7 +110,7 @@ function mecca_seo_faqs( $slug ) {
 		),
 		'mount-pleasant-limo-service' => array(
 			array( 'Do you serve Mount Pleasant, SC 24/7?', "Yes. Mecca Limo serves Mount Pleasant 24 hours a day, 7 days a week, including airport rides, weddings, nights out on Shem Creek and trips downtown. Call or text $p." ),
-			array( 'Which airports do you serve from Mount Pleasant?', 'Charleston International Airport (CHS) and Mount Pleasant Regional Airport (MPR), with flight tracking on airport pickups.' ),
+			array( 'Which airports do you serve from Mount Pleasant?', 'Charleston International Airport (CHS) and Mount Pleasant Regional Airport (LRO), with flight tracking on airport pickups.' ),
 		),
 		'charleston-hourly-limo-charter' => array(
 			array( 'Is there a minimum number of hours?', 'Yes. Every vehicle has a 3-hour minimum: executive sedans, luxury SUVs and the Mercedes Sprinter. See our booking and cancellation policy for details. Your chauffeur stays with you for the whole booking and drives you to every stop.' ),
@@ -288,6 +306,8 @@ add_action( 'init', function () {
 		. "- [Hotel Transfers]({$u}hotels/): private rides between CHS and Charleston hotels\n"
 		. "- [Cruise Port]({$u}cruise-trips/): rides to and from the Charleston cruise terminal\n"
 		. "- [Hourly Charter]({$u}charleston-hourly-limo-charter/): Sprinters, SUVs and sedans by the hour\n"
+		. "- [Bachelorette Party Transportation]({$u}charleston-bachelorette-party-transportation/): party bus guide, itinerary and pricing\n"
+		. "- [Brewery Tour Transportation]({$u}charleston-brewery-tour-transportation/): private brewery tour rides in Charleston\n"
 		. "- [Kiawah Island Car Service]({$u}kiawah-island-car-service/)\n"
 		. "- [Mount Pleasant Limo Service]({$u}mount-pleasant-limo-service/)\n\n"
 		. "## Company\n"
