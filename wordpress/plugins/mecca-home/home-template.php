@@ -276,7 +276,12 @@ body.menu-open{overflow:hidden}
 /* services */
 
 /* services: photo tiles (desktop) / swipe strip (phone) */
-.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.svc-marquee{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);padding:8px 0 14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.svc-track,.svc-dup{display:flex;width:max-content}
+.svc-track{animation:revscroll 60s linear infinite}
+.svc-marquee:hover .svc-track,.svc-marquee:focus-within .svc-track{animation-play-state:paused}
+.svc-track .svc{flex:none;width:280px;margin-right:16px}
+@media (prefers-reduced-motion:reduce){.svc-track{animation:none}.svc-marquee{overflow-x:auto}.svc-dup{display:none}}
 .svc{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;aspect-ratio:16/11;padding:14px;border-radius:14px;overflow:hidden;background:#141417;border:1px solid rgba(227,184,79,.22);isolation:isolate;transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .45s,box-shadow .45s}
 .svc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .svc::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.88))}
@@ -287,10 +292,7 @@ body.menu-open{overflow:hidden}
 .svc:hover .svc-ico{background:var(--gold-grad);color:#141416;border-color:transparent}
 .mh .svc h3{font-size:1.25rem;line-height:1.1;color:#fff;margin:0;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .svc .go{display:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright)}
-@media(max-width:1100px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:701px) and (max-width:1100px){.svc-grid>.svc:nth-child(10){display:none}}
-.svc-hint{display:none;margin-top:10px;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-@media(max-width:700px){.svc-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;gap:12px;margin:0 -16px;padding:0 16px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.svc-grid::-webkit-scrollbar{display:none}.svc{flex:0 0 46%;aspect-ratio:auto;height:230px;scroll-snap-align:start;padding:14px}.svc .go{display:block}.mh .svc h3{font-size:1.2rem}.svc-hint{display:block}}
+@media(max-width:700px){.svc-track{animation-duration:45s}.svc-track .svc{width:200px;margin-right:12px;aspect-ratio:auto;height:230px}.svc .go{display:block}.mh .svc h3{font-size:1.2rem}}
 /* steps: gold timeline */
 .tl{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;text-align:center}
 .tl::before{content:"";position:absolute;top:36px;left:16%;right:16%;height:2px;background:linear-gradient(90deg,transparent,#e3b84f 15%,#fff0a8 50%,#e3b84f 85%,transparent)}
@@ -637,12 +639,16 @@ echo wp_json_encode( array(
 <section class="alt pg-more">
 	<div class="wrap">
 		<div class="sec-head"><span class="eyebrow">Our Services</span><h2>More ways to ride with Mecca Limo.</h2></div>
-		<div class="svc-grid">
+		<div class="svc-marquee" aria-label="Our services">
+		<div class="svc-track">
 			<?php foreach ( $services as $i => $s ) : ?>
 			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
+			<div class="svc-dup" aria-hidden="true"><?php foreach ( $services as $i => $s ) : ?>
+			<a class="svc" tabindex="-1" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt=""><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
+			<?php endforeach; ?></div>
 		</div>
-		<span class="svc-hint" aria-hidden="true">Swipe for more →</span>
+		</div>
 	</div>
 </section>
 <?php else : ?>
@@ -682,12 +688,16 @@ echo wp_json_encode( array(
 			<span class="eyebrow">What We Do</span>
 			<h2>Limo service for every occasion.</h2>
 		</div>
-		<div class="svc-grid">
+		<div class="svc-marquee" aria-label="Our services">
+		<div class="svc-track">
 			<?php foreach ( $services as $i => $s ) : ?>
 			<a class="svc" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt="<?php echo esc_attr( $s[0] . ' limo service in Charleston, SC' ); ?>"><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
 			<?php endforeach; ?>
+			<div class="svc-dup" aria-hidden="true"><?php foreach ( $services as $i => $s ) : ?>
+			<a class="svc" tabindex="-1" href="<?php echo esc_url( home_url( $s[1] ) ); ?>"><img loading="lazy" decoding="async" src="<?php echo esc_url( $up_url . $svc_imgs[ $s[1] ] . '-t480.webp' ); ?>" width="480" height="330" alt=""><span class="svc-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo isset( $svc_icons[ $s[1] ] ) ? $svc_icons[ $s[1] ] : ''; ?></svg></span><h3><?php echo esc_html( $s[0] ); ?></h3><span class="go">Book now →</span></a>
+			<?php endforeach; ?></div>
 		</div>
-		<span class="svc-hint" aria-hidden="true">Swipe for more →</span>
+		</div>
 	</div>
 </section>
 
@@ -845,9 +855,9 @@ echo wp_json_encode( array(
 
 	if('IntersectionObserver' in window){
 		var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-		['.sec-head','.rev-badge','.story-copy','.story-photo','.grid3','.svc-grid','.tl','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
+		['.sec-head','.rev-badge','.story-copy','.story-photo','.grid3','.svc-marquee','.tl','.faq-list','.quote-title','.rev-cta'].forEach(function(sel){
 			document.querySelectorAll(sel).forEach(function(c){
-				var kids=c.matches('.grid3,.svc-grid,.tl')?[].slice.call(c.children):[c];
+				var kids=c.matches('.grid3,.tl')?[].slice.call(c.children):[c];
 				kids.forEach(function(el,i){el.classList.add('will-reveal');el.style.transitionDelay=(c.classList.contains('fleet-pop')?i*180:i%5*90)+'ms';io.observe(el);});
 			});
 		});
@@ -855,7 +865,7 @@ echo wp_json_encode( array(
 
 	if('IntersectionObserver' in window){
 		var po=new IntersectionObserver(function(es){es.forEach(function(en){en.target.classList.toggle('anim-off',!en.isIntersecting);});});
-		document.querySelectorAll('.strip,.marquee,.rev-marquee,.story-photo,.pg-hero-photo,.hero-quote,.stats').forEach(function(el){po.observe(el);});
+		document.querySelectorAll('.strip,.marquee,.rev-marquee,.svc-marquee,.story-photo,.pg-hero-photo,.hero-quote,.stats').forEach(function(el){po.observe(el);});
 	}
 
 	var burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu');
