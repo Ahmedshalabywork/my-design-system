@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-10-06",
+  "source": "Google Ads Transparency Center (US), advertiser AR16571550649217449985 'Coastal Limousine of Charleston', 37 text ads",
+  "observations": [
+    "Heavy use of location / map-style ads: pin, 4.9 stars (885-1,019 reviews), Call / Website / Directions buttons",
+    "Map ads show a 'Services:' line from the Business Profile (e.g. 14 Passenger Party Bus, Airport Limo, Airport Transportation)",
+    "Sitelinks point to specific offers: Free Quote, Our Fleet, Party Buses, Mercedes Sprinter Limo, Book Your Airport Transfer, Corporate & Event Service",
+    "Headline themes: 24/7 availability, on time and in style, online quote in minutes, locally owned, luxury shuttle and party bus",
+    "No prices in ads or on the site; quote-first funnel"
+  ],
+  "competitor_site": "coastallimocharleston.com: 95+ vehicles, since 2012, 800+ testimonials, NLA member, quote-only",
+  "other_competitors": {
+    "charlestonblackcab.com": "0 ads in the Transparency Center"
+  },
+  "inference_only": [
+    "Spend, performance and targeting are not observable and are not claimed"
+  ],
+  "note": "Themes were adapted, not copied; Mecca copy stays grounded in Mecca's own site claims."
+}

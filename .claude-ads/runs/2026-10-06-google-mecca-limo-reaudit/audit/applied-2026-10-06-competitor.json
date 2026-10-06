@@ -1,0 +1,42 @@
+{
+  "run_id": "2026-10-06-google-mecca-limo-reaudit",
+  "recorded_at": "2026-10-06T21:00:00Z",
+  "approval": "Owner: 'You do what you think is best. Just go by Coastal Carolina...'",
+  "changes": [
+    {
+      "id": "C7",
+      "object": "recommendation_subscriptions (15 types)",
+      "op": "update",
+      "what": "Auto-apply paused: broad match, keywords, display expansion, bid strategy and target changes, RSA",
+      "verified": "GAQL readback; 6 UNKNOWN-typed items need the UI",
+      "rollback": "Set status ENABLED"
+    },
+    {
+      "id": "C8",
+      "object": "campaign 20347533486 sitelinks",
+      "op": "unlink 14 + create/link 14",
+      "what": "Homepage-only and duplicate sitelinks unlinked (assets kept); 14 page-specific sitelinks added. Result: 20 sitelinks, 20 distinct pages",
+      "verified": "GAQL readback, 54 changes",
+      "rollback": "Re-link old asset IDs 91041902746, 91041902749, 94590693213, 94590693216, 94590693219, 96711454127, 100054419353, 100054419356, 100054419359, 100054419362, 100054419365, 111718754696, 428083058659, 428190937635"
+    },
+    {
+      "id": "C9",
+      "object": "campaign callouts",
+      "op": "unlink 4 dupes + add 4",
+      "what": "Removed duplicate callouts (Flight Tracking, 5.0 rating, Open 24/7, Family Owned & Operated); added Mercedes Sprinter Vans, Meet & Greet at CHS, Kiawah & Seabrook Rides, Quote in Under a Minute",
+      "verified": "GAQL readback",
+      "rollback": "Re-link 428003193893, 428083019353, 428100865705, 428100893434"
+    },
+    {
+      "id": "G1",
+      "object": "GBP locations/158256245226647269 service items",
+      "op": "replace list",
+      "what": "8 core services first, with descriptions; removed Limo Anywhere, Dance Clubs, Stag Party and an all-caps combo item; taxi items moved last; 124 items",
+      "verified": "Windsor action result",
+      "rollback": "Previous list recorded in the session transcript (128 items)"
+    }
+  ],
+  "not_done": [
+    "GBP primary category change (Airport shuttle service -> Limousine service) and removal of the 'Airport' category: risk of re-verification; left for the owner to decide"
+  ]
+}
