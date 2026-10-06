@@ -29,7 +29,6 @@ function mecca_seo_services() {
 		'kiawah-island-car-service'      => array( 'Kiawah Island Car Service', 'Car service' ),
 		'mount-pleasant-limo-service'    => array( 'Mount Pleasant Limo Service', 'Limo service' ),
 		'charleston-bachelorette-party-transportation' => array( 'Bachelorette Party Transportation', 'Party bus rental' ),
-		'charleston-brewery-tour-transportation'       => array( 'Brewery Tour Transportation', 'Brewery tour transportation' ),
 	);
 }
 
@@ -60,7 +59,7 @@ function mecca_seo_faqs( $slug ) {
 			array( 'Do you drive late at night?', "Yes. Mecca Limo runs 24/7, so late pickups and early-morning rides home are no problem. Call or text $p to book." ),
 			array( 'How much does a party bus cost in Charleston?', 'Our Mercedes-Benz Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. Your quote is confirmed before you book.' ),
 			array( 'Is there a cleaning fee?', 'Yes. If the vehicle needs unusual cleaning, such as spills, food or sickness, a cleaning fee of at least $300 applies.' ),
-			array( 'Do you do bachelorette parties and brewery tours?', 'Yes. Both are among our most popular bookings. See our Charleston bachelorette transportation guide and brewery tour guide for ideas and pricing.' ),
+			array( 'Do you do bachelorette parties?', 'Yes. Bachelorette weekends are one of our most popular bookings. See our Charleston bachelorette transportation guide for a sample itinerary and pricing.' ),
 		),
 		'corporate'    => array(
 			array( 'Do you handle conventions and multi-day events?', 'Yes. We move executives, clients and event guests for meetings, conventions and multi-day events, including coordinating airport arrivals from flight itineraries so guests are met on time.' ),
@@ -74,11 +73,6 @@ function mecca_seo_faqs( $slug ) {
 			array( 'How many hours should we book for a bachelorette night?', 'Most bachelorette nights run four to six hours from the first pickup to the last drop-off. Hourly bookings have a 3-hour minimum and you can add time on the night.' ),
 			array( 'Can you pick our group up from the airport?', 'Yes. We pick up groups at Charleston International Airport (CHS) and drop everyone at their rental or hotel, then handle departures at the end of the weekend.' ),
 			array( 'How much does a bachelorette party bus cost in Charleston?', 'The Sprinter starts at $135 per hour and a luxury SUV at $100 per hour, with a 3-hour minimum. A cleaning fee of at least $300 applies if the vehicle needs unusual cleaning.' ),
-		),
-		'charleston-brewery-tour-transportation' => array(
-			array( 'How many breweries can we visit in one booking?', 'Three to four breweries in about four hours is a comfortable pace for most groups. Hourly bookings have a 3-hour minimum.' ),
-			array( 'Do you pick up from hotels and rentals?', 'Yes. We pick up anywhere in Charleston, Mount Pleasant, North Charleston, James Island, Folly Beach and the islands, and drop everyone off at the end.' ),
-			array( 'How much is brewery tour transportation?', 'A luxury SUV for up to 6 starts at $100 per hour and the Mercedes-Benz Sprinter for up to 14 starts at $135 per hour, both with a 3-hour minimum.' ),
 		),
 		'events'       => array(
 			array( 'What events do you provide transportation for?', 'Proms, galas, birthdays, anniversaries, concerts and other celebrations across Charleston and the Lowcountry, in Sprinters, luxury SUVs and sedans with professional chauffeurs.' ),
@@ -307,7 +301,6 @@ add_action( 'init', function () {
 		. "- [Cruise Port]({$u}cruise-trips/): rides to and from the Charleston cruise terminal\n"
 		. "- [Hourly Charter]({$u}charleston-hourly-limo-charter/): Sprinters, SUVs and sedans by the hour\n"
 		. "- [Bachelorette Party Transportation]({$u}charleston-bachelorette-party-transportation/): party bus guide, itinerary and pricing\n"
-		. "- [Brewery Tour Transportation]({$u}charleston-brewery-tour-transportation/): private brewery tour rides in Charleston\n"
 		. "- [Kiawah Island Car Service]({$u}kiawah-island-car-service/)\n"
 		. "- [Mount Pleasant Limo Service]({$u}mount-pleasant-limo-service/)\n\n"
 		. "## Company\n"

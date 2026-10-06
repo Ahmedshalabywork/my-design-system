@@ -98,7 +98,7 @@ function mecca_home_strip( $html ) {
 
 // Pages that use the new design instead of their Divi layout.
 function mecca_home_page_slugs() {
-	return array( 'about', 'airport', 'attractions', 'beach', 'contact', 'corporate', 'cruise-trips', 'events', 'golf-courses', 'hotels', 'night-out', 'policy', 'service', 'wedding', 'charleston-limo-fleet', 'kiawah-island-car-service', 'mount-pleasant-limo-service', 'reviews', 'charleston-hourly-limo-charter', 'charleston-bachelorette-party-transportation', 'charleston-brewery-tour-transportation' );
+	return array( 'about', 'airport', 'attractions', 'beach', 'contact', 'corporate', 'cruise-trips', 'events', 'golf-courses', 'hotels', 'night-out', 'policy', 'service', 'wedding', 'charleston-limo-fleet', 'kiawah-island-car-service', 'mount-pleasant-limo-service', 'reviews', 'charleston-hourly-limo-charter', 'charleston-bachelorette-party-transportation' );
 }
 
 function mecca_home_attr( $attrs, $name ) {
