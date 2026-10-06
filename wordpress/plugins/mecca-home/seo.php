@@ -299,7 +299,7 @@ add_action( 'init', function () {
 		. "## Services\n"
 		. "- [Airport Transfers]({$u}airport/): 24/7 car service to and from Charleston International Airport (CHS), with flight tracking\n"
 		. "- [Wedding Transportation]({$u}wedding/): rides for the couple, wedding party and guests\n"
-		. "- [Night Out & Party Bus]({$u}night-out/): Sprinter party bus for birthdays, concerts, bachelor and bachelorette parties\n"
+		. "- [Party Bus & Bachelorette]({$u}night-out/): Sprinter party bus for birthdays, concerts, bachelor and bachelorette parties\n"
 		. "- [Corporate Car Service]({$u}corporate/): meetings, conventions and executive travel\n"
 		. "- [Events & Prom]({$u}events/): prom and special event rides\n"
 		. "- [Sightseeing & Tours]({$u}attractions/): private car service to Charleston landmarks\n"

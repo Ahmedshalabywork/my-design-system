@@ -22,7 +22,7 @@ if ( $is_page && ! $pg['h1'] ) {
 $services = array(
 	array( 'Weddings', '/wedding/', 'On-time, on-theme limo service for the couple, the wedding party and guests.' ),
 	array( 'Airport Transfers', '/airport/', 'Pickups and drop-offs at Charleston International (CHS), with flight tracking.' ),
-	array( 'Night Out & Party Bus', '/night-out/', 'Birthdays, bachelorette weekends, concerts. Everyone gets home safely.' ),
+	array( 'Party Bus & Bachelorette', '/night-out/', 'Birthdays, bachelorette weekends, concerts. Everyone gets home safely.' ),
 	array( 'Corporate', '/corporate/', 'Discreet chauffeurs and clean billing for executives and clients.' ),
 	array( 'Events & Prom', '/events/', 'Proms, galas and celebrations, arriving together in style.' ),
 	array( 'Sightseeing & Tours', '/attractions/', 'Historic landmarks, plantations, museums and custom Charleston tours.' ),
@@ -72,10 +72,10 @@ $reviews = array(
 );
 
 $faqs = array(
-	array( 'How far in advance should I book?', 'As early as you can for weddings and peak weekends. We also handle last-minute and same-day requests whenever a vehicle is free. Just phone ' . $phone . ', 24/7.' ),
+	array( 'How far in advance should I book?', 'As early as you can for weddings and peak dates. We also handle last-minute and same-day requests whenever a vehicle is free. Just phone ' . $phone . ', 24/7.' ),
 	array( 'What areas do you serve?', 'Charleston and the wider Lowcountry, including Mount Pleasant, North Charleston, Kiawah Island, Seabrook Island, Isle of Palms, Folly Beach, Sullivan\'s Island, Summerville and Georgetown.' ),
 	array( 'Which vehicles are in your fleet?', 'A Mercedes-Benz Sprinter for larger groups, luxury SUVs such as the Cadillac Escalade and Chevrolet Suburban, and an executive sedan for airport transfers and business travel. Tell us your group size and we will match the right vehicle.' ),
-	array( 'Do you handle airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
+	array( 'Do you handle CHS airport transfers?', 'Yes. We pick up and drop off at Charleston International Airport (CHS) and the area\'s private aviation terminals. Share your flight number and your chauffeur will track your arrival.' ),
 	array( 'Do you operate 24/7?', 'Yes. Mecca Limo runs around the clock, every day, including early-morning airport transfers and late nights out.' ),
 	array( 'How do I get a price?', 'Fill out the quote form on this page or phone ' . $phone . '. We will send a price for your date and route, with no obligation.' ),
 );
@@ -279,7 +279,7 @@ body.menu-open{overflow:hidden}
 .svc-marquee{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);padding:8px 0 14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .svc-track{display:flex;width:max-content}
 .svc-track{animation:revscroll 60s linear infinite}
-.rev-track:not(.dup),.svc-track:not(.dup){animation:none}
+.rev-track:not(.dup),.svc-track:not(.dup),.marquee:not(.dup) .marquee-track{animation:none}
 .svc-marquee:hover .svc-track,.svc-marquee:focus-within .svc-track{animation-play-state:paused}
 .svc-track .svc{flex:none;width:280px;margin-right:16px}
 @media (prefers-reduced-motion:reduce){.svc-track{animation:none}.svc-marquee{overflow-x:auto}.svc-track>[aria-hidden],.rev-track>[aria-hidden]{display:none}}
@@ -580,7 +580,7 @@ echo wp_json_encode( array(
 <header class="hero hero-v" id="top">
 	<div class="stage" aria-hidden="true">
 		<img class="stage-img" src="<?php echo esc_url( $a( 'open3.webp' ) ); ?>" srcset="<?php echo esc_url( $a( 'open3-480.webp' ) ); ?> 480w, <?php echo esc_url( $a( 'open3-s.webp' ) ); ?> 720w, <?php echo esc_url( $a( 'open3-828.webp' ) ); ?> 828w, <?php echo esc_url( $a( 'open3-m.webp' ) ); ?> 1080w, <?php echo esc_url( $a( 'open3-1440.webp' ) ); ?> 1440w, <?php echo esc_url( $a( 'open3.webp' ) ); ?> 1920w" sizes="100vw" width="1920" height="1080" alt="Mecca Limo black Mercedes sedan, Sprinter and Cadillac Escalade at sunset in Charleston, SC" fetchpriority="high">
-		<video id="heroVideo" muted playsinline autoplay preload="auto" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video><script>(function(v){var c=navigator.connection;if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches||(c&&(c.saveData||/2g|3g/.test(c.effectiveType||''))))return;var cut=setTimeout(function(){if(!v.classList.contains('on')){v.dataset.off='1';v.pause();v.removeAttribute('src');v.load();}},2500);v.addEventListener('playing',function(){if(v.dataset.off)return;clearTimeout(cut);v.classList.add('on');});v.addEventListener('ended',function(){var st=v.closest('.stage');if(st)st.classList.add('hold');});v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;var p=v.play();if(p&&p.catch)p.catch(function(){});})(document.getElementById('heroVideo'));</script>
+		<video id="heroVideo" muted playsinline autoplay preload="auto" data-d="<?php echo esc_url( $a( 'open3-1080.mp4' ) ); ?>" data-m="<?php echo esc_url( $a( 'open3-540.mp4' ) ); ?>" data-w="<?php echo esc_url( $a( 'open3-540.webm' ) ); ?>"></video><script>(function(v){var c=navigator.connection;if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches||(c&&(c.saveData||/2g|3g/.test(c.effectiveType||''))))return;function start(){var cut=setTimeout(function(){if(!v.classList.contains('on')){v.dataset.off='1';v.pause();v.removeAttribute('src');v.load();}},2500);v.addEventListener('playing',function(){if(v.dataset.off)return;clearTimeout(cut);v.classList.add('on');});v.addEventListener('ended',function(){var st=v.closest('.stage');if(st)st.classList.add('hold');});v.src=v.canPlayType('video/mp4; codecs="avc1.42E01E"')?(innerWidth<900?v.dataset.m:v.dataset.d):v.dataset.w;var p=v.play();if(p&&p.catch)p.catch(function(){});}var im=v.parentNode.querySelector('.stage-img');if(im&&!im.complete){im.addEventListener('load',start,{once:true});im.addEventListener('error',start,{once:true});}else{start();}})(document.getElementById('heroVideo'));</script>
 	</div>
 	<div class="hero-aurora" aria-hidden="true"></div>
 	<div class="wrap hero-inner">
@@ -651,7 +651,7 @@ echo wp_json_encode( array(
 </section>
 <?php else : ?>
 <div class="strip">
-	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always open</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div><div class="marquee-track" aria-hidden="true"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always open</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
+	<div class="marquee"><div class="marquee-track"><div class="stat"><b>5.0 ★</b><span>Google rating</span></div><i class="stat-sep">◆</i><div class="stat"><b>24/7</b><span>Always open</span></div><i class="stat-sep">◆</i><div class="stat"><b>Family</b><span>Owned &amp; operated</span></div><i class="stat-sep">◆</i><div class="stat"><b>Licensed</b><span>&amp; fully insured</span></div><i class="stat-sep">◆</i><div class="stat"><b>Pro</b><span>Chauffeurs</span></div><i class="stat-sep">◆</i><div class="stat"><b>CHS</b><span>Airport transfers</span></div><i class="stat-sep">◆</i></div></div>
 </div>
 <?php endif; ?>
 
@@ -666,7 +666,7 @@ echo wp_json_encode( array(
 		<div class="grid3 fleet-pop">
 			<div class="car">
 				<div class="car-img"><span class="car-tag">Sprinter</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter-wide.webp' ) ); ?>" alt="Mercedes Sprinter limo van background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-sprinter-wide.webp' ) ); ?>" width="800" height="450" alt="Black Mercedes-Benz Sprinter limo van by Mecca Limo in Charleston"></div>
-				<div class="car-body"><h3>Mercedes Sprinter</h3><h4 class="seats">Seats up to 14 with luggage</h4><p>The choice for wedding parties, corporate groups and bachelorette weekends.</p></div>
+				<div class="car-body"><h3>Mercedes Sprinter</h3><h4 class="seats">Seats up to 14 with luggage</h4><p>The choice for wedding parties, corporate groups and bachelorette parties.</p></div>
 			</div>
 			<div class="car">
 				<div class="car-img"><span class="car-tag">SUV</span><img class="car-bg" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" alt="Cadillac Escalade SUV limo background" aria-hidden="true" width="800" height="450"><img class="car-main" loading="lazy" decoding="async" src="<?php echo esc_url( $a( 'fleet-suv.webp' ) ); ?>" width="800" height="446" alt="Black Cadillac Escalade SUV limo in Charleston SC"></div>
@@ -715,9 +715,9 @@ echo wp_json_encode( array(
 	<div class="wrap story-grid">
 		<div class="story-copy">
 			<span class="eyebrow">Our Story</span>
-			<h2>Mecca Limo: a family business built on trust.</h2>
+			<h2>Mecca Limo: a family-owned business built on trust.</h2>
 			<p><span class="initial">M</span>ecca Limo was created with a simple mission: to give Charleston a more convenient, reliable and luxurious way to get around. As a family-owned business, our clients are at the center of everything we do.</p>
-			<p>From 4 a.m. airport transfers to wedding weekends and corporate events across the Lowcountry, we show up early, drive clean vehicles, and get you there safely. That is the whole promise.</p>
+			<p>From 4 a.m. airport transfers to weddings and corporate events across the Lowcountry, we show up early, drive clean vehicles, and get you there safely. That is the whole promise.</p>
 			<div class="sig">Moe &amp; the Mecca Limo family</div>
 			<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">Learn more about Mecca Limo</a>
 		</div>
@@ -860,8 +860,12 @@ echo wp_json_encode( array(
 
 	(function(){
 		function dupe(t){if(t.getAttribute('data-d'))return;t.setAttribute('data-d','1');[].slice.call(t.children).forEach(function(c){var k=c.cloneNode(true);k.setAttribute('aria-hidden','true');k.setAttribute('inert','');if(k.tagName==='A')k.tabIndex=-1;[].slice.call(k.querySelectorAll('h3')).forEach(function(h){var d=document.createElement('div');d.className=(h.className?h.className+' ':'')+'h3';d.innerHTML=h.innerHTML;h.parentNode.replaceChild(d,h);});t.appendChild(k);});t.classList.add('dup');}
-		var ts=[].slice.call(document.querySelectorAll('.rev-track,.svc-track'));
-		if('IntersectionObserver' in window){var dio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){dupe(e.target);dio.unobserve(e.target);}});},{rootMargin:'200px'});ts.forEach(function(t){dio.observe(t);});}else{ts.forEach(dupe);}
+		function dupeStrip(m){if(m.getAttribute('data-d'))return;m.setAttribute('data-d','1');var t=m.querySelector('.marquee-track');if(!t)return;var k=t.cloneNode(true);k.setAttribute('aria-hidden','true');k.setAttribute('inert','');m.appendChild(k);m.classList.add('dup');}
+		var ts=[].slice.call(document.querySelectorAll('.rev-track,.svc-track')),armed=false,pend=[];
+		function arm(){if(armed)return;armed=true;pend.forEach(dupe);pend=[];[].slice.call(document.querySelectorAll('.marquee')).forEach(dupeStrip);}
+		['wheel','touchstart','pointerdown','keydown','mousemove'].forEach(function(x){addEventListener(x,arm,{once:true,passive:true});});
+		function want(t){if(armed)dupe(t);else pend.push(t);}
+		if('IntersectionObserver' in window){var dio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){want(e.target);dio.unobserve(e.target);}});},{rootMargin:'200px'});ts.forEach(function(t){dio.observe(t);});}else{ts.forEach(want);}
 	})();
 
 	if('IntersectionObserver' in window){
