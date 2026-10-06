@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "google-ads": {
+      "type": "stdio",
+      "command": "python3",
+      "args": ["mcp-servers/google-ads/server.py"],
+      "env": {
+        "GOOGLE_ADS_CUSTOMER_ID": "2227770856"
+      }
+    }
+  }
+}
