@@ -588,13 +588,13 @@ echo wp_json_encode( array(
 		<h1>Charleston limo service with comfort, safety &amp; <em>luxury</em>.</h1>
 		<p class="lede">Family-owned chauffeur service for airport transfers, weddings, corporate travel and nights out across Charleston and the Lowcountry.</p>
 		<div>
-			<form class="hero-quote" id="heroQuote" aria-label="Start your quote">
+			<div class="hero-quote" id="heroQuote" role="form" aria-label="Start your quote">
 				<div class="hq-field"><label for="hqPickup">Pick up</label><input id="hqPickup" type="text" placeholder="Address, hotel or airport" autocomplete="off"></div>
 				<div class="hq-field"><label for="hqDrop">Drop off</label><input id="hqDrop" type="text" placeholder="Destination" autocomplete="off"></div>
 				<div class="hq-field"><label for="hqDate">Date</label><input id="hqDate" type="date" min="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>"></div>
 				<div class="hq-field"><label for="hqPax">Passengers</label><input id="hqPax" type="number" min="1" max="99" inputmode="numeric" placeholder="e.g. 4"></div>
-				<button class="hq-btn" type="submit">Get a Quote</button>
-			</form>
+				<button class="hq-btn" type="button">Get a Quote</button>
+			</div>
 			<div class="hero-mcta"><a href="<?php echo esc_attr( $tel ); ?>" class="btn btn-ghost">Call <?php echo esc_html( $phone ); ?></a></div>
 		</div>
 	</div>
@@ -840,13 +840,13 @@ echo wp_json_encode( array(
 		if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 		if(v.paused&&!v.ended&&!v.dataset.off&&v.readyState>2){var p=v.play();if(p&&p.catch)p.catch(function(){});}
 	})();
-	var hq=document.getElementById('heroQuote');if(hq)hq.addEventListener('submit',function(e){
-		e.preventDefault();
+	var hq=document.getElementById('heroQuote');function hqGo(){
 		var map={hqPickup:'mqf-pickup',hqDrop:'mqf-dropoff',hqDate:'mqf-date',hqPax:'mqf-pax'};
 		for(var k in map){var s=document.getElementById(k),t=document.getElementById(map[k]);if(s&&t&&s.value)t.value=s.value;}
 		document.getElementById('quote').scrollIntoView({behavior:'smooth'});
 		setTimeout(function(){var el=document.getElementById('mqf-time');if(el)el.focus({preventScroll:true});},700);
-	});
+	}
+	if(hq){hq.querySelector('.hq-btn').addEventListener('click',hqGo);hq.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();hqGo();}});}
 
 	if('IntersectionObserver' in window){
 		var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
