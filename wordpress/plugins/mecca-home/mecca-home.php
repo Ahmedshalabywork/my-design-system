@@ -155,6 +155,8 @@ function mecca_home_parse_page( $content ) {
 			$alt = preg_match( '#\balt="([^"]*)"#', $im[0], $am ) ? html_entity_decode( $am[1] ) : '';
 			return mecca_home_img( $im[1], $alt, array( 'loading' => 'lazy' ) );
 		}, $c );
+		// Lay runs of review quotes out as a compact grid.
+		$c = preg_replace( '#((?:<blockquote>.*?</blockquote>\s*){2,})#s', '<div class="pg-quotes">$1</div>', $c );
 		$out['html'] = '<div class="pg-text">' . $c . '</div>';
 		return $out;
 	}
