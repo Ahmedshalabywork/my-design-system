@@ -1,0 +1,10 @@
+{
+  "schema": "claude-ads/data-lifecycle@1",
+  "classification": "business-confidential (aggregate ad metrics only; no customer PII stored)",
+  "retention": {"minimum": "none", "delete_by": "on project end or owner request", "exception": "none"},
+  "storage": {"at_rest": "GitHub private repository", "in_transit": "HTTPS"},
+  "access": {"owner": "Mecca Limo owner", "roles": ["owner", "Claude sessions working in this repo"]},
+  "deletion": {"method": "delete .claude-ads/ directory and commit", "verification": "git log shows removal"},
+  "incident": {"owner": "Mecca Limo owner", "channel": "private (owner's email)"},
+  "never_store": ["API keys", "tokens", "passwords", "customer lists", "raw exports with personal data"]
+}
