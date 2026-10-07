@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'template_redirect', function () {
 	$path = untrailingslashit( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) );
-	$map  = array( '/cruise-trips' => '/attractions/' );
+	$map  = array( '/cruise-trips' => '/attractions/', '/charleston-to-savannah-hilton-head' => '/out-of-town-car-service/' );
 	if ( isset( $map[ $path ] ) ) {
 		wp_safe_redirect( home_url( $map[ $path ] ), 301 );
 		exit;
