@@ -1,0 +1,526 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mecca Limo Ads Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF0F2; --surface:#FFFFFF; --ink:#16212B; --muted:#586573; --line:#CBD2D9; --soft:#E1E6EA;
+  --crit:#B3261E; --high:#A85B08; --med:#2B5A8A; --low:#667281; --ok:#226645;
+  --crit-bg:#F8E1DF; --high-bg:#F7E8D3; --med-bg:#DDE9F5; --low-bg:#E4E8EC; --ok-bg:#D9EFE3;
+  --seg-search:#16212B; --seg-display:#A85B08; --seg-pmax:#B3261E; --seg-partner:#667281;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#18222B; --surface:#212D38; --ink:#E8EDF1; --muted:#A0ACB8; --line:#3B4854; --soft:#2A3743;
+    --crit:#F0857C; --high:#E9A654; --med:#86B5E3; --low:#A7B2BD; --ok:#72C99E;
+    --crit-bg:#47231F; --high-bg:#44321A; --med-bg:#1F3850; --low-bg:#303C47; --ok-bg:#1C3D2D;
+    --seg-search:#E8EDF1; --seg-display:#E9A654; --seg-pmax:#F0857C; --seg-partner:#A7B2BD;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#18222B; --surface:#212D38; --ink:#E8EDF1; --muted:#A0ACB8; --line:#3B4854; --soft:#2A3743;
+  --crit:#F0857C; --high:#E9A654; --med:#86B5E3; --low:#A7B2BD; --ok:#72C99E;
+  --crit-bg:#47231F; --high-bg:#44321A; --med-bg:#1F3850; --low-bg:#303C47; --ok-bg:#1C3D2D;
+  --seg-search:#E8EDF1; --seg-display:#E9A654; --seg-pmax:#F0857C; --seg-partner:#A7B2BD;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Barlow","Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:1.0625rem;line-height:1.5;-webkit-text-size-adjust:100%}
+.wrap{max-width:1040px;margin:0 auto;padding:1.5rem 1.15rem 4rem}
+h1,h2,h3,.num{font-family:"Barlow Condensed","Arial Narrow","Roboto Condensed",Arial,sans-serif}
+h1{font-size:clamp(2.2rem,6.6vw,4rem);line-height:1.02;font-weight:700;letter-spacing:-.01em;margin:.4rem 0 1rem;max-width:22ch;text-wrap:balance}
+h2{font-size:clamp(1.6rem,4vw,2.1rem);line-height:1.1;font-weight:600;margin:0 0 .35rem}
+h3{font-size:1.2rem;font-weight:600;margin:0}
+p{margin:0 0 .8rem;max-width:68ch}
+.muted{color:var(--muted)}
+.small{font-size:.94rem}
+section{margin-top:3.2rem}
+.context{color:var(--muted);font-size:.98rem;margin:0}
+
+/* hero */
+.hero-grid{display:grid;gap:1.5rem;align-items:end}
+@media(min-width:780px){.hero-grid{grid-template-columns:1fr auto}}
+.grade{border:2px solid var(--ink);padding:.9rem 1.1rem 1rem;min-width:11.5rem;background:var(--surface)}
+.grade .num{font-size:4.2rem;font-weight:700;line-height:.9;display:block}
+.grade .of{font-size:1.05rem;color:var(--muted)}
+.grade .letter{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:600;font-size:1.25rem;margin-top:.45rem;display:block}
+
+.split{margin-top:1.8rem}
+.bar{display:flex;height:3.4rem;width:100%;border:2px solid var(--ink);background:var(--surface)}
+.bar span{display:block;height:100%;min-width:4px}
+.s-search{background:var(--seg-search)}
+.s-display{background:var(--seg-display)}
+.s-pmax{background:var(--seg-pmax)}
+.s-partner{background:var(--seg-partner)}
+.legend{list-style:none;margin:.9rem 0 0;padding:0;display:grid;gap:.55rem 1.4rem}
+@media(min-width:680px){.legend{grid-template-columns:repeat(2,1fr)}}
+.legend li{display:grid;grid-template-columns:1rem 1fr;gap:.6rem;align-items:start}
+.legend i{width:1rem;height:1rem;margin-top:.28rem;display:block}
+.legend b{font-weight:600}
+
+/* scorecard */
+.score-row{display:grid;grid-template-columns:1fr;gap:.3rem;padding:.85rem 0;border-top:1px solid var(--line)}
+.score-row:last-child{border-bottom:1px solid var(--line)}
+@media(min-width:760px){.score-row{grid-template-columns:14rem 13rem 1fr;gap:1.2rem;align-items:center}}
+.score-name{font-weight:600}
+.score-name small{display:block;font-weight:400;color:var(--muted);font-size:.88rem}
+.meter{display:flex;align-items:center;gap:.6rem}
+.ticks{display:flex;gap:3px}
+.ticks span{width:11px;height:20px;background:var(--soft)}
+.meter .num{font-size:1.5rem;font-weight:600;min-width:3.2rem}
+.lv-crit .ticks .on{background:var(--crit)} .lv-high .ticks .on{background:var(--high)} .lv-med .ticks .on{background:var(--med)} .lv-ok .ticks .on{background:var(--ok)}
+
+/* tables */
+.table-scroll{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:34rem}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:600;font-size:.94rem;color:var(--muted);background:var(--paper)}
+td.n{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-size:1.3rem;font-weight:600;white-space:nowrap}
+
+.plain-list{margin:.6rem 0 0;padding-left:1.15rem;max-width:68ch}
+.plain-list li{margin-bottom:.4rem}
+
+/* tracker */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;margin:1rem 0 .4rem}
+.fgroup{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center}
+.fgroup > span{font-size:.94rem;color:var(--muted);margin-right:.2rem}
+button.f{font:inherit;font-size:.94rem;padding:.32rem .7rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;border-radius:999px}
+button.f[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+button.f:focus-visible,summary:focus-visible,input:focus-visible,.reset:focus-visible{outline:3px solid var(--med);outline-offset:2px}
+.count{font-size:.94rem;color:var(--muted);margin:.5rem 0 .8rem}
+.issues{border-top:2px solid var(--ink)}
+details.issue{border-bottom:1px solid var(--line);background:var(--surface)}
+details.issue[open]{border-bottom-color:var(--ink)}
+summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:2.6rem 1fr;gap:.2rem .7rem;padding:.8rem .8rem}
+summary::-webkit-details-marker{display:none}
+.iid{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;font-weight:600;font-size:1.15rem;color:var(--muted)}
+.ititle{font-weight:600}
+.chips{grid-column:2;display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.15rem}
+@media(min-width:820px){
+  summary{grid-template-columns:2.8rem 1fr auto;align-items:center}
+  .chips{grid-column:3;margin-top:0;justify-content:flex-end}
+}
+.chip{font-size:.84rem;font-weight:600;padding:.12rem .55rem;border-radius:3px;white-space:nowrap}
+.c-Critical{background:var(--crit-bg);color:var(--crit)} .c-High{background:var(--high-bg);color:var(--high)}
+.c-Medium{background:var(--med-bg);color:var(--med)} .c-Low{background:var(--low-bg);color:var(--low)}
+.c-Open{border:1px solid var(--crit);color:var(--crit)} .c-Partly{border:1px solid var(--high);color:var(--high)} .c-Fixed{border:1px solid var(--ok);color:var(--ok)}
+.c-area{border:1px solid var(--line);color:var(--muted);font-weight:500}
+.ibody{padding:0 .8rem 1rem;display:grid;gap:.7rem}
+@media(min-width:820px){.ibody{padding-left:4.3rem;padding-right:2rem}}
+.ibody dl{margin:0;display:grid;gap:.6rem}
+.ibody dt{font-weight:600;font-size:.94rem;color:var(--muted)}
+.ibody dd{margin:0;max-width:70ch}
+.handled{display:flex;gap:.55rem;align-items:center;font-size:.96rem;padding-top:.3rem}
+.handled input{width:1.15rem;height:1.15rem;accent-color:var(--ok)}
+details.issue.is-handled .ititle{text-decoration:line-through;color:var(--muted)}
+.empty{padding:1.2rem .8rem;background:var(--surface);border-bottom:1px solid var(--line)}
+.reset{font:inherit;font-size:.92rem;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:.4rem 0}
+.note{border-left:4px solid var(--high);background:var(--surface);padding:.9rem 1rem;margin-top:1rem}
+.note h3{margin-bottom:.3rem}
+footer{margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+
+h2{text-wrap:balance}
+td.n{font-variant-numeric:tabular-nums}
+.grade .was{display:block;color:var(--muted);font-size:.94rem;margin-top:.15rem}
+.barrow{display:grid;gap:.3rem;margin-top:.7rem}
+@media(min-width:680px){.barrow{grid-template-columns:13rem 1fr;align-items:center;gap:1rem}}
+.barlabel{font-size:.96rem;font-weight:500}
+.barrow .bar{height:2.6rem;min-width:0}
+.meter-mid{display:grid;gap:.2rem}
+.was-note{color:var(--muted);font-size:.86rem}
+.ticks .was{opacity:.42}
+ol.plain-list{padding-left:1.4rem}
+</style>
+<div class="wrap">
+
+<header>
+  <p class="context">Mecca Limo Google Ads account, rechecked October 6, 2026 at 10:05pm</p>
+  <div class="hero-grid">
+    <h1>Setup is up from 27 to 76. The last 24 points come from proven results, not more settings.</h1>
+    <div class="grade" aria-label="Score now 76 out of 100, grade B. It was 63 at 9:30pm and 27 before the rebuild.">
+      <span class="num">76</span><span class="of"> out of 100</span>
+      <span class="letter">Grade B, now</span>
+      <span class="was">Was 63 at 9:30pm, 27 this morning</span>
+    </div>
+  </div>
+
+  <div class="split">
+    <p class="muted small">Where the ad money goes</p>
+    <div class="barrow">
+      <span class="barlabel">Before, 90 days, $5,888</span>
+      <div class="bar" role="img" aria-label="Before: Google Search 54 percent, Display banners 14 percent, Performance Max overseas 31 percent">
+        <span class="s-search" style="width:54.4%"></span>
+        <span class="s-display" style="width:14.2%"></span>
+        <span class="s-pmax" style="width:31.3%"></span>
+        <span class="s-partner" style="width:.1%"></span>
+      </div>
+    </div>
+    <div class="barrow">
+      <span class="barlabel">Today, 1 day, $60.02</span>
+      <div class="bar" role="img" aria-label="Today: Google Search 100 percent">
+        <span class="s-search" style="width:100%"></span>
+      </div>
+    </div>
+    <ul class="legend">
+      <li><i class="s-search"></i><span><b>Google Search.</b> 54% before, 100% today.</span></li>
+      <li><i class="s-pmax"></i><span><b>Performance Max overseas.</b> 31% before, paused now.</span></li>
+      <li><i class="s-display"></i><span><b>Display banners.</b> 14% before, off now.</span></li>
+      <li><i class="s-partner"></i><span><b>Search partner sites.</b> Under 1% before, off now.</span></li>
+    </ul>
+  </div>
+</header>
+
+<section aria-labelledby="h-score">
+  <h2 id="h-score">Scorecard, same eight areas</h2>
+  <p class="muted">Each area is scored out of 10 and weighted the same way as the first audit. This rates how the account is set up. It can't rate results yet, because the new setup has one day of data.</p>
+  <div id="scorecard"></div>
+</section>
+
+<section aria-labelledby="h-moved">
+  <h2 id="h-moved">What moved since this morning's audit</h2>
+  <p class="muted">Of the 28 original problems, 18 are fixed, 6 are partly fixed and 4 are open. This morning it was 11, 3 and 14. All 6 problems found after the rebuild are handled except the budget timing, which needs a few days of data.</p>
+  <p><b>Fixed tonight, 9:30pm to 10:05pm:</b></p>
+  <ul class="plain-list">
+    <li><b>"rent a" is gone</b> as a negative, so "rent a party bus" and "rent a limo" can show your ads again. "rent a car" is blocked instead.</li>
+    <li><b>Black Car &amp; Corporate is no longer a catch-all.</b> It now has its own negatives (bus, ferry, carriage, waymo, valet, greyhound, airport, kiawah, seabrook), so those searches go to the right group or nowhere. The two vague "transportation" keywords are paused.</li>
+    <li><b>Ad claims are accurate.</b> "Stretch Limo Available" is gone from both wedding ads and its keyword is paused. Every ad now says "150+" reviews, matching your 153 on Google.</li>
+    <li><b>Asset clean-up is done.</b> The keyword-stuffed "Destinations" snippet, the email callout, the duplicate snippet and the duplicate call asset are removed. Two near-duplicate quote callouts were swapped for "Room for Golf Bags" and "Cars Detailed Every Ride".</li>
+    <li><b>Tablets are back on</b> at a normal bid. They had been turned off using the junk numbers.</li>
+    <li><b>The leftover conversion actions can't steer bidding.</b> Google won't let the API relabel those six system actions, but this campaign's goals already exclude them.</li>
+  </ul>
+  <p><b>Fixed earlier today:</b></p>
+  <ul class="plain-list">
+    <li><b>The junk "Call" conversion is demoted.</b> It no longer counts and no longer steers the bidding.</li>
+    <li><b>Auto-apply is off.</b> All 23 recommendation types are paused, so Google can't turn Display back on or add keywords without asking.</li>
+    <li><b>Sitelinks are rebuilt.</b> 20 sitelinks, each to its own page. The 11 that went to the homepage are gone.</li>
+    <li><b>Brand searches have their own ad group</b>, so "mecca limo" searches no longer mix with cold traffic.</li>
+    <li><b>Call assets report to the right place.</b> Calls from the ad's phone button now go to "Calls from ads".</li>
+    <li><b>Quote forms are recording.</b> Three came through today.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="h-today">
+  <h2 id="h-today">Today, first full day on the new setup</h2>
+  <p class="muted">One day is too little to judge. Treat these as a starting point.</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Ad group</th><th>Times shown</th><th>Clicks</th><th>Spend</th><th>Conversions</th></tr></thead>
+      <tbody>
+        <tr><td>Black Car &amp; Corporate</td><td class="n">181</td><td class="n">10</td><td class="n">$25.32</td><td class="n">1</td></tr>
+        <tr><td>Kiawah &amp; Seabrook</td><td class="n">31</td><td class="n">4</td><td class="n">$12.48</td><td class="n">1</td></tr>
+        <tr><td>Airport - CHS</td><td class="n">75</td><td class="n">2</td><td class="n">$12.03</td><td class="n">0</td></tr>
+        <tr><td>Party Bus &amp; Bachelorette</td><td class="n">40</td><td class="n">3</td><td class="n">$10.19</td><td class="n">2</td></tr>
+        <tr><td>Brand, Wedding, Cruise Port</td><td class="n">9</td><td class="n">0</td><td class="n">$0</td><td class="n">0</td></tr>
+        <tr><td><b>Total</b></td><td class="n">336</td><td class="n">19</td><td class="n">$60.02</td><td class="n">4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="plain-list">
+    <li>The 4 conversions are 3 quote forms and 1 fire of the old "Call" tag from before it was demoted. If any of the quote forms were your own tests through an ad, discount them.</li>
+    <li>Click-through rate was 5.7% and a click cost $3.16. Before, on Google Search, those were 8.7% and $3.35.</li>
+    <li>No ads showed after the 6pm hour, which is when spend reached $60. Reporting can lag a few hours, so confirm tomorrow.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="h-next">
+  <h2 id="h-next">What it takes to reach 100</h2>
+  <p class="muted">Everything that can be fixed from here is fixed. The remaining 24 points come from three sources: two quick switches only you can flip, real-world proof that only time gives, and booking data from your dispatch system.</p>
+  <ol class="plain-list">
+    <li><b>You, 2 minutes: turn on enhanced conversions for leads.</b> Go to Goals, then Settings, then tick "Enhanced conversions for leads" and choose "Google tag". The website already sends the hashed email and phone with each quote, so it starts working the moment you tick it. See T5. About +3 points.</li>
+    <li><b>You, when you can: take 4 to 6 real photos of your own vehicles</b> (Sprinter, Suburban, Escalade, sedan) outside in daylight. They become image ads and Business Profile posts. The website's current photos are stock, with logos on top and stretch limos you don't offer, so they can't be used. About +1 point.</li>
+    <li><b>Time, about 2 weeks: let the new call tracking prove itself.</b> Once "Website calls 60s+" records real calls, it becomes the main phone goal in place of the tap. See T2. About +4 points.</li>
+    <li><b>Time, 3 to 4 weeks: let bidding learn and quality scores settle.</b> Change nothing in bidding until then. See B1 and K4. About +6 points.</li>
+    <li><b>Limo Anywhere: send booked rides and their value back to Google.</b> This is what lets Google tell a short airport run from a full wedding day. It's the biggest single gain left. See T6. About +6 points.</li>
+    <li><b>November 5: remove the paused clutter</b> and decide on out-of-area targeting with 30 days of clean data. See S2 and W6. About +4 points.</li>
+  </ol>
+  <p class="muted">Realistic path: 79 once you flip enhanced conversions, mid-80s by early November, 90 and above once booked rides flow back. A true 100 means every item proven with results, and no account gets there in a day.</p>
+</section>
+
+<section aria-labelledby="h-track">
+  <h2 id="h-track">Issue tracker</h2>
+  <p class="muted">All 28 original problems plus 6 found after the rebuild, with status as of 10:05pm. Tap one for what was wrong, where it stands and the next step.</p>
+
+  <div class="filters">
+    <div class="fgroup" id="f-sev"><span>Severity</span></div>
+    <div class="fgroup" id="f-status"><span>Status now</span></div>
+  </div>
+  <p class="count" id="count" aria-live="polite"></p>
+  <div class="issues" id="issues"></div>
+  <button class="reset" id="reset" type="button">Clear my "handled" ticks</button>
+</section>
+
+<section aria-labelledby="h-base">
+  <h2 id="h-base">Numbers to beat</h2>
+  <p class="muted">The 90-day baseline next to today. Check again around November 5.</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>Measure</th><th>Before, 90 days</th><th>Today, 1 day</th></tr></thead>
+      <tbody>
+        <tr><td>Share of spend on Google Search</td><td class="n">54%</td><td class="n">100%</td></tr>
+        <tr><td>Click-through rate on Google Search</td><td class="n">8.7%</td><td class="n">5.7%</td></tr>
+        <tr><td>Cost per click on Google Search</td><td class="n">$3.35</td><td class="n">$3.16</td></tr>
+        <tr><td>Search impression share</td><td class="n">24%</td><td class="n">35%, partial day</td></tr>
+        <tr><td>Quote forms tracked</td><td class="n">0</td><td class="n">3</td></tr>
+        <tr><td>Broad match keywords running</td><td class="n">40</td><td class="n">0 of 242</td></tr>
+        <tr><td>Negative keywords</td><td class="n">about 25</td><td class="n">84</td></tr>
+        <tr><td>Average quality score</td><td class="n">5.0</td><td class="n">not scored yet</td></tr>
+        <tr><td>Daily budget</td><td class="n">$45</td><td class="n">$50</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p>Data pulled October 6, 2026 at about 9:30pm Eastern and rechecked after the 10pm fixes from the Google Ads API for account 222-777-0856. "Before" means the account up to 11:14pm on October 5. "Today" is October 6 up to the pull, and same-day figures can lag by a few hours. The scores are my judgment against a weighted rubric, not a Google metric. Search term figures cover only the terms Google chooses to show. I did not review the website pages themselves.</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var SCORES=[
+    {name:"Conversion tracking",w:"25% of score",b:2,s:6,why:"Junk tag demoted, quote forms counting, leftover actions kept out of bidding. Enhanced conversions needs your tick, real-call tracking is unproven and booked rides don't flow back yet."},
+    {name:"Where the money went",w:"20%",b:2,s:9,why:"Performance Max paused. Display, partners and auto-apply off. All spend on Google Search, tablets back at a normal bid."},
+    {name:"Keywords and search terms",w:"15%",b:3,s:8,why:"Phrase and exact only. \"rent a\" no longer blocks buyers. The catch-all group has its own negatives and vague keywords are paused. Quality scores aren't in yet."},
+    {name:"Account structure",w:"10%",b:2,s:8,why:"Seven themed ad groups, brand split out, and the catch-all now hands airport and Kiawah searches to their own groups. Paused clutter goes on November 5."},
+    {name:"Ads",w:"10%",b:3,s:9,why:"13 service-specific ads, all approved. No stretch-limo claim, one review count everywhere. Ad strength still pending."},
+    {name:"Bidding, budget, schedule",w:"10%",b:4,s:6,why:"Clean goals, wider hours, tablets restored. Bidding is one day into learning on $50 a day."},
+    {name:"Landing pages",w:"5%",b:3,s:7,why:"Every ad goes to its own page, with call and quote buttons at the top. Prices stay off the pages by your choice."},
+    {name:"Ad assets",w:"5%",b:5,s:9,why:"20 sitelinks, 15 distinct callouts, no duplicates or misused account assets. No image assets until real fleet photos exist."}
+  ];
+  var sc=document.getElementById("scorecard");
+  SCORES.forEach(function(r){
+    var lv=r.s<=2?"lv-crit":r.s<=4?"lv-high":r.s<=6?"lv-med":"lv-ok";
+    var row=el("div","score-row "+lv);
+    var n=el("div","score-name",r.name); n.appendChild(el("small",null,r.w)); row.appendChild(n);
+    var m=el("div","meter");
+    var num=el("span","num",r.s+"/10"); m.appendChild(num);
+    var mid=el("div","meter-mid");
+    var t=el("div","ticks"); t.setAttribute("aria-hidden","true");
+    for(var i=1;i<=10;i++){t.appendChild(el("span",i<=r.b?"on was":(i<=r.s?"on":"")));}
+    mid.appendChild(t); mid.appendChild(el("small","was-note","was "+r.b+"/10"));
+    m.appendChild(mid); row.appendChild(m);
+    row.appendChild(el("div","muted",r.why));
+    sc.appendChild(row);
+  });
+
+  var ISSUES=[
+  {id:"T1",area:"Tracking",sev:"Critical",status:"Fixed",title:"The main conversion, \"Call\", couldn't be trusted",
+   was:"217 of the Search campaign's 219 conversions in 90 days came from one website tag named \"Call\". The same tag logged 70,492 conversions on Performance Max, nearly all from clicks in India, Bangladesh and Nepal.",
+   now:"Set to secondary on October 6 at 3:34pm. It no longer counts as a conversion or steers bidding. The change note says the tag also fires on quote form submits. Today it fired 3 times and the quote form recorded 3, which is consistent with that.",
+   next:"Leave it as secondary for a month as a cross-check, then remove it."},
+  {id:"T2",area:"Tracking",sev:"Critical",status:"Partly",title:"Real phone calls are barely counted",
+   was:"Google logged 21 calls from call assets in 90 days. Only 6 lasted 30 seconds or more. Calls made from the website were not tracked at all.",
+   now:"Call assets now report to \"Calls from ads\", counted once per click at 60 seconds. A new primary action, \"Phone number tap (website)\", counts a tap on your number, which is not the same as a completed call. A new \"Website calls 60s+\" action exists but is secondary, so bidding ignores it. Neither new action has recorded anything yet. They are six hours old and only three ad clicks have come in since.",
+   next:"In Google Ads under Goals, check both show as recording within a few days. I can't see from the Ads data whether the call-forwarding snippet is on the site. Once \"Website calls\" records real calls, make it primary at 30 seconds and set the tap to secondary."},
+  {id:"T3",area:"Tracking",sev:"High",status:"Fixed",title:"Quote form leads were left out of the conversion count",
+   was:"The \"Submit lead form\" goal was set as not biddable, so form submits never showed in the Conversions column.",
+   now:"Counting. \"Quote form submitted\" recorded 3 conversions today.",
+   next:"If any of today's 3 were your own test submissions through an ad click, discount them."},
+  {id:"T4",area:"Tracking",sev:"Medium",status:"Fixed",title:"Nine primary conversion actions, several irrelevant",
+   was:"9 of the enabled actions were marked primary, including directions requests and Smart campaign map actions.",
+   now:"Still 9 primary at account level, because Google won't let the API relabel its six system actions. But this campaign's goals already exclude them: only quote forms, phone taps and calls count for bidding here.",
+   next:"Optional: set the six to secondary by hand in Goals to tidy the list."},
+  {id:"T5",area:"Tracking",sev:"Medium",status:"Partly",title:"Enhanced conversions for leads is off",
+   was:"An attempt to turn it on through the API failed on a permissions error.",
+   now:"The website already sends the customer's email and phone, hashed by the Google tag, with every quote conversion. The account switch is still off and can only be flipped by hand.",
+   next:"Goals, then Settings, then tick Enhanced conversions for leads and choose Google tag. Two minutes."},
+  {id:"T6",area:"Tracking",sev:"Medium",status:"Open",title:"Booked rides never flow back into Google Ads",
+   was:"No offline import exists and no conversion carries a dollar value. Bookings live in Limo Anywhere.",
+   now:"Unchanged. Google still can't tell a short airport run from a full wedding booking.",
+   next:"Import booked rides with their value, through the Limo Anywhere API when you have access or by a monthly upload."},
+
+  {id:"W1",area:"Wasted spend",sev:"Critical",status:"Fixed",title:"Performance Max ran with no location targeting",
+   was:"January 25 to October 5: $4,352.90 across 213 countries. The United States got $7.13.",
+   now:"Paused since 11:14pm on October 5. No spend today.",
+   next:"Leave it paused. If you relaunch it, set Charleston with \"presence\" only, and only after call tracking is proven."},
+  {id:"W2",area:"Wasted spend",sev:"Critical",status:"Fixed",title:"Display Network was on inside the Search campaign",
+   was:"90 days: $834.64, a fifth of the campaign, on banner ads.",
+   now:"Off. All of today's $60.02 went to Google Search.",
+   next:"Nothing. With auto-apply off it should stay off."},
+  {id:"W3",area:"Wasted spend",sev:"Critical",status:"Fixed",title:"Google auto-apply was on for 21 recommendation types",
+   was:"Google could turn on Display, add keywords and switch bid strategies by itself. On September 11 it added \"car hauling trucking companies\".",
+   now:"All 23 subscription types were paused on October 6 at 3:47pm.",
+   next:"Nothing. This was the most urgent open item and it is closed."},
+  {id:"W4",area:"Wasted spend",sev:"Medium",status:"Fixed",title:"Search partner sites were on",
+   was:"12 months: $438.",
+   now:"Off.",
+   next:"Nothing."},
+  {id:"W5",area:"Wasted spend",sev:"High",status:"Partly",title:"Irrelevant searches were getting through",
+   was:"About 17% of visible search-term spend went to taxi, \"black cab\", \"black truck\", Uber and competitor-name searches, with about 25 negatives in place.",
+   now:"75 negatives. Google shows the search term for 6 of today's 19 clicks, and all 6 were relevant. Ads still showed, without a click, on \"bus to charleston sc\", \"charleston to atlanta bus\", \"ferry from myrtle beach to charleston\", \"charleston carriage tours\", \"waymo charleston\", \"low country valet\", \"taxis charleston sc\" and \"charleston airport rental cars\".",
+   next:"Add the negatives in N3. Review search terms weekly for a month. Move the campaign negatives into a shared list."},
+  {id:"W6",area:"Wasted spend",sev:"Medium",status:"Open",title:"Three quarters of Search spend reached people outside the Charleston area",
+   was:"Location option is \"Presence or interest\". $2,997 of 90-day spend went to US users outside the Charleston market.",
+   now:"Unchanged, and that is the right call for now. Travelers booking ahead are your customer.",
+   next:"Once conversions are trustworthy, compare inside against outside for 30 days and decide."},
+
+  {id:"S1",area:"Structure",sev:"High",status:"Fixed",title:"Every service shared one ad group",
+   was:"Airport, weddings, party bus, Kiawah and corporate all sat in one ad group with one ad.",
+   now:"Seven live ad groups: Airport, Kiawah and Seabrook, Wedding, Party Bus and Bachelorette, Black Car and Corporate, Cruise Port, and Brand.",
+   next:"See N3 for the one group that is too broad."},
+  {id:"S2",area:"Structure",sev:"Low",status:"Open",title:"Leftover clutter",
+   was:"A dead 2023 Smart campaign, the old ad group and six paused duplicates.",
+   now:"Seven paused ad groups and two paused campaigns are still there.",
+   next:"Remove them in 30 days once you are sure nothing needs restoring."},
+
+  {id:"K1",area:"Keywords",sev:"High",status:"Fixed",title:"All 40 active keywords were broad match",
+   was:"Every keyword that earned an impression in 90 days was broad match.",
+   now:"242 live keywords: 126 phrase, 116 exact, none broad.",
+   next:"Nothing."},
+  {id:"K2",area:"Keywords",sev:"High",status:"Fixed",title:"\"wedding cars\" was the top spender and matched non-wedding searches",
+   was:"$1,192 in 90 days, 37% of Google Search spend, mostly on searches that had nothing to do with weddings.",
+   now:"Paused with the old ad group. The Wedding group has 30 wedding-specific keywords. It showed 4 times today with no clicks.",
+   next:"Watch whether it gets enough volume over two weeks."},
+  {id:"K3",area:"Keywords",sev:"Medium",status:"Fixed",title:"Junk keywords in the account",
+   was:"\"Charleston black cab company\", \"car transportation service\" and the auto-added \"car hauling trucking companies\".",
+   now:"Paused, and with auto-apply off Google can't add more.",
+   next:"Nothing."},
+  {id:"K4",area:"Keywords",sev:"Medium",status:"Open",title:"Weak quality scores on the money keywords",
+   was:"Impression-weighted quality score was 5.0. 55% of impression share was lost to ad rank.",
+   now:"The new keywords have no scores yet. Today 62% of impression share was lost to ad rank, on one partial day.",
+   next:"Recheck in two to three weeks. This is the number that says whether the new ads and pages are earning better positions."},
+
+  {id:"A1",area:"Ads",sev:"High",status:"Fixed",title:"One ad for every service, written as a keyword list",
+   was:"Headlines like \"downtown car service\" and \"black limo\", with no offer, proof or call to action.",
+   now:"13 ads across the seven groups. Each has 15 headlines and 4 descriptions, written for its service, with proof points such as the 5.0 rating, flight tracking and a quote prompt. All approved. Strength still shows as pending.",
+   next:"Check ad strength in a few days. See N4 for two claims to verify."},
+  {id:"A2",area:"Ads",sev:"Medium",status:"Fixed",title:"Google appeared to be writing some of your ad text",
+   was:"Headlines were serving that were in neither of your ads and ran longer than a person can enter.",
+   now:"Automatically created text assets are opted out on the campaign. I confirmed the setting but can't tell from the log when it was switched.",
+   next:"Nothing."},
+
+  {id:"L1",area:"Landing pages",sev:"High",status:"Fixed",title:"95% of clicks landed on the homepage",
+   was:"1,932 of 2,022 clicks went to the homepage.",
+   now:"Each ad points at its own page: airport, wedding, night out, Kiawah, cruise trips and service. Only the brand ad goes to the homepage.",
+   next:"Nothing."},
+  {id:"L2",area:"Landing pages",sev:"Medium",status:"Partly",title:"Landing page experience is average at best",
+   was:"Google rated it \"Average\" on nearly every keyword and \"Below average\" on the party bus keywords.",
+   now:"The night out page already has the phone number and Get a Quote button at the top and the quote form on the page. Prices stay off the site by your choice. Google hasn't re-rated the pages yet.",
+   next:"Add real fleet photos when you have them. Recheck the rating in two to three weeks."},
+  {id:"L3",area:"Landing pages",sev:"Low",status:"Fixed",title:"Mixed web addresses",
+   was:"Old ads and sitelinks used both meccalimo.com and www.meccalimo.com.",
+   now:"Every live ad and all 20 sitelinks use the www address.",
+   next:"Nothing."},
+
+  {id:"E1",area:"Assets",sev:"Medium",status:"Fixed",title:"11 of 12 sitelinks went to the homepage",
+   was:"\"Contact Us\", \"Our Fleet\", \"Golf Courses\" and \"Attractions\" all opened the homepage.",
+   now:"20 sitelinks, each to its own page, with description lines. The old ones were removed on October 6.",
+   next:"Nothing."},
+  {id:"E2",area:"Assets",sev:"Low",status:"Fixed",title:"Account-level assets misused",
+   was:"A \"Destinations\" snippet filled with keywords and a callout reading \"email: info@meccalimo.com\".",
+   now:"Both removed on October 6 at 10pm. The account level now holds only the call asset and your logo.",
+   next:"Nothing."},
+
+  {id:"B1",area:"Bidding and budget",sev:"High",status:"Partly",title:"Maximize Conversions bidding ran on the junk signal",
+   was:"99% of the conversions the bidding learned from were the \"Call\" tag.",
+   now:"Bidding now aims at quote forms, phone taps and 60-second calls from ads. That is a cleaner target, but it is one day old and the last 90 days of learning came from the junk signal.",
+   next:"Change nothing in bidding for three to four weeks. Don't add a target cost per lead yet."},
+  {id:"B2",area:"Bidding and budget",sev:"Medium",status:"Fixed",title:"Ads only ran 9am to 8pm",
+   was:"Every impression in 90 days fell between 9am and 8pm.",
+   now:"Scheduled 6am to 11pm, every day. Today the first impressions came in the 6am hour.",
+   next:"See N2. The evening hours had no budget left today."},
+  {id:"B3",area:"Bidding and budget",sev:"Medium",status:"Partly",title:"Budget ran out while a fifth of it went to Display",
+   was:"Search impression share was 24% on $45 a day.",
+   now:"Display is off, so the whole budget goes to Search. The budget is $50 a day, set by you at 9:22pm and kept there on purpose.",
+   next:"Recheck impression share in 30 days. No budget change without your say-so."},
+
+  {id:"N1",area:"Found after rebuild",sev:"Medium",status:"Fixed",title:"The negative keyword \"rent a\" blocks buyers",
+   was:"Added as a phrase-match negative on October 6.",
+   now:"Removed at 10pm. \"rent a car\" was added as a phrase negative to keep car-rental searches out.",
+   next:"Nothing."},
+  {id:"N2",area:"Found after rebuild",sev:"Medium",status:"Open",title:"The budget ran out around 6pm today",
+   was:"Not an issue before, because ads stopped at 8pm anyway.",
+   now:"Spend reached $60.02 and the last impressions came in the 6pm hour, so 7pm to 11pm showed nothing. Reporting can lag a few hours, so confirm tomorrow. At $50 a day it will run out sooner. A click averaged $3.16 today, which is about 16 clicks for $50.",
+   next:"To make $50 last, tighten the Black Car and Corporate group as in N3. If evening airport searches matter more than midday ones, the alternative is a later start time."},
+  {id:"N3",area:"Found after rebuild",sev:"Medium",status:"Fixed",title:"Black Car and Corporate is a catch-all",
+   was:"New group created in the rebuild.",
+   now:"The group now has its own phrase negatives: bus, ferry, carriage, waymo, valet, greyhound, airport, kiawah and seabrook. Airport and Kiawah searches now go to their own groups. \"charleston transportation\" and \"transportation charleston sc\" (phrase) are paused.",
+   next:"Check its share of spend over the next week."},
+  {id:"N4",area:"Found after rebuild",sev:"Medium",status:"Fixed",title:"Two ad claims to check",
+   was:"New ad copy written October 5 and 6.",
+   now:"\"Stretch Limo Available\" was replaced with \"Escalades & Suburbans\" in both wedding ads, and the keyword \"stretch limo charleston\" is paused. All 11 ads that cited a review count now say 150+, matching the 153 on your Google profile. All 13 ads still show approved.",
+   next:"Update the count when you pass 200."},
+  {id:"N5",area:"Found after rebuild",sev:"Low",status:"Fixed",title:"Leftover duplicate assets",
+   was:"This morning there were duplicate callouts, sitelinks and call assets from two passes.",
+   now:"The second Service catalog snippet and the duplicate call asset are removed. \"Free Quotes\" and \"Flat-Price Quotes\" were swapped for \"Room for Golf Bags\" and \"Cars Detailed Every Ride\".",
+   next:"Nothing."},
+  {id:"N6",area:"Found after rebuild",sev:"Low",status:"Fixed",title:"Tablets were switched off using the junk numbers",
+   was:"On October 6 tablets were set to minus 100% because they cost $39 per conversion against $18 on mobile.",
+   now:"Tablets are back to a normal bid (no adjustment).",
+   next:"Revisit in a month with real conversions."}
+  ];
+
+  var STATUS_LABEL={Open:"Open",Partly:"Partly fixed",Fixed:"Fixed"};
+  var KEY="meccaAuditHandled";
+  var handled={};
+  try{handled=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){handled={};}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(handled));}catch(e){}}
+
+  var state={sev:"All",status:"All"};
+  buildFilter("f-sev",["All","Critical","High","Medium","Low"],"sev",function(v){return v;});
+  buildFilter("f-status",["All","Open","Partly","Fixed"],"status",function(v){return v==="All"?"All":STATUS_LABEL[v];});
+
+  var list=document.getElementById("issues");
+  var countEl=document.getElementById("count");
+  render();
+
+  document.getElementById("reset").addEventListener("click",function(){handled={};save();render();});
+
+  function buildFilter(hostId,opts,key,label){
+    var host=document.getElementById(hostId);
+    opts.forEach(function(o){
+      var b=el("button","f",label(o)); b.type="button"; b.id=hostId+"-"+o;
+      b.setAttribute("aria-pressed",o==="All"?"true":"false");
+      b.addEventListener("click",function(){
+        state[key]=o;
+        Array.prototype.forEach.call(host.querySelectorAll("button"),function(x){x.setAttribute("aria-pressed","false");});
+        b.setAttribute("aria-pressed","true");
+        render();
+      });
+      host.appendChild(b);
+    });
+  }
+
+  function needWork(){return ISSUES.filter(function(i){return i.status!=="Fixed"&&!handled[i.id];}).length;}
+
+  function render(){
+    list.textContent="";
+    var shown=ISSUES.filter(function(i){return (state.sev==="All"||i.sev===state.sev)&&(state.status==="All"||i.status===state.status);});
+    countEl.textContent="Showing "+shown.length+" of "+ISSUES.length+". "+needWork()+" still need work.";
+    if(!shown.length){list.appendChild(el("p","empty","Nothing matches these filters. Pick \"All\" to see every issue."));return;}
+    shown.forEach(function(i){
+      var d=el("details","issue"+(handled[i.id]?" is-handled":""));
+      var s=document.createElement("summary");
+      s.appendChild(el("span","iid",i.id));
+      s.appendChild(el("span","ititle",i.title));
+      var chips=el("span","chips");
+      chips.appendChild(el("span","chip c-area",i.area));
+      chips.appendChild(el("span","chip c-"+i.sev,i.sev));
+      chips.appendChild(el("span","chip c-"+i.status,STATUS_LABEL[i.status]));
+      s.appendChild(chips); d.appendChild(s);
+      var body=el("div","ibody"); var dl=document.createElement("dl");
+      [["What was wrong",i.was],["Where it stands now",i.now],["Next step",i.next]].forEach(function(p){
+        var w=document.createElement("div"); w.appendChild(el("dt",null,p[0])); w.appendChild(el("dd",null,p[1])); dl.appendChild(w);
+      });
+      body.appendChild(dl);
+      var lab=el("label","handled"); var cb=document.createElement("input"); cb.type="checkbox"; cb.id="handled-"+i.id; cb.checked=!!handled[i.id];
+      cb.addEventListener("change",function(){
+        if(cb.checked){handled[i.id]=1;}else{delete handled[i.id];}
+        save(); d.classList.toggle("is-handled",cb.checked);
+        countEl.textContent="Showing "+shown.length+" of "+ISSUES.length+". "+needWork()+" still need work.";
+      });
+      lab.appendChild(cb); lab.appendChild(document.createTextNode("I've handled this"));
+      body.appendChild(lab); d.appendChild(body); list.appendChild(d);
+    });
+  }
+
+  function el(tag,cls,text){var e=document.createElement(tag); if(cls){e.className=cls;} if(text!=null){e.textContent=text;} return e;}
+})();
+</script>
+
+</body></html>
