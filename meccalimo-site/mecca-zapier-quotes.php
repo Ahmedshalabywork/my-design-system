@@ -44,5 +44,10 @@ add_action( 'mecca_qf_sent', function ( $f, $email, $tel ) {
 	foreach ( $lines as $k => $v ) {
 		$body .= $k . ': ' . str_replace( array( "\r", "\n" ), ' ', (string) $v ) . "\n";
 	}
-	wp_mail( $to, 'Quote ' . $f['first_name'] . ' ' . $f['last_name'] . ' ' . $f['date'], $body, array( 'Content-Type: text/plain; charset=UTF-8' ) );
+	// Each field also goes in its own X-Mecca-* header, which Email by Zapier exposes as a separate raw__ field.
+	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+	foreach ( $lines as $k => $v ) {
+		$headers[] = 'X-Mecca-' . str_replace( '_', '-', ucwords( $k, '_' ) ) . ': ' . trim( preg_replace( '/[\r\n]+/', ' ', (string) $v ) );
+	}
+	wp_mail( $to, 'Quote ' . $f['first_name'] . ' ' . $f['last_name'] . ' ' . $f['date'], $body, $headers );
 }, 10, 3 );
