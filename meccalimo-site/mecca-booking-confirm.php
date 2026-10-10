@@ -302,7 +302,7 @@ add_filter( 'wp_mail', function ( $args ) {
 	update_post_meta( $id, '_bc_status', 'quote' );
 	// The quote email is what you reply to, so keep the booking button out of it.
 	// Send the button in a separate, staff-only email whose replies come back to you.
-	$url  = home_url( '/new-booking/?from=' . $id );
+	$url  = add_query_arg( 'from', $id, mecca_bc_staff_url() ); // carries the key: opens without logging in
 	$name = trim( $d['first_name'] . ' ' . $d['last_name'] );
 	add_action( 'shutdown', function () use ( $url, $name, $d ) {
 		wp_mail(
