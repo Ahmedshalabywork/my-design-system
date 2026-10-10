@@ -148,7 +148,13 @@ add_action( 'template_redirect', function () {
 	nocache_headers();
 	header( 'X-Robots-Tag: noindex, nofollow' );
 	$key = (string) ( $_REQUEST['k'] ?? '' );
-	if ( ! hash_equals( mecca_bc_staff_key(), $key ) ) {
+	if ( ! current_user_can( 'manage_options' ) && '' === $key ) {
+		// Links in emails carry no key (customers can see replies); log in first.
+		$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
+		wp_safe_redirect( add_query_arg( 'redirect_to', rawurlencode( home_url( $_SERVER['REQUEST_URI'] ) ), $login ) );
+		exit;
+	}
+	if ( ! current_user_can( 'manage_options' ) && ! hash_equals( mecca_bc_staff_key(), $key ) ) {
 		status_header( 404 );
 		echo '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><p style="font:16px sans-serif;padding:24px">Not found.</p>';
 		exit;
@@ -294,7 +300,7 @@ add_filter( 'wp_mail', function ( $args ) {
 	}
 	update_post_meta( $id, '_bc_details', $d );
 	update_post_meta( $id, '_bc_status', 'quote' );
-	$url  = add_query_arg( 'from', $id, mecca_bc_staff_url() );
+	$url  = home_url( '/new-booking/?from=' . $id ); // no key: customers see this email when you reply to it
 	$html = false !== stripos( (string) $args['message'], '</' );
 	$args['message'] .= $html
 		? '<p style="margin:16px 0 0"><a href="' . esc_url( $url ) . '" style="display:inline-block;background:#c9a45c;color:#111;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none">Price agreed? Create booking link →</a></p>'
