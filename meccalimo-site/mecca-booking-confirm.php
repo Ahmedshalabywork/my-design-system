@@ -102,10 +102,24 @@ add_action( 'template_redirect', function () {
 	}
 	status_header( 200 );
 	$made = null;
+	$from = (int) ( $_REQUEST['from'] ?? 0 );
+	$pre  = array();
+	if ( $from && 'quote' === get_post_meta( $from, '_bc_status', true ) ) {
+		$pre = (array) get_post_meta( $from, '_bc_details', true );
+	} else {
+		$from = 0;
+	}
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) ) {
 		$made = mecca_bc_create( wp_unslash( $_POST ) );
+		if ( $from ) {
+			wp_delete_post( $from, true ); // The quote is now a real booking link.
+		}
 	}
-	$recent = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 8, 'post_status' => 'publish' ) );
+	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 10, 'post_status' => 'publish', 'meta_key' => '_bc_status', 'meta_value' => 'quote' ) );
+	$recent = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 8, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote', 'compare' => '!=' ) ) ) );
+	$v      = function ( $k ) use ( $pre ) {
+		return esc_attr( $pre[ $k ] ?? '' );
+	};
 	$self   = mecca_bc_staff_url();
 	?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mecca Book">
@@ -132,17 +146,23 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">+ New booking</a>
 <?php else : ?>
 	<h1>New booking link</h1>
-	<form method="post" action="<?php echo esc_url( $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
-	<div class="two"><div><label>First name</label><input name="first_name" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" required autocomplete="off"></div></div>
-	<label>Phone</label><input name="phone" type="tel" inputmode="tel" placeholder="843-555-1234">
-	<label>Email (optional)</label><input name="email" type="email" inputmode="email">
-	<label>Date &amp; time</label><input name="trip_date" required placeholder="Sat, Oct 24 at 6:30 PM">
-	<label>Pickup</label><input name="pickup" required>
-	<label>Drop-off</label><input name="dropoff">
-	<div class="two"><div><label>Vehicle</label><select name="vehicle"><option>Executive Sedan</option><option>Luxury SUV</option><option>Mercedes Sprinter</option></select></div><div><label>Price</label><input name="price" placeholder="$450 total"></div></div>
-	<label>Notes for customer (optional)</label><textarea name="notes" rows="2"></textarea>
+	<?php if ( $from ) : ?><p class="muted" style="margin:-6px 0 6px">Filled in from their quote request. Just add the price.</p><?php endif; ?>
+	<form method="post" action="<?php echo esc_url( $from ? add_query_arg( 'from', $from, $self ) : $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+	<div class="two"><div><label>First name</label><input name="first_name" value="<?php echo $v( 'first_name' ); ?>" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" value="<?php echo $v( 'last_name' ); ?>" required autocomplete="off"></div></div>
+	<label>Phone</label><input name="phone" value="<?php echo $v( 'phone' ); ?>" type="tel" inputmode="tel" placeholder="843-555-1234">
+	<label>Email (optional)</label><input name="email" value="<?php echo $v( 'email' ); ?>" type="email" inputmode="email">
+	<label>Date &amp; time</label><input name="trip_date" value="<?php echo $v( 'trip_date' ); ?>" required placeholder="Sat, Oct 24 at 6:30 PM">
+	<label>Pickup</label><input name="pickup" value="<?php echo $v( 'pickup' ); ?>" required>
+	<label>Drop-off</label><input name="dropoff" value="<?php echo $v( 'dropoff' ); ?>">
+	<div class="two"><div><label>Vehicle</label><select name="vehicle"><?php foreach ( array( 'Executive Sedan', 'Luxury SUV', 'Mercedes Sprinter' ) as $o ) { echo '<option' . selected( $pre['vehicle'] ?? '', $o, false ) . '>' . esc_html( $o ) . '</option>'; } ?></select></div><div><label>Price</label><input name="price" value="<?php echo $v( 'price' ); ?>" placeholder="$450 total"></div></div>
+	<label>Notes for customer (optional)</label><textarea name="notes" rows="3"><?php echo esc_textarea( $pre['notes'] ?? '' ); ?></textarea>
 	<button>Create link</button></form>
 <?php endif; ?>
+	<?php if ( $quotes && ! $made ) : ?>
+	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">New quote requests — tap to make a link</div>
+	<?php foreach ( $quotes as $q ) : ?><div><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><?php echo esc_html( $q->post_title ); ?> <span style="color:var(--gold)">→</span></a></div><?php endforeach; ?>
+	</div>
+	<?php endif; ?>
 	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">Recent</div>
 	<?php foreach ( $recent as $p ) : $st = get_post_meta( $p->ID, '_bc_status', true ); $c = get_post_meta( $p->ID, '_bc_card', true ); ?>
 		<div><?php echo esc_html( $p->post_title ); ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
@@ -153,6 +173,62 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<?php
 	exit;
 } );
+
+
+/* ---------------------------------------------------------------- Quote requests → prefilled booking links */
+
+/**
+ * When the website quote form emails "New Quote Request: ...", save the request so it
+ * can be turned into a booking link with one tap, and add that button to the email.
+ */
+add_filter( 'wp_mail', function ( $args ) {
+	if ( empty( $args['subject'] ) || 0 !== strpos( (string) $args['subject'], 'New Quote Request:' ) || empty( $_POST['mecca_qf_submit'] ) ) {
+		return $args;
+	}
+	$p   = wp_unslash( $_POST );
+	$g   = function ( $k ) use ( $p ) {
+		return sanitize_text_field( $p[ $k ] ?? '' );
+	};
+	$ts  = strtotime( $g( 'date' ) . ' ' . $g( 'time' ) );
+	$pax = (int) $g( 'passengers' );
+	$notes = array_filter( array(
+		$g( 'service' ) ? 'Service: ' . $g( 'service' ) : '',
+		$pax ? 'Passengers: ' . $pax : '',
+		$g( 'hours' ) ? 'Hours: ' . $g( 'hours' ) : '',
+		$g( 'stop' ) ? 'Stop: ' . $g( 'stop' ) : '',
+		$g( 'flight' ) ? 'Flight: ' . $g( 'flight' ) : '',
+		! empty( $p['round_trip'] ) ? 'Return: ' . $g( 'return_date' ) . ' ' . $g( 'return_time' ) : '',
+		sanitize_textarea_field( $p['notes'] ?? '' ),
+	) );
+	$d = array(
+		'first_name' => $g( 'first_name' ),
+		'last_name'  => $g( 'last_name' ),
+		'email'      => sanitize_email( $p['email'] ?? '' ),
+		'phone'      => $g( 'phone' ),
+		'trip_date'  => $ts ? date( 'D, M j \\a\\t g:i A', $ts ) : trim( $g( 'date' ) . ' ' . $g( 'time' ) ),
+		'pickup'     => $g( 'pickup' ),
+		'dropoff'    => $g( 'dropoff' ),
+		'vehicle'    => $pax > 5 ? 'Mercedes Sprinter' : ( $pax > 2 ? 'Luxury SUV' : 'Executive Sedan' ),
+		'price'      => '',
+		'notes'      => implode( "\n", $notes ),
+	);
+	$id = wp_insert_post( array(
+		'post_type'   => 'mecca_booking',
+		'post_status' => 'publish',
+		'post_title'  => trim( $d['first_name'] . ' ' . $d['last_name'] ) . ' — ' . $d['trip_date'],
+	) );
+	if ( ! $id ) {
+		return $args;
+	}
+	update_post_meta( $id, '_bc_details', $d );
+	update_post_meta( $id, '_bc_status', 'quote' );
+	$url  = add_query_arg( 'from', $id, mecca_bc_staff_url() );
+	$html = false !== stripos( (string) $args['message'], '</' );
+	$args['message'] .= $html
+		? '<p style="margin:16px 0 0"><a href="' . esc_url( $url ) . '" style="display:inline-block;background:#c9a45c;color:#111;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none">Price agreed? Create booking link →</a></p>'
+		: "\n\nPrice agreed? Create the booking link: " . $url;
+	return $args;
+}, 6 );
 
 /* ---------------------------------------------------------------- Admin */
 
@@ -235,7 +311,7 @@ function mecca_bc_admin_list() {
 		$st   = get_post_meta( $p->ID, '_bc_status', true );
 		$card = get_post_meta( $p->ID, '_bc_card', true );
 		$idf  = get_post_meta( $p->ID, '_bc_id_file', true );
-		echo '<tr><td>' . esc_html( $p->post_title ) . '</td><td>' . ( 'confirmed' === $st ? '<strong style="color:#1a7f37">Confirmed</strong>' : 'Waiting on customer' ) . '</td><td>' . esc_html( $card ? $card['brand'] . ' •••• ' . $card['last4'] : '—' ) . '</td><td>' . ( $idf ? 'Uploaded' : '—' ) . '</td><td><a href="' . esc_url( admin_url( 'admin.php?page=mecca-bookings&view_id=' . $p->ID ) ) . '">Open</a></td></tr>';
+		echo '<tr><td>' . esc_html( $p->post_title ) . '</td><td>' . ( 'confirmed' === $st ? '<strong style="color:#1a7f37">Confirmed</strong>' : ( 'quote' === $st ? 'Quote request (no link yet)' : 'Waiting on customer' ) ) . '</td><td>' . esc_html( $card ? $card['brand'] . ' •••• ' . $card['last4'] : '—' ) . '</td><td>' . ( $idf ? 'Uploaded' : '—' ) . '</td><td><a href="' . esc_url( admin_url( 'admin.php?page=mecca-bookings&view_id=' . $p->ID ) ) . '">Open</a></td></tr>';
 	}
 	if ( ! $q ) {
 		echo '<tr><td colspan="5">No booking links yet.</td></tr>';
