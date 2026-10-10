@@ -269,7 +269,7 @@ add_action( 'admin_menu', function () {
 } );
 
 function mecca_bc_admin_settings() {
-	if ( isset( $_POST['mecca_bc_save'] ) && check_admin_referer( 'mecca_bc_settings' ) ) {
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['_wpnonce'] ) && check_admin_referer( 'mecca_bc_settings' ) ) {
 		$old = (array) get_option( 'mecca_bc_settings', array() );
 		$new = array(
 			'env'         => 'production' === ( $_POST['env'] ?? '' ) ? 'production' : 'sandbox',
@@ -291,7 +291,7 @@ function mecca_bc_admin_settings() {
 	<tr><th>Application ID</th><td><input class="regular-text" name="app_id" value="<?php echo esc_attr( mecca_bc_opt( 'app_id' ) ); ?>"></td></tr>
 	<tr><th>Location ID</th><td><input class="regular-text" name="location_id" value="<?php echo esc_attr( mecca_bc_opt( 'location_id' ) ); ?>"></td></tr>
 	<tr><th>Access token</th><td><input class="regular-text" type="password" name="token" placeholder="<?php echo $has_token ? 'Saved — leave blank to keep' : ''; ?>" autocomplete="off"></td></tr>
-	</table><p><button class="button button-primary" name="mecca_bc_save" value="1">Save</button></p></form></div>
+	</table><p><input type="hidden" name="mecca_bc_save" value="1"><button class="button button-primary">Save</button></p></form></div>
 	<?php
 }
 
