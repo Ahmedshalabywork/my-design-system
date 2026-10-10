@@ -202,7 +202,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 </div></body></html>
 	<?php
 	exit;
-} );
+}, 1 );
 
 
 /* ---------------------------------------------------------------- Quote requests → prefilled booking links */
@@ -456,12 +456,14 @@ add_action( 'template_redirect', function () {
 	if ( $post && 'POST' === $_SERVER['REQUEST_METHOD'] && 'confirmed' !== get_post_meta( $post->ID, '_bc_status', true ) ) {
 		$err = mecca_bc_submit( $post );
 		if ( '' === $err ) {
-			$msg = 'done';
+			// Send the browser to a plain GET of the same link so a refresh or "back" never re-posts or lands elsewhere.
+			wp_safe_redirect( home_url( '/confirm/?t=' . get_post_meta( $post->ID, '_bc_token', true ) . '&done=1' ), 303 );
+			exit;
 		}
 	}
 	mecca_bc_render( $post, $msg, $err );
 	exit;
-} );
+}, 1 );
 
 function mecca_bc_submit( $post ) {
 	if ( ! wp_verify_nonce( $_POST['_bcn'] ?? '', 'mecca_bc_confirm_' . $post->ID ) ) {
