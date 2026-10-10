@@ -44,6 +44,116 @@ add_action( 'init', function () {
 	) );
 } );
 
+
+/** Create a booking link from raw form fields. Returns array( id, link, details ). */
+function mecca_bc_create( $in ) {
+	$f = array();
+	foreach ( array( 'first_name', 'last_name', 'email', 'phone', 'trip_date', 'pickup', 'dropoff', 'vehicle', 'price', 'notes' ) as $k ) {
+		$f[ $k ] = 'notes' === $k ? sanitize_textarea_field( $in[ $k ] ?? '' ) : sanitize_text_field( $in[ $k ] ?? '' );
+	}
+	$token = wp_generate_password( 32, false, false );
+	$id    = wp_insert_post( array(
+		'post_type'   => 'mecca_booking',
+		'post_status' => 'publish',
+		'post_title'  => trim( $f['first_name'] . ' ' . $f['last_name'] ) . ' — ' . $f['trip_date'],
+	) );
+	update_post_meta( $id, '_bc_token', $token );
+	update_post_meta( $id, '_bc_details', $f );
+	update_post_meta( $id, '_bc_status', 'sent' );
+	return array( 'id' => $id, 'link' => home_url( '/confirm/?t=' . $token ), 'details' => $f );
+}
+
+/** Secret key for the phone staff page (/new-booking/?k=KEY). */
+function mecca_bc_staff_key() {
+	$k = get_option( 'mecca_bc_staff_key' );
+	if ( ! $k ) {
+		$k = wp_generate_password( 24, false, false );
+		update_option( 'mecca_bc_staff_key', $k, false );
+	}
+	return $k;
+}
+
+function mecca_bc_staff_url() {
+	return home_url( '/new-booking/?k=' . mecca_bc_staff_key() );
+}
+
+/** Pre-written customer message for SMS/email. */
+function mecca_bc_message( $d, $link ) {
+	return 'Hi ' . ( $d['first_name'] ?? '' ) . ', this is Mecca Limo. Thanks for booking with us! Please confirm your ride (' . ( $d['trip_date'] ?? '' ) . ') here: ' . $link . ' It takes 2 minutes. Your card is saved securely and nothing is charged today. Questions? Call or text (843) 804-1188.';
+}
+
+/* ---------------------------------------------------------------- Phone staff page */
+
+add_action( 'template_redirect', function () {
+	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+	if ( 'new-booking' !== $path ) {
+		return;
+	}
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+	nocache_headers();
+	header( 'X-Robots-Tag: noindex, nofollow' );
+	$key = (string) ( $_REQUEST['k'] ?? '' );
+	if ( ! hash_equals( mecca_bc_staff_key(), $key ) ) {
+		status_header( 404 );
+		echo '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><p style="font:16px sans-serif;padding:24px">Not found.</p>';
+		exit;
+	}
+	status_header( 200 );
+	$made = null;
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) ) {
+		$made = mecca_bc_create( wp_unslash( $_POST ) );
+	}
+	$recent = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 8, 'post_status' => 'publish' ) );
+	$self   = mecca_bc_staff_url();
+	?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mecca Book">
+<link rel="apple-touch-icon" href="<?php echo esc_url( home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' ) ); ?>">
+<title>Mecca Book</title>
+<style>
+:root{--gold:#c9a45c;--bg:#0e0e10;--card:#17171a;--line:#2a2a2f;--text:#f2efe8;--muted:#a9a6a0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:520px;margin:0 auto;padding:16px 16px 40px}h1{font:600 22px Georgia,serif;margin:6px 0 14px;color:var(--gold)}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0f0f12;color:var(--text);font-size:16px}
+.two{display:flex;gap:10px}.two>div{flex:1}button,.btn{display:block;width:100%;text-align:center;padding:14px;border:0;border-radius:10px;background:var(--gold);color:#111;font-size:17px;font-weight:700;margin-top:14px;text-decoration:none}
+.btn.alt{background:#24242a;color:var(--text);border:1px solid var(--line)}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 16px}
+.link{word-break:break-all;font-size:14px;color:var(--gold)}.list a{color:var(--text);text-decoration:none}.list div{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.ok{color:#5fd38a}.muted{color:var(--muted)}
+</style></head><body><div class="wrap">
+<?php if ( $made ) :
+		$msg = mecca_bc_message( $made['details'], $made['link'] );
+		$ph  = preg_replace( '/[^0-9+]/', '', $made['details']['phone'] );
+		?>
+	<h1>Link ready ✓</h1>
+	<div class="box"><div class="muted" style="font-size:13px">For <?php echo esc_html( trim( $made['details']['first_name'] . ' ' . $made['details']['last_name'] ) ); ?></div><div class="link"><?php echo esc_html( $made['link'] ); ?></div></div>
+	<a class="btn" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text it</a>
+	<?php if ( $made['details']['email'] ) : ?><a class="btn alt" href="mailto:<?php echo esc_attr( $made['details']['email'] ); ?>?subject=<?php echo rawurlencode( 'Confirm your Mecca Limo booking' ); ?>&amp;body=<?php echo rawurlencode( $msg ); ?>">✉️ Email it</a><?php endif; ?>
+	<button type="button" class="btn alt" onclick="navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( $made['link'] ) ); ?>);this.textContent='Copied ✓'">📋 Copy link</button>
+	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">+ New booking</a>
+<?php else : ?>
+	<h1>New booking link</h1>
+	<form method="post" action="<?php echo esc_url( $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+	<div class="two"><div><label>First name</label><input name="first_name" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" required autocomplete="off"></div></div>
+	<label>Phone</label><input name="phone" type="tel" inputmode="tel" placeholder="843-555-1234">
+	<label>Email (optional)</label><input name="email" type="email" inputmode="email">
+	<label>Date &amp; time</label><input name="trip_date" required placeholder="Sat, Oct 24 at 6:30 PM">
+	<label>Pickup</label><input name="pickup" required>
+	<label>Drop-off</label><input name="dropoff">
+	<div class="two"><div><label>Vehicle</label><select name="vehicle"><option>Executive Sedan</option><option>Luxury SUV</option><option>Mercedes Sprinter</option></select></div><div><label>Price</label><input name="price" placeholder="$450 total"></div></div>
+	<label>Notes for customer (optional)</label><textarea name="notes" rows="2"></textarea>
+	<button>Create link</button></form>
+<?php endif; ?>
+	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">Recent</div>
+	<?php foreach ( $recent as $p ) : $st = get_post_meta( $p->ID, '_bc_status', true ); $c = get_post_meta( $p->ID, '_bc_card', true ); ?>
+		<div><?php echo esc_html( $p->post_title ); ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
+	<?php endforeach; if ( ! $recent ) : ?><div class="muted">No bookings yet.</div><?php endif; ?>
+	</div>
+	<p class="muted" style="font-size:12px;text-align:center">Keep this page private. To see ID photos, use the website dashboard.</p>
+</div></body></html>
+	<?php
+	exit;
+} );
+
 /* ---------------------------------------------------------------- Admin */
 
 add_action( 'admin_menu', function () {
@@ -82,20 +192,7 @@ function mecca_bc_admin_settings() {
 function mecca_bc_admin_new() {
 	$link = '';
 	if ( isset( $_POST['mecca_bc_create'] ) && check_admin_referer( 'mecca_bc_new' ) ) {
-		$f = array();
-		foreach ( array( 'first_name', 'last_name', 'email', 'phone', 'trip_date', 'pickup', 'dropoff', 'vehicle', 'price', 'notes' ) as $k ) {
-			$f[ $k ] = 'notes' === $k ? sanitize_textarea_field( wp_unslash( $_POST[ $k ] ?? '' ) ) : sanitize_text_field( wp_unslash( $_POST[ $k ] ?? '' ) );
-		}
-		$token = wp_generate_password( 32, false, false );
-		$id    = wp_insert_post( array(
-			'post_type'   => 'mecca_booking',
-			'post_status' => 'publish',
-			'post_title'  => trim( $f['first_name'] . ' ' . $f['last_name'] ) . ' — ' . $f['trip_date'],
-		) );
-		update_post_meta( $id, '_bc_token', $token );
-		update_post_meta( $id, '_bc_details', $f );
-		update_post_meta( $id, '_bc_status', 'sent' );
-		$link = home_url( '/confirm/?t=' . $token );
+		$link = mecca_bc_create( wp_unslash( $_POST ) )['link'];
 	}
 	?>
 	<div class="wrap"><h1>New booking link</h1>
@@ -129,6 +226,10 @@ function mecca_bc_admin_list() {
 	if ( '' === mecca_bc_opt( 'token' ) ) {
 		echo '<div class="notice notice-warning"><p>Square isn\'t connected yet. Add your keys in <a href="' . esc_url( admin_url( 'admin.php?page=mecca-bookings-settings' ) ) . '">Square settings</a>.</p></div>';
 	}
+	if ( isset( $_GET['newkey'] ) && check_admin_referer( 'mecca_bc_newkey' ) ) {
+		delete_option( 'mecca_bc_staff_key' );
+	}
+	echo '<div class="notice notice-info"><p><strong>Phone shortcut:</strong> open this on your phone and "Add to Home Screen": <input class="large-text" readonly value="' . esc_attr( mecca_bc_staff_url() ) . '" onclick="this.select()"> <a href="' . esc_url( wp_nonce_url( admin_url( 'admin.php?page=mecca-bookings&newkey=1' ), 'mecca_bc_newkey' ) ) . '" onclick="return confirm(\'Make a new private link? The old one stops working.\')">Make a new private link</a></p></div>';
 	echo '<table class="widefat striped" style="margin-top:12px"><thead><tr><th>Customer / trip</th><th>Status</th><th>Card</th><th>ID</th><th></th></tr></thead><tbody>';
 	foreach ( $q as $p ) {
 		$st   = get_post_meta( $p->ID, '_bc_status', true );
