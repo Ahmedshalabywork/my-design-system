@@ -65,8 +65,8 @@ function mecca_ai_service() {
 		'services' => $services,
 		'fleet'    => array(
 			array( 'vehicle' => 'Mercedes-Benz Sprinter', 'passengers' => 14, 'notes' => 'Wedding parties, corporate groups, nights out; room for luggage' ),
-			array( 'vehicle' => 'Luxury SUV (Cadillac Escalade, Chevrolet Suburban, GMC Yukon Denali)', 'passengers' => 6, 'notes' => 'Room for luggage' ),
-			array( 'vehicle' => 'Executive sedan', 'passengers' => 3, 'notes' => 'Up to 2 bags; airport runs and business travel' ),
+			array( 'vehicle' => 'Luxury SUV (Cadillac Escalade, Chevrolet Suburban, GMC Yukon Denali)', 'passengers' => 5, 'notes' => 'Room for luggage' ),
+			array( 'vehicle' => 'Executive sedan', 'passengers' => 2, 'notes' => 'Room for luggage; airport runs and business travel' ),
 		),
 		'airports' => array( 'Charleston International Airport (CHS)', 'Charleston Executive Airport (JZI)', 'Mount Pleasant Regional Airport (LRO)' ),
 		'booking'  => array( 'quote' => home_url( '/get-a-quote/' ), 'phone' => '+1-843-804-1188', 'policy' => home_url( '/policy/' ) ),

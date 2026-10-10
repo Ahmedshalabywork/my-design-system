@@ -16,7 +16,7 @@ add_action( 'mecca_qf_sent', function ( $f, $email, $tel ) {
 	if ( ! empty( $_COOKIE['mecca_click'] ) && preg_match( '/^(gclid|gbraid|wbraid):([\w.-]{10,200})\|/', sanitize_text_field( wp_unslash( $_COOKIE['mecca_click'] ) ), $m ) ) {
 		$click = $m[1] . '=' . $m[2];
 	}
-	$vehicle = (int) $f['passengers'] > 6 ? 'Sprinter' : ( (int) $f['passengers'] > 3 ? 'Suburban' : 'Sedan' );
+	$vehicle = (int) $f['passengers'] > 5 ? 'Sprinter' : ( (int) $f['passengers'] > 2 ? 'Suburban' : 'Sedan' );
 	$notes   = array_filter( array(
 		'Pickup: ' . date( 'l, M j, Y \\a\\t g:i A', strtotime( $f['date'] . ' ' . $f['time'] ) ),
 		'Service: ' . $f['service'],
