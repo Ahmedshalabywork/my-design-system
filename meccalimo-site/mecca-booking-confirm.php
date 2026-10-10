@@ -63,6 +63,17 @@ function mecca_bc_create( $in ) {
 	return array( 'id' => $id, 'link' => home_url( '/confirm/?t=' . $token ), 'details' => $f );
 }
 
+/** Update an unconfirmed booking's details; the customer's link stays the same. */
+function mecca_bc_update( $id, $in ) {
+	$f = array();
+	foreach ( array( 'first_name', 'last_name', 'email', 'phone', 'trip_date', 'pickup', 'dropoff', 'vehicle', 'price', 'notes' ) as $k ) {
+		$f[ $k ] = 'notes' === $k ? sanitize_textarea_field( $in[ $k ] ?? '' ) : sanitize_text_field( $in[ $k ] ?? '' );
+	}
+	wp_update_post( array( 'ID' => $id, 'post_title' => trim( $f['first_name'] . ' ' . $f['last_name'] ) . ' — ' . $f['trip_date'] ) );
+	update_post_meta( $id, '_bc_details', $f );
+	return array( 'id' => $id, 'link' => home_url( '/confirm/?t=' . get_post_meta( $id, '_bc_token', true ) ), 'details' => $f, 'updated' => true );
+}
+
 /** Secret key for the phone staff page (/new-booking/?k=KEY). */
 function mecca_bc_staff_key() {
 	$k = get_option( 'mecca_bc_staff_key' );
@@ -102,20 +113,39 @@ add_action( 'template_redirect', function () {
 	}
 	status_header( 200 );
 	$made = null;
+	// ?from=ID opens a quote request OR a not-yet-confirmed booking, pre-filled, so it can be fixed and re-sent.
 	$from = (int) ( $_REQUEST['from'] ?? 0 );
 	$pre  = array();
-	if ( $from && 'quote' === get_post_meta( $from, '_bc_status', true ) ) {
-		$pre = (array) get_post_meta( $from, '_bc_details', true );
+	$fst  = $from ? get_post_meta( $from, '_bc_status', true ) : '';
+	if ( $from && in_array( $fst, array( 'quote', 'sent' ), true ) && 'mecca_booking' === get_post_type( $from ) ) {
+		$pre    = (array) get_post_meta( $from, '_bc_details', true );
+		$linked = 'quote' === $fst ? (int) get_post_meta( $from, '_bc_linked', true ) : 0;
+		if ( $linked && 'sent' === get_post_meta( $linked, '_bc_status', true ) ) {
+			$pre = (array) get_post_meta( $linked, '_bc_details', true ); // Show what was last sent, including the price.
+		}
 	} else {
 		$from = 0;
 	}
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) ) {
-		$made = mecca_bc_create( wp_unslash( $_POST ) );
-		if ( $from ) {
-			wp_delete_post( $from, true ); // The quote is now a real booking link.
+		$target = 0;
+		if ( $from && 'sent' === $fst ) {
+			$target = $from; // Editing an unconfirmed link.
+		} elseif ( $from && 'quote' === $fst ) {
+			$linked = (int) get_post_meta( $from, '_bc_linked', true );
+			if ( $linked && 'sent' === get_post_meta( $linked, '_bc_status', true ) ) {
+				$target = $linked; // Quote already has an unconfirmed link: update it instead of making another.
+			}
+		}
+		if ( $target ) {
+			$made = mecca_bc_update( $target, wp_unslash( $_POST ) );
+		} else {
+			$made = mecca_bc_create( wp_unslash( $_POST ) );
+		}
+		if ( $from && 'quote' === $fst ) {
+			update_post_meta( $from, '_bc_linked', $made['id'] ); // Keep the quote so it can be reopened.
 		}
 	}
-	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 10, 'post_status' => 'publish', 'meta_key' => '_bc_status', 'meta_value' => 'quote' ) );
+	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 10, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote' ), array( 'key' => '_bc_linked', 'compare' => 'NOT EXISTS' ) ) ) );
 	$recent = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 8, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote', 'compare' => '!=' ) ) ) );
 	$v      = function ( $k ) use ( $pre ) {
 		return esc_attr( $pre[ $k ] ?? '' );
@@ -138,7 +168,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 		$msg = mecca_bc_message( $made['details'], $made['link'] );
 		$ph  = preg_replace( '/[^0-9+]/', '', $made['details']['phone'] );
 		?>
-	<h1>Link ready ✓</h1>
+	<h1><?php echo ! empty( $made['updated'] ) ? 'Link updated ✓' : 'Link ready ✓'; ?></h1>
 	<div class="box"><div class="muted" style="font-size:13px">For <?php echo esc_html( trim( $made['details']['first_name'] . ' ' . $made['details']['last_name'] ) ); ?></div><div class="link"><?php echo esc_html( $made['link'] ); ?></div></div>
 	<a class="btn" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text it</a>
 	<?php if ( $made['details']['email'] ) : ?><a class="btn alt" href="mailto:<?php echo esc_attr( $made['details']['email'] ); ?>?subject=<?php echo rawurlencode( 'Confirm your Mecca Limo booking' ); ?>&amp;body=<?php echo rawurlencode( $msg ); ?>">✉️ Email it</a><?php endif; ?>
@@ -146,7 +176,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">+ New booking</a>
 <?php else : ?>
 	<h1>New booking link</h1>
-	<?php if ( $from ) : ?><p class="muted" style="margin:-6px 0 6px">Filled in from their quote request. Just add the price.</p><?php endif; ?>
+	<?php if ( $from ) : ?><p class="muted" style="margin:-6px 0 6px"><?php echo 'sent' === $fst ? 'Editing this link. The customer\'s link stays the same; send it again after saving.' : 'Filled in from their quote request. Just add the price.'; ?></p><?php endif; ?>
 	<form method="post" action="<?php echo esc_url( $from ? add_query_arg( 'from', $from, $self ) : $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
 	<div class="two"><div><label>First name</label><input name="first_name" value="<?php echo $v( 'first_name' ); ?>" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" value="<?php echo $v( 'last_name' ); ?>" required autocomplete="off"></div></div>
 	<label>Phone</label><input name="phone" value="<?php echo $v( 'phone' ); ?>" type="tel" inputmode="tel" placeholder="843-555-1234">
@@ -165,7 +195,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<?php endif; ?>
 	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">Recent</div>
 	<?php foreach ( $recent as $p ) : $st = get_post_meta( $p->ID, '_bc_status', true ); $c = get_post_meta( $p->ID, '_bc_card', true ); ?>
-		<div><?php echo esc_html( $p->post_title ); ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
+		<div><?php if ( 'sent' === $st ) : ?><a href="<?php echo esc_url( add_query_arg( 'from', $p->ID, $self ) ); ?>"><?php echo esc_html( $p->post_title ); ?> <span style="color:var(--gold)">✎ edit / resend</span></a><?php else : echo esc_html( $p->post_title ); endif; ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
 	<?php endforeach; if ( ! $recent ) : ?><div class="muted">No bookings yet.</div><?php endif; ?>
 	</div>
 	<p class="muted" style="font-size:12px;text-align:center">Keep this page private. To see ID photos, use the website dashboard.</p>
