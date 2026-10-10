@@ -74,6 +74,16 @@ function mecca_bc_update( $id, $in ) {
 	return array( 'id' => $id, 'link' => home_url( '/confirm/?t=' . get_post_meta( $id, '_bc_token', true ) ), 'details' => $f, 'updated' => true );
 }
 
+/**
+ * Link to a booking in the dashboard that also works when logged out: the site hides
+ * /wp-admin behind a custom login page (WPS Hide Login), so go through that page first.
+ */
+function mecca_bc_admin_link( $id ) {
+	$dest  = admin_url( 'admin.php?page=mecca-bookings&view_id=' . (int) $id );
+	$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
+	return add_query_arg( 'redirect_to', rawurlencode( $dest ), $login );
+}
+
 /** Secret key for the phone staff page (/new-booking/?k=KEY). */
 function mecca_bc_staff_key() {
 	$k = get_option( 'mecca_bc_staff_key' );
@@ -552,7 +562,7 @@ function mecca_bc_submit( $post ) {
 	wp_mail(
 		'info@meccalimo.com',
 		'Booking confirmed: ' . $post->post_title,
-		"A customer completed their booking confirmation.\n\n" . $post->post_title . "\nCard on file: " . ( $c['card_brand'] ?? '' ) . ' •••• ' . ( $c['last_4'] ?? '' ) . "\nSigned by: " . $name . "\n\nOpen it (card, signature and ID photo): " . admin_url( 'admin.php?page=mecca-bookings&view_id=' . $post->ID )
+		"A customer completed their booking confirmation.\n\n" . $post->post_title . "\nCard on file: " . ( $c['card_brand'] ?? '' ) . ' •••• ' . ( $c['last_4'] ?? '' ) . "\nSigned by: " . $name . "\n\nOpen it (card, signature and ID photo): " . mecca_bc_admin_link( $post->ID )
 	);
 	return '';
 }
