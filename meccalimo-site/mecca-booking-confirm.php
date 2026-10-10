@@ -94,10 +94,27 @@ add_action( 'template_redirect', function () {
 		wp_safe_redirect( $dest );
 		exit;
 	}
+	// Remember the booking in a cookie: some login flows drop redirect_to and land on the dashboard.
+	setcookie( 'mecca_bk', (string) (int) $m[1], time() + 900, COOKIEPATH ?: '/', '', is_ssl(), true );
+	setcookie( 'mecca_bk', (string) (int) $m[1], time() + 900, ADMIN_COOKIE_PATH, '', is_ssl(), true );
 	$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
 	wp_safe_redirect( add_query_arg( 'redirect_to', rawurlencode( $dest ), $login ) );
 	exit;
 }, 0 );
+
+/* After login, finish the trip to the booking the short link asked for. */
+add_action( 'admin_init', function () {
+	$id = (int) ( $_COOKIE['mecca_bk'] ?? 0 );
+	if ( ! $id || wp_doing_ajax() || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	setcookie( 'mecca_bk', '', time() - 3600, COOKIEPATH ?: '/', '', is_ssl(), true );
+	setcookie( 'mecca_bk', '', time() - 3600, ADMIN_COOKIE_PATH, '', is_ssl(), true );
+	if ( ( $_GET['page'] ?? '' ) !== 'mecca-bookings' ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=mecca-bookings&view_id=' . $id ) );
+		exit;
+	}
+} );
 
 /** Secret key for the phone staff page (/new-booking/?k=KEY). */
 function mecca_bc_staff_key() {
