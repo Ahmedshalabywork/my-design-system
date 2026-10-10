@@ -680,3 +680,8 @@ button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--gold
 </div></body></html>
 	<?php
 }
+
+/* "Remember Me" keeps you logged in for a year, so the booking page opens without logging in each time. */
+add_filter( 'auth_cookie_expiration', function ( $ttl, $user_id, $remember ) {
+	return $remember ? YEAR_IN_SECONDS : $ttl;
+}, 10, 3 );
