@@ -18,6 +18,7 @@ add_action( 'mecca_qf_sent', function ( $f, $email, $tel ) {
 	}
 	$vehicle = (int) $f['passengers'] > 6 ? 'Sprinter' : ( (int) $f['passengers'] > 3 ? 'Suburban' : 'Sedan' );
 	$notes   = array_filter( array(
+		'Pickup: ' . date( 'l, M j, Y \\a\\t g:i A', strtotime( $f['date'] . ' ' . $f['time'] ) ),
 		'Service: ' . $f['service'],
 		$f['hours'] ? 'Hours: ' . $f['hours'] : '',
 		$f['stop'] ? 'Stop: ' . $f['stop'] : '',
