@@ -148,6 +148,13 @@ add_action( 'template_redirect', function () {
 	nocache_headers();
 	header( 'X-Robots-Tag: noindex, nofollow' );
 	$key = (string) ( $_REQUEST['k'] ?? '' );
+	// The phone app remembers the key in a cookie, so it opens even without ?k= in the address.
+	if ( '' === $key && ! empty( $_COOKIE['mecca_app'] ) && hash_equals( wp_hash( mecca_bc_staff_key() ), (string) $_COOKIE['mecca_app'] ) ) {
+		$key = mecca_bc_staff_key();
+	}
+	if ( '' !== $key && hash_equals( mecca_bc_staff_key(), $key ) ) {
+		setcookie( 'mecca_app', wp_hash( $key ), time() + YEAR_IN_SECONDS, '/new-booking', '', true, true );
+	}
 	if ( ! current_user_can( 'manage_options' ) && '' === $key ) {
 		// Links in emails carry no key (customers can see replies); log in first.
 		$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
@@ -200,9 +207,9 @@ add_action( 'template_redirect', function () {
 	};
 	$self   = mecca_bc_staff_url();
 	?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mecca Book">
+<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mecca Limo">
 <link rel="apple-touch-icon" href="<?php echo esc_url( home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' ) ); ?>">
-<title>Mecca Book</title>
+<title>Mecca Limo</title><meta name="theme-color" content="#0e0e10"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{--gold:#c9a45c;--bg:#0e0e10;--card:#17171a;--line:#2a2a2f;--text:#f2efe8;--muted:#a9a6a0}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
@@ -211,7 +218,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 .two{display:flex;gap:10px}.two>div{flex:1}button,.btn{display:block;width:100%;text-align:center;padding:14px;border:0;border-radius:10px;background:var(--gold);color:#111;font-size:17px;font-weight:700;margin-top:14px;text-decoration:none}
 .btn.alt{background:#24242a;color:var(--text);border:1px solid var(--line)}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 16px}
 .link{word-break:break-all;font-size:14px;color:var(--gold)}.list a{color:var(--text);text-decoration:none}.list div{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.ok{color:#5fd38a}.muted{color:var(--muted)}
-</style></head><body><div class="wrap">
+</style></head><body><div class="wrap"><div style="text-align:center;padding:6px 0 10px;border-bottom:1px solid var(--line);margin-bottom:14px"><img src="<?php echo esc_url( home_url( "/wp-content/plugins/mecca-home/assets/icon-192.png" ) ); ?>" alt="" style="width:44px;height:44px;border-radius:10px;vertical-align:middle"> <span style="font:600 20px Georgia,serif;color:var(--gold);vertical-align:middle;letter-spacing:.04em">MECCA LIMO</span></div>
 <?php if ( $made ) :
 		$msg = mecca_bc_message( $made['details'], $made['link'] );
 		$ph  = preg_replace( '/[^0-9+]/', '', $made['details']['phone'] );
@@ -223,7 +230,32 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<button type="button" class="btn alt" onclick="navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( $made['link'] ) ); ?>);this.textContent='Copied ✓'">📋 Copy link</button>
 	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">+ New booking</a>
 <?php else : ?>
-	<h1>New booking link</h1>
+	<?php if ( ! $from ) :
+		$all = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 300, 'post_status' => 'publish' ) );
+		?>
+	<input id="find" type="search" placeholder="🔍 Search customer name or phone" autocomplete="off" style="margin:4px 0 12px">
+	<div id="found" class="box list" style="display:none"></div>
+	<div id="pool" hidden>
+	<?php foreach ( $all as $q ) :
+		$qs = get_post_meta( $q->ID, '_bc_status', true );
+		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
+		$ql = 'quote' === $qs ? (int) get_post_meta( $q->ID, '_bc_linked', true ) : 0;
+		$lab = 'confirmed' === $qs ? '<span class="ok">Confirmed ✓</span>' : ( 'sent' === $qs ? '<span style="color:var(--gold)">✎ edit / resend link</span>' : ( $ql ? '<span style="color:var(--gold)">quote · link already made →</span>' : '<span style="color:var(--gold)">→ make link</span>' ) );
+		?>
+		<div data-s="<?php echo esc_attr( strtolower( $q->post_title . ' ' . ( $qd['phone'] ?? '' ) . ' ' . preg_replace( '/\D/', '', $qd['phone'] ?? '' ) . ' ' . ( $qd['email'] ?? '' ) ) ); ?>"><?php if ( 'confirmed' !== $qs ) : ?><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><?php endif; ?><strong><?php echo esc_html( $q->post_title ); ?></strong> <?php echo $lab; ?><br><span class="muted"><?php echo esc_html( trim( ( $qd['pickup'] ?? '' ) . ( ! empty( $qd['dropoff'] ) ? ' → ' . $qd['dropoff'] : '' ) ) ); ?></span><?php if ( 'confirmed' !== $qs ) : ?></a><?php endif; ?></div>
+	<?php endforeach; ?>
+	</div>
+	<script>(function(){var f=document.getElementById('find'),o=document.getElementById('found'),p=document.getElementById('pool').children;f.addEventListener('input',function(){var t=f.value.trim().toLowerCase(),h='',n=0;if(t.length>1){for(var i=0;i<p.length&&n<15;i++){if(p[i].getAttribute('data-s').indexOf(t)!==-1){h+='<div>'+p[i].innerHTML+'</div>';n++;}}if(!n)h='<div class="muted">No one found with “'+f.value.replace(/</g,'')+'”.</div>';}o.innerHTML=h;o.style.display=t.length>1?'block':'none';});})();</script>
+	<h1>Quote requests</h1>
+	<div class="box list">
+	<?php foreach ( $quotes as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
+		<div><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><strong><?php echo esc_html( $q->post_title ); ?></strong> <span style="color:var(--gold)">→ make link</span><br>
+		<span class="muted"><?php echo esc_html( trim( ( $qd['pickup'] ?? '' ) . ( ! empty( $qd['dropoff'] ) ? ' → ' . $qd['dropoff'] : '' ) ) ); ?></span></a>
+		<?php if ( ! empty( $qd['phone'] ) ) : ?><br><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $qd['phone'] ) ); ?>" style="color:var(--gold)">📞 <?php echo esc_html( $qd['phone'] ); ?></a><?php endif; ?></div>
+	<?php endforeach; if ( ! $quotes ) : ?><div class="muted">No new quote requests. New ones from the website show up here.</div><?php endif; ?>
+	</div>
+	<?php endif; ?>
+	<h1><?php echo $from ? 'New booking link' : 'Or make one by hand'; ?></h1>
 	<?php if ( $from ) : ?><p class="muted" style="margin:-6px 0 6px"><?php echo 'sent' === $fst ? 'Editing this link. The customer\'s link stays the same; send it again after saving.' : 'Filled in from their quote request. Just add the price.'; ?></p><?php endif; ?>
 	<form method="post" action="<?php echo esc_url( $from ? add_query_arg( 'from', $from, $self ) : $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
 	<div class="two"><div><label>First name</label><input name="first_name" value="<?php echo $v( 'first_name' ); ?>" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" value="<?php echo $v( 'last_name' ); ?>" required autocomplete="off"></div></div>
@@ -236,18 +268,16 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<label>Notes for customer (optional)</label><textarea name="notes" rows="3"><?php echo esc_textarea( $pre['notes'] ?? '' ); ?></textarea>
 	<button>Create link</button></form>
 <?php endif; ?>
-	<?php if ( $quotes && ! $made ) : ?>
-	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">New quote requests — tap to make a link</div>
-	<?php foreach ( $quotes as $q ) : ?><div><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><?php echo esc_html( $q->post_title ); ?> <span style="color:var(--gold)">→</span></a></div><?php endforeach; ?>
-	</div>
-	<?php endif; ?>
 	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">Recent</div>
 	<?php foreach ( $recent as $p ) : $st = get_post_meta( $p->ID, '_bc_status', true ); $c = get_post_meta( $p->ID, '_bc_card', true ); ?>
 		<div><?php if ( 'sent' === $st ) : ?><a href="<?php echo esc_url( add_query_arg( 'from', $p->ID, $self ) ); ?>"><?php echo esc_html( $p->post_title ); ?> <span style="color:var(--gold)">✎ edit / resend</span></a><?php else : echo esc_html( $p->post_title ); endif; ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
 	<?php endforeach; if ( ! $recent ) : ?><div class="muted">No bookings yet.</div><?php endif; ?>
 	</div>
 	<p class="muted" style="font-size:12px;text-align:center">Keep this page private. To see ID photos, use the website dashboard.</p>
-</div></body></html>
+</div>
+<script>/* Refresh the list when you come back to the app, so new quotes appear. */
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('form input:focus')&&!/[?&]from=/.test(location.search)&&!document.querySelector('.link'))location.reload();});</script>
+</body></html>
 	<?php
 	exit;
 }, 1 );
@@ -300,18 +330,7 @@ add_filter( 'wp_mail', function ( $args ) {
 	}
 	update_post_meta( $id, '_bc_details', $d );
 	update_post_meta( $id, '_bc_status', 'quote' );
-	// The quote email is what you reply to, so keep the booking button out of it.
-	// Send the button in a separate, staff-only email whose replies come back to you.
-	$url  = add_query_arg( 'from', $id, mecca_bc_staff_url() ); // carries the key: opens without logging in
-	$name = trim( $d['first_name'] . ' ' . $d['last_name'] );
-	add_action( 'shutdown', function () use ( $url, $name, $d ) {
-		wp_mail(
-			'info@meccalimo.com',
-			'🔒 Booking link for ' . $name . ' (staff only – don\'t forward)',
-			'<p style="font:15px sans-serif">' . esc_html( $name . ' — ' . $d['trip_date'] ) . '</p><p><a href="' . esc_url( $url ) . '" style="display:inline-block;background:#c9a45c;color:#111;padding:12px 18px;border-radius:8px;font:bold 15px sans-serif;text-decoration:none">Price agreed? Create booking link →</a></p><p style="font:13px sans-serif;color:#666">Staff only. Reply to the other email (New Quote Request) to talk to the customer.</p>',
-			array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: info@meccalimo.com' )
-		);
-	} );
+	// The quote now shows up in the Mecca app (/new-booking); the email stays button-free so replies are safe.
 	return $args;
 }, 6 );
 
@@ -634,7 +653,7 @@ label{display:block;font-weight:600;margin:12px 0 6px}input[type=text],input[typ
 button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--gold);color:#111;font-size:17px;font-weight:700;cursor:pointer;margin-top:8px}button:disabled{opacity:.6}
 .err{background:#3a1515;border:1px solid #7a2a2a;color:#ffd7d7;border-radius:8px;padding:12px;margin:0 0 16px}.ok{text-align:center}.ok .tick{font-size:48px;color:var(--gold)}
 .note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}.sandbox{background:#3a3315;border:1px solid #7a6a2a;color:#ffe9a8;border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:14px;text-align:center}
-</style></head><body><div class="wrap"><img class="logo" src="<?php echo esc_url( $logo ); ?>" alt="Mecca Limo">
+</style></head><body><div class="wrap"><div style="text-align:center;padding:6px 0 10px;border-bottom:1px solid var(--line);margin-bottom:14px"><img src="<?php echo esc_url( home_url( "/wp-content/plugins/mecca-home/assets/icon-192.png" ) ); ?>" alt="" style="width:44px;height:44px;border-radius:10px;vertical-align:middle"> <span style="font:600 20px Georgia,serif;color:var(--gold);vertical-align:middle;letter-spacing:.04em">MECCA LIMO</span></div><img class="logo" src="<?php echo esc_url( $logo ); ?>" alt="Mecca Limo">
 <?php if ( ! $post ) : ?>
 	<h1>Link not found</h1><p class="sub">This booking link is invalid or has expired. Please call or text <a style="color:var(--gold)" href="tel:+18438041188">(843) 804-1188</a>.</p>
 <?php elseif ( $done ) : ?>
