@@ -300,11 +300,18 @@ add_filter( 'wp_mail', function ( $args ) {
 	}
 	update_post_meta( $id, '_bc_details', $d );
 	update_post_meta( $id, '_bc_status', 'quote' );
-	$url  = home_url( '/new-booking/?from=' . $id ); // no key: customers see this email when you reply to it
-	$html = false !== stripos( (string) $args['message'], '</' );
-	$args['message'] .= $html
-		? '<p style="margin:16px 0 0"><a href="' . esc_url( $url ) . '" style="display:inline-block;background:#c9a45c;color:#111;padding:12px 18px;border-radius:8px;font-weight:bold;text-decoration:none">Price agreed? Create booking link →</a></p>'
-		: "\n\nPrice agreed? Create the booking link: " . $url;
+	// The quote email is what you reply to, so keep the booking button out of it.
+	// Send the button in a separate, staff-only email whose replies come back to you.
+	$url  = home_url( '/new-booking/?from=' . $id );
+	$name = trim( $d['first_name'] . ' ' . $d['last_name'] );
+	add_action( 'shutdown', function () use ( $url, $name, $d ) {
+		wp_mail(
+			'info@meccalimo.com',
+			'🔒 Booking link for ' . $name . ' (staff only – don\'t forward)',
+			'<p style="font:15px sans-serif">' . esc_html( $name . ' — ' . $d['trip_date'] ) . '</p><p><a href="' . esc_url( $url ) . '" style="display:inline-block;background:#c9a45c;color:#111;padding:12px 18px;border-radius:8px;font:bold 15px sans-serif;text-decoration:none">Price agreed? Create booking link →</a></p><p style="font:13px sans-serif;color:#666">Staff only. Reply to the other email (New Quote Request) to talk to the customer.</p>',
+			array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: info@meccalimo.com' )
+		);
+	} );
 	return $args;
 }, 6 );
 
