@@ -79,10 +79,25 @@ function mecca_bc_update( $id, $in ) {
  * /wp-admin behind a custom login page (WPS Hide Login), so go through that page first.
  */
 function mecca_bc_admin_link( $id ) {
-	$dest  = admin_url( 'admin.php?page=mecca-bookings&view_id=' . (int) $id );
-	$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
-	return add_query_arg( 'redirect_to', rawurlencode( $dest ), $login );
+	return home_url( '/bk/' . (int) $id . '/' );
 }
+
+/* Short link /bk/ID/: straight to the booking when logged in, else login first. */
+add_action( 'template_redirect', function () {
+	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+	if ( ! preg_match( '#^bk/(\d+)$#', $path, $m ) ) {
+		return;
+	}
+	nocache_headers();
+	$dest = admin_url( 'admin.php?page=mecca-bookings&view_id=' . (int) $m[1] );
+	if ( current_user_can( 'manage_options' ) ) {
+		wp_safe_redirect( $dest );
+		exit;
+	}
+	$login = get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url();
+	wp_safe_redirect( add_query_arg( 'redirect_to', rawurlencode( $dest ), $login ) );
+	exit;
+}, 0 );
 
 /** Secret key for the phone staff page (/new-booking/?k=KEY). */
 function mecca_bc_staff_key() {
@@ -382,7 +397,9 @@ function mecca_bc_admin_view( $id ) {
 	}
 	if ( get_post_meta( $id, '_bc_id_file', true ) ) {
 		$url = wp_nonce_url( admin_url( 'admin-post.php?action=mecca_bc_id&id=' . $id ), 'mecca_bc_id_' . $id );
-		echo '<tr><th>Photo ID</th><td><a class="button" href="' . esc_url( $url ) . '" target="_blank">View ID</a> <a class="button" href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=mecca_bc_id_delete&id=' . $id ), 'mecca_bc_id_del_' . $id ) ) . '" onclick="return confirm(\'Delete this ID photo permanently?\')">Delete ID photo</a><p class="description">Delete the ID once the trip is done. There\'s no reason to keep it.</p></td></tr>';
+		$ext = strtolower( pathinfo( (string) get_post_meta( $id, '_bc_id_file', true ), PATHINFO_EXTENSION ) );
+		$img = in_array( $ext, array( 'jpg', 'jpeg', 'png', 'webp' ), true ) ? '<a href="' . esc_url( $url ) . '" target="_blank"><img src="' . esc_url( $url ) . '" style="max-width:420px;width:100%;border:1px solid #ccd0d4;border-radius:6px;display:block;margin-bottom:8px" alt="Photo ID"></a>' : '';
+		echo '<tr><th>Photo ID</th><td>' . $img . '<a class="button" href="' . esc_url( $url ) . '" target="_blank">View ID</a> <a class="button" href="' . esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=mecca_bc_id_delete&id=' . $id ), 'mecca_bc_id_del_' . $id ) ) . '" onclick="return confirm(\'Delete this ID photo permanently?\')">Delete ID photo</a><p class="description">Delete the ID once the trip is done. There\'s no reason to keep it.</p></td></tr>';
 	}
 	echo '</table></div>';
 }
