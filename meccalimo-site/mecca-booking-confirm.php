@@ -268,12 +268,6 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,se
 	<label>Notes for customer (optional)</label><textarea name="notes" rows="3"><?php echo esc_textarea( $pre['notes'] ?? '' ); ?></textarea>
 	<button>Create link</button></form>
 <?php endif; ?>
-	<div class="box list" style="margin-top:22px"><div class="muted" style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:0">Recent</div>
-	<?php foreach ( $recent as $p ) : $st = get_post_meta( $p->ID, '_bc_status', true ); $c = get_post_meta( $p->ID, '_bc_card', true ); ?>
-		<div><?php if ( 'sent' === $st ) : ?><a href="<?php echo esc_url( add_query_arg( 'from', $p->ID, $self ) ); ?>"><?php echo esc_html( $p->post_title ); ?> <span style="color:var(--gold)">✎ edit / resend</span></a><?php else : echo esc_html( $p->post_title ); endif; ?><br><?php echo 'confirmed' === $st ? '<span class="ok">Confirmed · ' . esc_html( $c ? $c['brand'] . ' •••• ' . $c['last4'] : '' ) . '</span>' : '<span class="muted">Waiting on customer</span>'; ?></div>
-	<?php endforeach; if ( ! $recent ) : ?><div class="muted">No bookings yet.</div><?php endif; ?>
-	</div>
-	<p class="muted" style="font-size:12px;text-align:center">Keep this page private. To see ID photos, use the website dashboard.</p>
 </div>
 <script>/* Refresh the list when you come back to the app, so new quotes appear. */
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('form input:focus')&&!/[?&]from=/.test(location.search)&&!document.querySelector('.link'))location.reload();});</script>
