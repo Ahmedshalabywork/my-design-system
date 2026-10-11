@@ -135,6 +135,18 @@ function mecca_bc_message( $d, $link ) {
 	return 'Hi ' . ( $d['first_name'] ?? '' ) . ', this is Mecca Limo. Thanks for booking with us! Please confirm your ride (' . ( $d['trip_date'] ?? '' ) . ') here: ' . $link . ' It takes 2 minutes. Your card is saved securely and nothing is charged today. Questions? Call or text (843) 804-1188.';
 }
 
+/** Trip fields shared by the app's quote form and manual form. */
+function mecca_bc_app_fields( $v, $pre ) {
+	?>
+	<div class="two"><div class="field"><label>First name</label><input name="first_name" value="<?php echo $v( 'first_name' ); ?>" required autocomplete="off"></div><div class="field"><label>Last name</label><input name="last_name" value="<?php echo $v( 'last_name' ); ?>" required autocomplete="off"></div></div>
+	<div class="two"><div class="field"><label>Phone</label><input name="phone" value="<?php echo $v( 'phone' ); ?>" type="tel" inputmode="tel"></div><div class="field"><label>Email</label><input name="email" value="<?php echo $v( 'email' ); ?>" type="email" inputmode="email"></div></div>
+	<div class="field"><label>Date &amp; time</label><input name="trip_date" value="<?php echo $v( 'trip_date' ); ?>" required placeholder="Sat, Oct 24 at 6:30 PM"></div>
+	<div class="field"><label>Pickup</label><input name="pickup" value="<?php echo $v( 'pickup' ); ?>" required></div>
+	<div class="field"><label>Drop-off</label><input name="dropoff" value="<?php echo $v( 'dropoff' ); ?>"></div>
+	<div class="field"><label>Notes for customer</label><textarea name="notes" rows="3"><?php echo esc_textarea( $pre['notes'] ?? '' ); ?></textarea></div>
+	<?php
+}
+
 /* ---------------------------------------------------------------- Phone staff page */
 
 add_action( 'template_redirect', function () {
@@ -200,77 +212,178 @@ add_action( 'template_redirect', function () {
 			update_post_meta( $from, '_bc_linked', $made['id'] ); // Keep the quote so it can be reopened.
 		}
 	}
-	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 10, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote' ), array( 'key' => '_bc_linked', 'compare' => 'NOT EXISTS' ) ) ) );
-	$recent = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 8, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote', 'compare' => '!=' ) ) ) );
+	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 30, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote' ), array( 'key' => '_bc_linked', 'compare' => 'NOT EXISTS' ) ) ) );
 	$v      = function ( $k ) use ( $pre ) {
 		return esc_attr( $pre[ $k ] ?? '' );
 	};
 	$self   = mecca_bc_staff_url();
-	?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mecca Limo">
-<link rel="apple-touch-icon" href="<?php echo esc_url( home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' ) ); ?>">
-<title>Mecca Limo</title><meta name="theme-color" content="#0e0e10"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	$icon   = home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' );
+	$route  = function ( $d ) {
+		return array( trim( (string) ( $d['pickup'] ?? '' ) ), trim( (string) ( $d['dropoff'] ?? '' ) ) );
+	};
+	$digits = function ( $p ) {
+		return preg_replace( '/[^0-9+]/', '', (string) $p );
+	};
+	?><!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mecca Limo"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#0b0b0d">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="<?php echo esc_url( $icon ); ?>">
+<title>Mecca Limo</title>
 <style>
-:root{--gold:#c9a45c;--bg:#0e0e10;--card:#17171a;--line:#2a2a2f;--text:#f2efe8;--muted:#a9a6a0}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.wrap{max-width:520px;margin:0 auto;padding:16px 16px 40px}h1{font:600 22px Georgia,serif;margin:6px 0 14px;color:var(--gold)}
-label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0f0f12;color:var(--text);font-size:16px}
-.two{display:flex;gap:10px}.two>div{flex:1}button,.btn{display:block;width:100%;text-align:center;padding:14px;border:0;border-radius:10px;background:var(--gold);color:#111;font-size:17px;font-weight:700;margin-top:14px;text-decoration:none}
-.btn.alt{background:#24242a;color:var(--text);border:1px solid var(--line)}.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 16px}
-.link{word-break:break-all;font-size:14px;color:var(--gold)}.list a{color:var(--text);text-decoration:none}.list div{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.ok{color:#5fd38a}.muted{color:var(--muted)}
-</style></head><body><div class="wrap"><div style="text-align:center;padding:6px 0 10px;border-bottom:1px solid var(--line);margin-bottom:14px"><img src="<?php echo esc_url( home_url( "/wp-content/plugins/mecca-home/assets/icon-192.png" ) ); ?>" alt="" style="width:44px;height:44px;border-radius:10px;vertical-align:middle"> <span style="font:600 20px Georgia,serif;color:var(--gold);vertical-align:middle;letter-spacing:.04em">MECCA LIMO</span></div>
+:root{--gold:#d4b06a;--gold2:#a8843f;--bg:#0b0b0d;--card:#151518;--card2:#1c1c20;--line:rgba(255,255,255,.08);--text:#f5f2ea;--muted:#9a978f;--ok:#4cd28a;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;background:radial-gradient(120% 60% at 50% -10%,#221c10 0%,var(--bg) 55%) fixed;color:var(--text);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.top{position:sticky;top:0;z-index:5;padding:calc(env(safe-area-inset-top) + 10px) 18px 12px;background:rgba(11,11,13,.78);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.top img{width:38px;height:38px;border-radius:10px;box-shadow:0 0 0 1px rgba(212,176,106,.35)}
+.brand{font:600 17px/1.1 "Didot","Bodoni 72",Georgia,serif;letter-spacing:.18em;color:var(--gold)}
+.brand small{display:block;font:500 11px -apple-system,sans-serif;letter-spacing:.12em;color:var(--muted);margin-top:3px;text-transform:uppercase}
+.back{font-size:28px;line-height:1;color:var(--gold);padding:0 6px 0 0}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px calc(env(safe-area-inset-bottom) + 110px)}
+.search{position:relative;margin:4px 0 18px}
+.search input{width:100%;padding:15px 16px 15px 46px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:17px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:rgba(212,176,106,.6);box-shadow:0 0 0 4px rgba(212,176,106,.12)}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);opacity:.55}
+.sec{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 10px}
+.sec h2{margin:0;font:600 13px -apple-system,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.badge{min-width:24px;padding:3px 9px;border-radius:99px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141006;font:700 13px -apple-system,sans-serif;text-align:center}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 12px;box-shadow:0 10px 30px -18px rgba(0,0,0,.8);animation:in .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.name{font:600 18px/1.25 -apple-system,sans-serif;margin:0 0 4px}
+.when{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--gold);background:rgba(212,176,106,.1);border:1px solid rgba(212,176,106,.22);padding:4px 10px;border-radius:99px;margin:4px 0 10px}
+.route{position:relative;padding-left:18px;margin:2px 0 4px;font-size:14px;color:#d9d5cc}
+.route div{padding:2px 0}
+.route:before{content:"";position:absolute;left:4px;top:10px;bottom:10px;width:1px;background:linear-gradient(var(--gold),rgba(212,176,106,.2))}
+.route div:before{content:"";position:absolute;left:0;width:9px;height:9px;margin-top:6px;border-radius:50%;background:var(--bg);border:2px solid var(--gold)}
+.route div:last-child:before{background:var(--gold)}
+.meta{font-size:13px;color:var(--muted);margin-top:6px}
+.acts{display:flex;gap:8px;margin-top:14px}
+.chip{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border-radius:12px;background:#222227;border:1px solid var(--line);font:600 14px -apple-system,sans-serif;color:var(--text);transition:transform .12s}
+.chip.go{flex:1.6;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141006;border:0}
+.chip:active,.btn:active{transform:scale(.97)}
+.empty{text-align:center;color:var(--muted);padding:34px 16px;border:1px dashed var(--line);border-radius:var(--r)}
+.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:4px}
+.row{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}.row .t{flex:1;min-width:0}.row .t b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .t span{font-size:13px;color:var(--muted)}
+.tag{font:600 12px -apple-system,sans-serif;padding:5px 10px;border-radius:99px;white-space:nowrap}
+.tag.ok{color:var(--ok);background:rgba(76,210,138,.1)}.tag.wait{color:var(--gold);background:rgba(212,176,106,.1)}.tag.new{color:#141006;background:var(--gold)}
+details.manual{margin-top:22px}details.manual summary{list-style:none;cursor:pointer;text-align:center;color:var(--muted);font-size:14px;padding:12px}details.manual summary::-webkit-details-marker{display:none}
+.field{margin:0 0 12px}.field label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px 2px}
+.field input,.field textarea,.field select{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#111114;color:var(--text);font-size:16px;outline:none;font-family:inherit}
+.field input:focus,.field textarea:focus{border-color:rgba(212,176,106,.6)}
+.two{display:flex;gap:10px}.two>.field{flex:1}
+.price input{font:600 30px -apple-system,sans-serif;text-align:center;padding:18px;color:var(--gold);letter-spacing:.02em}
+.seg{display:flex;background:#111114;border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+.seg label{flex:1;margin:0}.seg input{display:none}.seg span{display:block;text-align:center;padding:11px 4px;border-radius:9px;font:600 13px -apple-system,sans-serif;color:var(--muted);transition:all .15s}
+.seg input:checked+span{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141006}
+.sum{display:flex;align-items:center;gap:14px}.av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(212,176,106,.14);color:var(--gold);font:700 18px -apple-system,sans-serif;flex:none}
+details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--gold);font-size:14px;padding:10px 2px;cursor:pointer}details.more summary::-webkit-details-marker{display:none}
+.dock{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(env(safe-area-inset-bottom) + 12px);background:linear-gradient(transparent,rgba(11,11,13,.95) 30%)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:528px;margin:0 auto 10px;padding:17px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#141006;font:700 17px -apple-system,sans-serif;box-shadow:0 12px 30px -12px rgba(212,176,106,.55);transition:transform .12s;cursor:pointer}
+.btn.alt{background:#1f1f24;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.done{text-align:center;padding:22px 0 8px}
+.tick{width:74px;height:74px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:rgba(76,210,138,.12);animation:pop .45s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.done h1{font:600 24px "Didot","Bodoni 72",Georgia,serif;margin:0 0 4px}.done p{margin:0;color:var(--muted)}
+.linkbox{font:14px ui-monospace,Menlo,monospace;color:var(--gold);word-break:break-all;background:#111114;border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
+.hint{font-size:13px;color:var(--muted);margin:-2px 2px 14px}
+</style></head><body>
+<header class="top">
+<?php if ( $from || $made ) : ?><a class="back" href="<?php echo esc_url( $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
+<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : 'Quotes &amp; bookings' ); ?></small></div>
+</header>
+<main class="wrap">
 <?php if ( $made ) :
-		$msg = mecca_bc_message( $made['details'], $made['link'] );
-		$ph  = preg_replace( '/[^0-9+]/', '', $made['details']['phone'] );
-		?>
-	<h1><?php echo ! empty( $made['updated'] ) ? 'Link updated ✓' : 'Link ready ✓'; ?></h1>
-	<div class="box"><div class="muted" style="font-size:13px">For <?php echo esc_html( trim( $made['details']['first_name'] . ' ' . $made['details']['last_name'] ) ); ?></div><div class="link"><?php echo esc_html( $made['link'] ); ?></div></div>
-	<a class="btn" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text it</a>
+	$msg = mecca_bc_message( $made['details'], $made['link'] );
+	$ph  = $digits( $made['details']['phone'] );
+	$nm  = trim( $made['details']['first_name'] . ' ' . $made['details']['last_name'] );
+	?>
+	<div class="done">
+		<div class="tick"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#4cd28a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+		<h1><?php echo ! empty( $made['updated'] ) ? 'Link updated' : 'Link ready'; ?></h1>
+		<p>For <?php echo esc_html( $nm ); ?><?php echo ! empty( $made['details']['price'] ) ? ' · ' . esc_html( $made['details']['price'] ) : ''; ?></p>
+	</div>
+	<div class="linkbox"><?php echo esc_html( $made['link'] ); ?></div>
+	<p class="hint">Nothing is sent until you tap send in Messages or Mail.</p>
+	<?php if ( $ph ) : ?><a class="btn" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text it to <?php echo esc_html( $made['details']['first_name'] ); ?></a><?php endif; ?>
 	<?php if ( $made['details']['email'] ) : ?><a class="btn alt" href="mailto:<?php echo esc_attr( $made['details']['email'] ); ?>?subject=<?php echo rawurlencode( 'Confirm your Mecca Limo booking' ); ?>&amp;body=<?php echo rawurlencode( $msg ); ?>">✉️ Email it</a><?php endif; ?>
 	<button type="button" class="btn alt" onclick="navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( $made['link'] ) ); ?>);this.textContent='Copied ✓'">📋 Copy link</button>
-	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">+ New booking</a>
+	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">Done</a>
+<?php elseif ( $from ) :
+	list( $pu, $do ) = $route( $pre );
+	$nm = trim( ( $pre['first_name'] ?? '' ) . ' ' . ( $pre['last_name'] ?? '' ) );
+	?>
+	<div class="card"><div class="sum"><div class="av"><?php echo esc_html( strtoupper( mb_substr( $nm, 0, 1 ) ) ); ?></div><div><div class="name"><?php echo esc_html( $nm ); ?></div><div class="meta" style="margin:0"><?php echo esc_html( $pre['trip_date'] ?? '' ); ?></div></div></div>
+	<?php if ( $pu || $do ) : ?><div class="route" style="margin-top:12px"><?php if ( $pu ) : ?><div><?php echo esc_html( $pu ); ?></div><?php endif; ?><?php if ( $do ) : ?><div><?php echo esc_html( $do ); ?></div><?php endif; ?></div><?php endif; ?>
+	<?php if ( 'sent' === $fst ) : ?><p class="hint" style="margin:10px 0 0">Editing an existing link — the customer's link stays the same.</p><?php endif; ?></div>
+	<form method="post" id="bk" action="<?php echo esc_url( add_query_arg( 'from', $from, $self ) ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+	<div class="field price"><label>Price</label><input name="price" value="<?php echo $v( 'price' ); ?>" placeholder="$0" inputmode="text" autocomplete="off" <?php echo empty( $pre['price'] ) ? 'autofocus' : ''; ?>></div>
+	<div class="field"><label>Vehicle</label><div class="seg"><?php foreach ( array( 'Executive Sedan' => 'Sedan', 'Luxury SUV' => 'SUV', 'Mercedes Sprinter' => 'Sprinter' ) as $o => $short ) : ?><label><input type="radio" name="vehicle" value="<?php echo esc_attr( $o ); ?>" <?php checked( ( $pre['vehicle'] ?? 'Executive Sedan' ), $o ); ?>><span><?php echo esc_html( $short ); ?></span></label><?php endforeach; ?></div></div>
+	<details class="more"<?php echo ( empty( $pre['first_name'] ) || empty( $pre['last_name'] ) || empty( $pre['trip_date'] ) || empty( $pre['pickup'] ) ) ? ' open' : ''; ?>><summary>Edit trip details ›</summary>
+	<?php mecca_bc_app_fields( $v, $pre ); ?>
+	</details>
+	</form>
+	<div class="dock"><button class="btn" form="bk">Create booking link</button></div>
 <?php else : ?>
-	<?php if ( ! $from ) :
-		$all = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 300, 'post_status' => 'publish' ) );
+	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="find" type="search" placeholder="Search name or phone" autocomplete="off" enterkeyhint="search"></div>
+	<div id="found" style="display:none"></div>
+	<div id="home">
+	<div class="sec"><h2>New requests</h2><?php if ( $quotes ) : ?><span class="badge"><?php echo count( $quotes ); ?></span><?php endif; ?></div>
+	<?php foreach ( $quotes as $q ) :
+		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
+		list( $pu, $do ) = $route( $qd );
+		$ph = $digits( $qd['phone'] ?? '' );
+		$nm = trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ?: $q->post_title;
 		?>
-	<input id="find" type="search" placeholder="🔍 Search customer name or phone" autocomplete="off" style="margin:4px 0 12px">
-	<div id="found" class="box list" style="display:none"></div>
-	<div id="pool" hidden>
-	<?php foreach ( $all as $q ) :
+		<div class="card">
+			<div class="name"><?php echo esc_html( $nm ); ?></div>
+			<?php if ( ! empty( $qd['trip_date'] ) ) : ?><div class="when">🗓 <?php echo esc_html( $qd['trip_date'] ); ?></div><?php endif; ?>
+			<?php if ( $pu || $do ) : ?><div class="route"><?php if ( $pu ) : ?><div><?php echo esc_html( $pu ); ?></div><?php endif; ?><?php if ( $do ) : ?><div><?php echo esc_html( $do ); ?></div><?php endif; ?></div><?php endif; ?>
+			<?php if ( ! empty( $qd['vehicle'] ) ) : ?><div class="meta"><?php echo esc_html( $qd['vehicle'] ); ?></div><?php endif; ?>
+			<div class="acts">
+				<?php if ( $ph ) : ?><a class="chip" href="tel:<?php echo esc_attr( $ph ); ?>">📞 Call</a><a class="chip" href="sms:<?php echo esc_attr( $ph ); ?>">💬 Text</a><?php endif; ?>
+				<a class="chip go" href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>">Make link →</a>
+			</div>
+		</div>
+	<?php endforeach; if ( ! $quotes ) : ?><div class="empty"><b>You're all caught up</b>New quote requests from the website appear here.</div><?php endif; ?>
+	<details class="manual"><summary>+ Make a booking link by hand</summary>
+	<form method="post" action="<?php echo esc_url( $self ); ?>" style="margin-top:8px"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+	<?php mecca_bc_app_fields( $v, $pre ); ?>
+	<div class="two"><div class="field"><label>Vehicle</label><select name="vehicle"><option>Executive Sedan</option><option>Luxury SUV</option><option>Mercedes Sprinter</option></select></div><div class="field"><label>Price</label><input name="price" placeholder="$450 total"></div></div>
+	<button class="btn">Create booking link</button></form>
+	</details>
+	</div>
+	<?php
+	$all  = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 300, 'post_status' => 'publish' ) );
+	$pool = array();
+	foreach ( $all as $q ) {
 		$qs = get_post_meta( $q->ID, '_bc_status', true );
 		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
 		$ql = 'quote' === $qs ? (int) get_post_meta( $q->ID, '_bc_linked', true ) : 0;
-		$lab = 'confirmed' === $qs ? '<span class="ok">Confirmed ✓</span>' : ( 'sent' === $qs ? '<span style="color:var(--gold)">✎ edit / resend link</span>' : ( $ql ? '<span style="color:var(--gold)">quote · link already made →</span>' : '<span style="color:var(--gold)">→ make link</span>' ) );
-		?>
-		<div data-s="<?php echo esc_attr( strtolower( $q->post_title . ' ' . ( $qd['phone'] ?? '' ) . ' ' . preg_replace( '/\D/', '', $qd['phone'] ?? '' ) . ' ' . ( $qd['email'] ?? '' ) ) ); ?>"><?php if ( 'confirmed' !== $qs ) : ?><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><?php endif; ?><strong><?php echo esc_html( $q->post_title ); ?></strong> <?php echo $lab; ?><br><span class="muted"><?php echo esc_html( trim( ( $qd['pickup'] ?? '' ) . ( ! empty( $qd['dropoff'] ) ? ' → ' . $qd['dropoff'] : '' ) ) ); ?></span><?php if ( 'confirmed' !== $qs ) : ?></a><?php endif; ?></div>
-	<?php endforeach; ?>
-	</div>
-	<script>(function(){var f=document.getElementById('find'),o=document.getElementById('found'),p=document.getElementById('pool').children;f.addEventListener('input',function(){var t=f.value.trim().toLowerCase(),h='',n=0;if(t.length>1){for(var i=0;i<p.length&&n<15;i++){if(p[i].getAttribute('data-s').indexOf(t)!==-1){h+='<div>'+p[i].innerHTML+'</div>';n++;}}if(!n)h='<div class="muted">No one found with “'+f.value.replace(/</g,'')+'”.</div>';}o.innerHTML=h;o.style.display=t.length>1?'block':'none';});})();</script>
-	<h1>Quote requests</h1>
-	<div class="box list">
-	<?php foreach ( $quotes as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
-		<div><a href="<?php echo esc_url( add_query_arg( 'from', $q->ID, $self ) ); ?>"><strong><?php echo esc_html( $q->post_title ); ?></strong> <span style="color:var(--gold)">→ make link</span><br>
-		<span class="muted"><?php echo esc_html( trim( ( $qd['pickup'] ?? '' ) . ( ! empty( $qd['dropoff'] ) ? ' → ' . $qd['dropoff'] : '' ) ) ); ?></span></a>
-		<?php if ( ! empty( $qd['phone'] ) ) : ?><br><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $qd['phone'] ) ); ?>" style="color:var(--gold)">📞 <?php echo esc_html( $qd['phone'] ); ?></a><?php endif; ?></div>
-	<?php endforeach; if ( ! $quotes ) : ?><div class="muted">No new quote requests. New ones from the website show up here.</div><?php endif; ?>
-	</div>
-	<?php endif; ?>
-	<h1><?php echo $from ? 'New booking link' : 'Or make one by hand'; ?></h1>
-	<?php if ( $from ) : ?><p class="muted" style="margin:-6px 0 6px"><?php echo 'sent' === $fst ? 'Editing this link. The customer\'s link stays the same; send it again after saving.' : 'Filled in from their quote request. Just add the price.'; ?></p><?php endif; ?>
-	<form method="post" action="<?php echo esc_url( $from ? add_query_arg( 'from', $from, $self ) : $self ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
-	<div class="two"><div><label>First name</label><input name="first_name" value="<?php echo $v( 'first_name' ); ?>" required autocomplete="off"></div><div><label>Last name</label><input name="last_name" value="<?php echo $v( 'last_name' ); ?>" required autocomplete="off"></div></div>
-	<label>Phone</label><input name="phone" value="<?php echo $v( 'phone' ); ?>" type="tel" inputmode="tel" placeholder="843-555-1234">
-	<label>Email (optional)</label><input name="email" value="<?php echo $v( 'email' ); ?>" type="email" inputmode="email">
-	<label>Date &amp; time</label><input name="trip_date" value="<?php echo $v( 'trip_date' ); ?>" required placeholder="Sat, Oct 24 at 6:30 PM">
-	<label>Pickup</label><input name="pickup" value="<?php echo $v( 'pickup' ); ?>" required>
-	<label>Drop-off</label><input name="dropoff" value="<?php echo $v( 'dropoff' ); ?>">
-	<div class="two"><div><label>Vehicle</label><select name="vehicle"><?php foreach ( array( 'Executive Sedan', 'Luxury SUV', 'Mercedes Sprinter' ) as $o ) { echo '<option' . selected( $pre['vehicle'] ?? '', $o, false ) . '>' . esc_html( $o ) . '</option>'; } ?></select></div><div><label>Price</label><input name="price" value="<?php echo $v( 'price' ); ?>" placeholder="$450 total"></div></div>
-	<label>Notes for customer (optional)</label><textarea name="notes" rows="3"><?php echo esc_textarea( $pre['notes'] ?? '' ); ?></textarea>
-	<button>Create link</button></form>
+		$pool[] = array(
+			'n' => trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ?: $q->post_title,
+			'd' => (string) ( $qd['trip_date'] ?? '' ),
+			's' => strtolower( $q->post_title . ' ' . ( $qd['phone'] ?? '' ) . ' ' . $digits( $qd['phone'] ?? '' ) . ' ' . ( $qd['email'] ?? '' ) ),
+			't' => 'confirmed' === $qs ? 'ok' : ( 'sent' === $qs ? 'wait' : ( $ql ? 'wait' : 'new' ) ),
+			'l' => 'confirmed' === $qs ? 'Confirmed' : ( 'sent' === $qs || $ql ? 'Link sent' : 'New' ),
+			'u' => 'confirmed' === $qs ? '' : add_query_arg( 'from', $q->ID, $self ),
+		);
+	}
+	?>
+	<script>
+	(function(){var P=<?php echo wp_json_encode( $pool ); ?>,f=document.getElementById('find'),o=document.getElementById('found'),h=document.getElementById('home');
+	function e(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+	f.addEventListener('input',function(){var t=f.value.trim().toLowerCase();if(t.length<2){o.style.display='none';h.style.display='';return}
+	var r=P.filter(function(x){return x.s.indexOf(t)>-1||x.s.indexOf(t.replace(/\D/g,'')||'~')>-1}).slice(0,25),s='<div class="card" style="padding:4px 14px">';
+	r.forEach(function(x){var row='<div class="t"><b>'+e(x.n)+'</b><span>'+e(x.d)+'</span></div><span class="tag '+x.t+'">'+e(x.l)+'</span>';s+=x.u?'<a class="row" href="'+e(x.u)+'">'+row+'</a>':'<div class="row">'+row+'</div>'});
+	s+='</div>';o.innerHTML=r.length?s:'<div class="empty"><b>No match</b>Nobody found for “'+e(f.value)+'”.</div>';o.style.display='';h.style.display='none'});})();
+	document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.getElementById('find').value&&!document.querySelector('details[open]'))location.reload()});
+	</script>
 <?php endif; ?>
-</div>
-<script>/* Refresh the list when you come back to the app, so new quotes appear. */
-document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('form input:focus')&&!/[?&]from=/.test(location.search)&&!document.querySelector('.link'))location.reload();});</script>
+</main>
 </body></html>
 	<?php
 	exit;
