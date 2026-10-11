@@ -746,48 +746,63 @@ function mecca_bc_render( $post, $msg, $err ) {
 	$sandbox = 'production' !== mecca_bc_opt( 'env', 'sandbox' );
 	$logo    = 'https://www.meccalimo.com/wp-content/uploads/2026/10/mecca-limo-logo-gold.png';
 	?><!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Confirm your booking — Mecca Limo</title>
+<meta name="theme-color" content="#050505"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>
-:root{--gold:#c9a45c;--bg:#0e0e10;--card:#17171a;--line:#2a2a2f;--text:#f2efe8;--muted:#a9a6a0}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-.wrap{max-width:560px;margin:0 auto;padding:24px 16px 48px}.logo{display:block;width:170px;margin:8px auto 20px}
-h1{font:600 26px/1.25 Georgia,serif;margin:0 0 6px;text-align:center}.sub{color:var(--muted);text-align:center;margin:0 0 22px}
-.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:0 0 16px}
-.box h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.row span{color:var(--muted)}.row b{text-align:right;font-weight:600}
-label{display:block;font-weight:600;margin:12px 0 6px}input[type=text],input[type=file]{width:100%;padding:12px;border-radius:8px;border:1px solid var(--line);background:#0f0f12;color:var(--text);font-size:16px}
-#card-container{min-height:90px}.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:var(--muted);font-size:14px}.check input{margin-top:4px;width:18px;height:18px}
-.terms{font-size:13px;color:var(--muted);max-height:140px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:10px;background:#0f0f12}
-button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--gold);color:#111;font-size:17px;font-weight:700;cursor:pointer;margin-top:8px}button:disabled{opacity:.6}
-.err{background:#3a1515;border:1px solid #7a2a2a;color:#ffd7d7;border-radius:8px;padding:12px;margin:0 0 16px}.ok{text-align:center}.ok .tick{font-size:48px;color:var(--gold)}
-.note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}.sandbox{background:#3a3315;border:1px solid #7a6a2a;color:#ffe9a8;border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:14px;text-align:center}
-</style></head><body><div class="wrap"><div style="text-align:center;padding:6px 0 10px;border-bottom:1px solid var(--line);margin-bottom:14px"><img src="<?php echo esc_url( home_url( "/wp-content/plugins/mecca-home/assets/icon-192.png" ) ); ?>" alt="" style="width:44px;height:44px;border-radius:10px;vertical-align:middle"> <span style="font:600 20px Georgia,serif;color:var(--gold);vertical-align:middle;letter-spacing:.04em">MECCA LIMO</span></div><img class="logo" src="<?php echo esc_url( $logo ); ?>" alt="Mecca Limo">
+:root{--gold:#e3c27d;--goldg:linear-gradient(135deg,#f3dfa8 0%,#d4ad5e 45%,#a7802f 100%);--bg:#050505;--card:#0d0d0e;--card2:#121213;--line:rgba(227,194,125,.16);--text:#f7f3ea;--muted:#8f8a80}
+*{box-sizing:border-box}html,body{overflow-x:hidden}
+body{margin:0;background:radial-gradient(90% 40% at 50% -6%,rgba(227,194,125,.12) 0%,transparent 60%),var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 26px) 18px calc(env(safe-area-inset-bottom) + 48px)}
+.logo{display:block;width:180px;margin:6px auto 22px;filter:drop-shadow(0 8px 24px rgba(227,194,125,.18))}
+h1{font:500 30px/1.2 "Didot","Bodoni 72",Georgia,serif;margin:0 0 8px;text-align:center;letter-spacing:.01em}
+.sub{color:var(--muted);text-align:center;margin:0 auto 26px;max-width:420px}
+.rule{width:56px;height:1px;margin:0 auto 22px;background:var(--goldg)}
+.box{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:20px;margin:0 0 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 18px 40px -26px #000}
+.box h2{display:flex;align-items:center;gap:10px;font:600 12px -apple-system,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 14px}
+.box h2 i{font-style:normal;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--goldg);color:#1a1307;font-size:12px;letter-spacing:0}
+.row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}.row:last-child{border:0}.row span{color:var(--muted);font-size:14px}.row b{text-align:right;font-weight:600}
+.row.price b{font:600 22px -apple-system,sans-serif;background:var(--goldg);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+label{display:block;font-weight:600;margin:14px 0 8px;font-size:15px}
+input[type=text]{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:#0a0a0b;color:var(--text);font-size:16px;outline:none}
+input[type=text]:focus{border-color:rgba(227,194,125,.65);box-shadow:0 0 0 4px rgba(227,194,125,.1)}
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 14px;border:1.5px dashed rgba(227,194,125,.35);border-radius:14px;text-align:center;color:var(--muted);cursor:pointer;margin:0;font-weight:500}
+.drop b{color:var(--text)}.drop.has{border-style:solid;border-color:var(--gold);color:var(--gold)}
+.drop input{position:absolute;opacity:0;width:1px;height:1px}
+#card-container{min-height:96px}.check{display:flex;gap:12px;align-items:flex-start;font-weight:400;color:#cfcac0;font-size:14px}.check input{margin-top:2px;width:20px;height:20px;accent-color:#d4ad5e;flex:none}
+.terms{font-size:13px;color:var(--muted);max-height:150px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;background:#0a0a0b}
+button{width:100%;padding:18px;border:0;border-radius:14px;background:var(--goldg);color:#1a1307;font:700 17px -apple-system,sans-serif;letter-spacing:.02em;cursor:pointer;margin-top:6px;box-shadow:0 14px 34px -14px rgba(227,194,125,.5),inset 0 1px 0 rgba(255,255,255,.45);transition:transform .12s}button:active{transform:scale(.98)}button:disabled{opacity:.6}
+.err{background:rgba(160,40,40,.15);border:1px solid rgba(220,90,90,.5);color:#ffd7d7;border-radius:12px;padding:12px;margin:0 0 16px}
+.ok{text-align:center;padding:30px 20px}.ok .tick{width:76px;height:76px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:var(--goldg);color:#1a1307;font-size:36px;box-shadow:0 16px 40px -14px rgba(227,194,125,.6)}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:16px}.note a{color:var(--gold);text-decoration:none}
+.sandbox{background:rgba(227,194,125,.08);border:1px solid var(--line);color:var(--gold);border-radius:12px;padding:8px 12px;font-size:13px;margin-bottom:14px;text-align:center}
+.foot{margin-top:28px;text-align:center;font:500 11px -apple-system,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#5f5b54}
+</style></head><body><div class="wrap"><img class="logo" src="<?php echo esc_url( $logo ); ?>" alt="Mecca Limo">
 <?php if ( ! $post ) : ?>
 	<h1>Link not found</h1><p class="sub">This booking link is invalid or has expired. Please call or text <a style="color:var(--gold)" href="tel:+18438041188">(843) 804-1188</a>.</p>
 <?php elseif ( $done ) : ?>
 	<div class="box ok"><div class="tick">✓</div><h1>You're all set, <?php echo esc_html( $d['first_name'] ?? '' ); ?></h1><p class="sub">Your booking is confirmed and your card is saved on file. Nothing has been charged yet. We'll be in touch before your ride.</p></div>
 	<p class="note">Questions? Call or text <a style="color:var(--gold)" href="tel:+18438041188">(843) 804-1188</a></p>
 <?php else : ?>
-	<h1>Confirm your booking</h1><p class="sub">Hi <?php echo esc_html( $d['first_name'] ?? '' ); ?>, please review your trip and complete the steps below.</p>
+	<h1>Confirm your booking</h1><div class="rule"></div><p class="sub">Hi <?php echo esc_html( $d['first_name'] ?? '' ); ?>, please review your trip and complete the steps below.</p>
 	<?php if ( $sandbox ) : ?><div class="sandbox">Test mode — no real cards are saved.</div><?php endif; ?>
 	<?php if ( $err ) : ?><div class="err"><?php echo esc_html( $err ); ?></div><?php endif; ?>
 	<div class="box"><h2>Your trip</h2>
 		<?php foreach ( array( 'trip_date' => 'Date & time', 'pickup' => 'Pickup', 'dropoff' => 'Drop-off', 'vehicle' => 'Vehicle', 'price' => 'Quoted price' ) as $k => $lab ) : if ( ! empty( $d[ $k ] ) ) : ?>
-			<div class="row"><span><?php echo esc_html( $lab ); ?></span><b><?php echo esc_html( $d[ $k ] ); ?></b></div>
+			<div class="row<?php echo 'price' === $k ? ' price' : ''; ?>"><span><?php echo esc_html( $lab ); ?></span><b><?php echo esc_html( $d[ $k ] ); ?></b></div>
 		<?php endif; endforeach; ?>
 		<?php if ( ! empty( $d['notes'] ) ) : ?><p style="color:var(--muted);font-size:14px;margin:10px 0 0"><?php echo nl2br( esc_html( $d['notes'] ) ); ?></p><?php endif; ?>
 	</div>
 	<form id="bf" method="post" enctype="multipart/form-data" action="<?php echo esc_url( home_url( '/confirm/?t=' . get_post_meta( $post->ID, '_bc_token', true ) ) ); ?>">
 	<?php wp_nonce_field( 'mecca_bc_confirm_' . $post->ID, '_bcn' ); ?>
 	<input type="hidden" name="card_nonce" id="card_nonce"><input type="hidden" name="verification_token" id="verification_token">
-	<div class="box"><h2>1. Card on file</h2><p style="color:var(--muted);font-size:14px;margin:0 0 10px">Your card is saved securely by Square. <strong>Nothing is charged now.</strong></p><div id="card-container"></div></div>
-	<div class="box"><h2>2. Photo ID</h2><label for="photo_id">Upload a photo of your driver's license or ID</label><input type="file" id="photo_id" name="photo_id" accept="image/*,.pdf" required><p style="color:var(--muted);font-size:13px;margin:8px 0 0">Kept private and deleted after your trip.</p></div>
-	<div class="box"><h2>3. Agreement</h2>
+	<div class="box"><h2><i>1</i>Card on file</h2><p style="color:var(--muted);font-size:14px;margin:0 0 10px">Your card is saved securely by Square. <strong>Nothing is charged now.</strong></p><div id="card-container"></div></div>
+	<div class="box"><h2><i>2</i>Photo ID</h2><label class="drop" for="photo_id" id="dropl"><span style="font-size:26px">🪪</span><b id="dropt">Tap to add your driver's license</b><span>Take a photo or choose one</span><input type="file" id="photo_id" name="photo_id" accept="image/*,.pdf" required onchange="var l=document.getElementById('dropl');if(this.files[0]){l.classList.add('has');document.getElementById('dropt').textContent='✓ '+this.files[0].name;}"></label><p style="color:var(--muted);font-size:13px;margin:8px 0 0">Kept private and deleted after your trip.</p></div>
+	<div class="box"><h2><i>3</i>Agreement</h2>
 		<div class="terms">By confirming, you authorize Mecca Limo to store this card with Square and to charge it for this reservation, including the agreed fare, any approved extra time, and cancellation fees under our policy: a $150 non-refundable deposit; 50% of the fare for cancellations within 30 days of the trip; 100% within 15 days. Quotes are honored for 48 hours. A 15-minute grace period applies at pickup. Full policy: meccalimo.com/policy.</div>
 		<label class="check"><input type="checkbox" name="agree" value="1" required> I agree to the terms above and authorize Mecca Limo to keep my card on file for this booking.</label>
 		<label for="signature">Type your full name to sign</label><input type="text" id="signature" name="signature" required autocomplete="name">
 	</div>
 	<button type="submit" id="go">Confirm booking</button>
-	<p class="note">🔒 Card details go directly to Square and never touch our servers.</p>
+	<p class="note">🔒 Card details go directly to Square and never touch our servers.</p><p class="foot">Mecca Limo · Charleston, SC</p>
 	</form>
 	<script src="https://<?php echo $sandbox ? 'sandbox.' : ''; ?>web.squarecdn.com/v1/square.js"></script>
 	<script>
@@ -795,7 +810,7 @@ button{width:100%;padding:15px;border:0;border-radius:10px;background:var(--gold
 		var form=document.getElementById('bf'),btn=document.getElementById('go');
 		if(!window.Square){btn.disabled=true;btn.textContent='Card form unavailable — please call (843) 804-1188';return;}
 		var payments=Square.payments(<?php echo wp_json_encode( mecca_bc_opt( 'app_id' ) ); ?>,<?php echo wp_json_encode( mecca_bc_opt( 'location_id' ) ); ?>);
-		var card=await payments.card();await card.attach('#card-container');
+		var card;try{card=await payments.card({style:{'.input-container':{borderColor:'#2b261c',borderRadius:'12px'},'.input-container.is-focus':{borderColor:'#e3c27d'},'.input-container.is-error':{borderColor:'#d96a6a'},'input':{backgroundColor:'#0a0a0b',color:'#f7f3ea',fontSize:'16px'},'input::placeholder':{color:'#7d786f'},'.message-text':{color:'#8f8a80'},'.message-icon':{color:'#8f8a80'},'.message-text.is-error':{color:'#ff9b9b'},'.message-icon.is-error':{color:'#ff9b9b'}}});}catch(z){card=await payments.card();}await card.attach('#card-container');
 		form.addEventListener('submit',async function(e){
 			if(document.getElementById('card_nonce').value)return;
 			e.preventDefault();btn.disabled=true;btn.textContent='Saving…';
