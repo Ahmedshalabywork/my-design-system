@@ -1,18 +1,10 @@
 {
- "images": [
-  {
-   "url": "https://v3b.fal.media/files/b/0aae0e28/fKGtg7I936zrAVvVu1C6k.jpg",
-   "width": 1024,
-   "height": 768,
-   "content_type": "image/jpeg"
-  }
- ],
- "timings": {
-  "inference": 1.0709313009865582
+ "video": {
+  "url": "https://v3b.fal.media/files/b/0aae0e6b/2cxOKh5eYLqkJLnKdwsRP_video.mp4",
+  "content_type": "video/mp4",
+  "file_name": "video.mp4",
+  "file_size": 8991935
  },
- "seed": 986446760,
- "has_nsfw_concepts": [
-  false
- ],
- "prompt": "black Mercedes Sprinter passenger van parked on a cobblestone street in historic downtown Charleston SC at golden hour, photorealistic"
+ "seed": 1013198909,
+ "draft_id": null
 }
