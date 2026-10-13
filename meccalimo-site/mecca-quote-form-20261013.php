@@ -195,11 +195,23 @@ function mecca_qf_handle() {
 		. $gap
 		. $line( 'Message', $f['notes'] ? $e( $f['notes'] ) : '' );
 	$admin_body = '<div style="background:#ffffff;padding:8px"><div style="max-width:600px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.35;color:#222">' . $admin_lines . '<div style="margin-top:12px"><img src="https://www.meccalimo.com/wp-content/uploads/2026/10/mecca-limo-logo-gold.png" alt="Mecca Limo Service" width="130" height="62" style="display:block;border:0;outline:none"></div></div></div>';
-	$headers = array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: New Mecca Booking <booking@meccalimo.com>', 'Reply-To: ' . $name . ' <' . $email . '>' );
 	// Always keep a copy in WordPress (Quotes menu), so a request is never lost if email fails.
 	wp_insert_post( array( 'post_type' => 'mecca_quote', 'post_status' => 'private', 'post_title' => $f['service'] . ' - ' . $name . ' (' . date_i18n( 'm/d/y', strtotime( $f['date'] ) ) . ')', 'post_content' => $admin_lines ) );
+	// Quote emails come from "New Mecca Booking" so Outlook doesn't file them as "Note to self".
+	$mecca_from = function ( $value, $group, $key ) {
+		if ( 'mail' === $group && 'from_email' === $key ) {
+			return 'booking@meccalimo.com';
+		}
+		if ( 'mail' === $group && 'from_name' === $key ) {
+			return 'New Mecca Booking';
+		}
+		return $value;
+	};
+	add_filter( 'wp_mail_smtp_options_get', $mecca_from, 10, 3 );
 	$sent    = wp_mail( MECCA_QF_TO, 'New Quote Request: ' . $f['service'] . ' - ' . $name . ' (' . date_i18n( 'm/d/y', strtotime( $f['date'] ) ) . ')', $admin_body, $headers );
 
+	remove_filter( 'wp_mail_smtp_options_get', $mecca_from, 10 );
 	if ( ! $sent ) {
 		return array( 'errors' => array( 'form' => 'Sorry, we could not send your request. Please call us at (843) 804-1188.' ), 'values' => $f );
 	}
