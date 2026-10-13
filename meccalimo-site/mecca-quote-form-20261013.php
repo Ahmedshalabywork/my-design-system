@@ -196,6 +196,8 @@ function mecca_qf_handle() {
 		. $line( 'Message', $f['notes'] ? $e( $f['notes'] ) : '' );
 	$admin_body = '<div style="background:#ffffff;padding:8px"><div style="max-width:600px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.35;color:#222">' . $admin_lines . '<div style="margin-top:12px"><img src="https://www.meccalimo.com/wp-content/uploads/2026/10/mecca-limo-logo-gold.png" alt="Mecca Limo Service" width="130" height="62" style="display:block;border:0;outline:none"></div></div></div>';
 	$headers = array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $email . '>' );
+	// Always keep a copy in WordPress (Quotes menu), so a request is never lost if email fails.
+	wp_insert_post( array( 'post_type' => 'mecca_quote', 'post_status' => 'private', 'post_title' => $f['service'] . ' - ' . $name . ' (' . date_i18n( 'm/d/y', strtotime( $f['date'] ) ) . ')', 'post_content' => $admin_lines ) );
 	$sent    = wp_mail( MECCA_QF_TO, 'New Quote Request: ' . $f['service'] . ' - ' . $name . ' (' . date_i18n( 'm/d/y', strtotime( $f['date'] ) ) . ')', $admin_body, $headers );
 
 	if ( ! $sent ) {
@@ -378,6 +380,11 @@ function mecca_qf_shortcode( $atts = array() ) {
 	return ob_get_clean();
 }
 add_shortcode( 'mecca_quote_form', 'mecca_qf_shortcode' );
+
+// Private "Quotes" list in the WordPress admin (never public, not indexed).
+add_action( 'init', function () {
+	register_post_type( 'mecca_quote', array( 'label' => 'Quotes', 'public' => false, 'show_ui' => true, 'show_in_menu' => true, 'menu_icon' => 'dashicons-email-alt', 'menu_position' => 3, 'supports' => array( 'title', 'editor' ), 'capability_type' => 'post', 'map_meta_cap' => true, 'exclude_from_search' => true, 'show_in_rest' => false ) );
+} );
 
 
 
