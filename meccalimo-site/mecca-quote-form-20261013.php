@@ -381,9 +381,9 @@ function mecca_qf_shortcode( $atts = array() ) {
 }
 add_shortcode( 'mecca_quote_form', 'mecca_qf_shortcode' );
 
-// Private "Quotes" list in the WordPress admin (never public, not indexed).
+// Hidden backup copy of each quote (no menu, never public), in case an email ever fails.
 add_action( 'init', function () {
-	register_post_type( 'mecca_quote', array( 'label' => 'Quotes', 'public' => false, 'show_ui' => true, 'show_in_menu' => true, 'menu_icon' => 'dashicons-email-alt', 'menu_position' => 3, 'supports' => array( 'title', 'editor' ), 'capability_type' => 'post', 'map_meta_cap' => true, 'exclude_from_search' => true, 'show_in_rest' => false ) );
+	register_post_type( 'mecca_quote', array( 'label' => 'Quotes', 'public' => false, 'show_ui' => false, 'show_in_menu' => false, 'menu_icon' => 'dashicons-email-alt', 'menu_position' => 3, 'supports' => array( 'title', 'editor' ), 'capability_type' => 'post', 'map_meta_cap' => true, 'exclude_from_search' => true, 'show_in_rest' => false ) );
 } );
 
 
