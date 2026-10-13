@@ -15,7 +15,7 @@ function mecca_qf_hourly() {
 	return array( 'Wedding', 'Hourly Charter', 'Night Out / Party Bus', 'Corporate', 'Prom / Special Event', 'Sightseeing / Tour', 'Golf Course', 'Other' );
 }
 
-/** Extras: key => array( form label, email label, price shown ONLY in the internal email ). */
+/** Extras: key => array( form label, email label, price for reference only - never shown in any email or on the site ). */
 function mecca_qf_extras() {
 	return array(
 		'meet'    => array( 'Meet and greet', 'Meet and greet', '$25' ),
@@ -170,7 +170,7 @@ function mecca_qf_handle() {
 	$gap   = '<div style="height:8px"></div>';
 	$extra = '';
 	foreach ( mecca_qf_extras() as $k => $x ) {
-		$extra .= $line( $x[1], esc_html( $x[2] ) . ' - ' . ( $f['extras'][ $k ] ? '<strong style="color:#1a7f37">YES</strong>' : 'No' ) );
+		$extra .= $line( $x[1], $f['extras'][ $k ] ? '<strong style="color:#1a7f37">YES</strong>' : 'No' );
 	}
 	$admin_lines = $line( 'Registration type', $e( $f['service'] ) )
 		. $gap
