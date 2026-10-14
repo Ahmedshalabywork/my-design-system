@@ -280,6 +280,10 @@ body.menu-open{overflow:hidden}
 
 /* services: photo tiles (desktop) / swipe strip (phone) */
 .svc-marquee{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);padding:8px 0 14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mq-drive{animation:none!important;will-change:transform}
+.svc-marquee,.rev-marquee,.marquee{touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+.svc-marquee.mq-dragging,.rev-marquee.mq-dragging,.marquee.mq-dragging{cursor:grabbing}
+.mq-dragging a,.mq-dragging img{pointer-events:none}
 .svc-track{display:flex;width:max-content}
 .svc-track{animation:revscroll 60s linear infinite}
 .rev-track:not(.dup),.svc-track:not(.dup),.marquee:not(.dup) .marquee-track{animation:none}
@@ -873,6 +877,34 @@ echo wp_json_encode( array(
 		['wheel','touchstart','pointerdown','keydown','mousemove'].forEach(function(x){addEventListener(x,arm,{once:true,passive:true});});
 		function want(t){if(armed)dupe(t);else pend.push(t);}
 		if('IntersectionObserver' in window){var dio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){want(e.target);dio.unobserve(e.target);}});},{rootMargin:'200px'});ts.forEach(function(t){dio.observe(t);});}else{ts.forEach(want);}
+	})();
+
+
+	// Sliding strips: keep auto-scrolling, but visitors can also drag/swipe them both ways; touching pauses them.
+	(function(){
+		var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+		[].slice.call(document.querySelectorAll('.svc-marquee,.rev-marquee,.marquee')).forEach(function(box){
+			var strip=box.classList.contains('marquee'),x=0,last=0,vis=true,hold=0,drag=null,moved=0;
+			var speed=strip?(innerWidth<700?55:45):(box.classList.contains('rev-marquee')?(innerWidth<700?45:40):(innerWidth<700?42:38));
+			function tracks(){return strip?[].slice.call(box.querySelectorAll('.marquee-track')):[box.querySelector('.svc-track,.rev-track')];}
+			function ready(){return strip?box.classList.contains('dup'):(tracks()[0]&&tracks()[0].classList.contains('dup'));}
+			function span(){var t=tracks()[0];if(!t)return 0;return strip?t.getBoundingClientRect().width:t.scrollWidth/2;}
+			function paint(){var w=span();if(w>0){while(x<=-w)x+=w;while(x>0)x-=w;}tracks().forEach(function(t){t.classList.add('mq-drive');t.style.transform='translate3d('+x+'px,0,0)';});}
+			function frame(now){var dt=last?Math.min((now-last)/1000,.05):0;last=now;
+				if(vis&&ready()&&!drag&&!reduce&&now>hold){x-=speed*dt;paint();}
+				requestAnimationFrame(frame);}
+			if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(box);
+			box.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'&&e.button!==0)return;drag={sx:e.clientX,sy:e.clientY,x0:x,lock:null,id:e.pointerId};moved=0;hold=Infinity;});
+			box.addEventListener('pointermove',function(e){if(!drag||e.pointerId!==drag.id)return;var dx=e.clientX-drag.sx,dy=e.clientY-drag.sy;
+				if(drag.lock===null&&(Math.abs(dx)>6||Math.abs(dy)>6)){drag.lock=Math.abs(dx)>Math.abs(dy);if(drag.lock){box.classList.add('mq-dragging');try{box.setPointerCapture(e.pointerId);}catch(_){}}}
+				if(drag.lock){moved=Math.abs(dx);x=drag.x0+dx;paint();}});
+			function end(){if(!drag)return;drag=null;box.classList.remove('mq-dragging');hold=performance.now()+2500;}
+			box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);box.addEventListener('lostpointercapture',end);
+			box.addEventListener('click',function(e){if(moved>6){e.preventDefault();e.stopPropagation();moved=0;}},true);
+			box.addEventListener('mouseenter',function(){hold=Infinity;});box.addEventListener('mouseleave',function(){if(!drag)hold=performance.now()+800;});
+			box.addEventListener('wheel',function(e){if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault();x-=e.deltaX;paint();hold=performance.now()+2500;}},{passive:false});
+			requestAnimationFrame(frame);
+		});
 	})();
 
 	if('IntersectionObserver' in window){
