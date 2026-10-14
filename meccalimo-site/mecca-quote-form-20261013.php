@@ -87,6 +87,16 @@ function mecca_qf_handle() {
 	foreach ( $text as $k ) {
 		$f[ $k ] = isset( $p[ $k ] ) ? ( $k === 'notes' ? sanitize_textarea_field( $p[ $k ] ) : sanitize_text_field( $p[ $k ] ) ) : '';
 	}
+	// Stops: any number of "Add a stop" fields (stops[]), up to 8; old single "stop" field still accepted.
+	$f['stops'] = array();
+	$raw_stops  = isset( $p['stops'] ) && is_array( $p['stops'] ) ? $p['stops'] : array( $p['stop'] ?? '' );
+	foreach ( array_slice( $raw_stops, 0, 8 ) as $s ) {
+		$s = sanitize_text_field( (string) $s );
+		if ( '' !== $s ) {
+			$f['stops'][] = $s;
+		}
+	}
+	$f['stop']       = implode( ' | ', $f['stops'] );
 	$f['round_trip'] = ! empty( $p['round_trip'] );
 	$f['sms_ok']     = ! empty( $p['sms_ok'] );
 	$f['extras']     = array();
@@ -168,6 +178,10 @@ function mecca_qf_handle() {
 	};
 	$when = esc_html( date_i18n( 'l, m/d/y', strtotime( $f['date'] ) ) . ' ' . $time_txt );
 	$gap   = '<div style="height:8px"></div>';
+	$stops_html = '';
+	foreach ( $f['stops'] as $i => $s ) {
+		$stops_html .= ( $i ? '<br>' : '' ) . ( count( $f['stops'] ) > 1 ? ( $i + 1 ) . ') ' : '' ) . $e( $s );
+	}
 	$extra = '';
 	foreach ( mecca_qf_extras() as $k => $x ) {
 		$extra .= $line( $x[1], $f['extras'][ $k ] ? '<strong style="color:#1a7f37">YES</strong>' : 'No' );
@@ -185,7 +199,7 @@ function mecca_qf_handle() {
 		. $line( 'Drop Off Location', $e( $f['dropoff'] ) )
 		. $line( 'Hourly Option', $f['hours'] ? $e( $f['hours'] ) : '' )
 		. $gap
-		. $line( 'Stops', $f['stop'] ? $e( $f['stop'] ) : '' )
+		. $line( 'Stops', $stops_html )
 		. ( $f['flight'] ? $line( 'Flight Number', $e( $f['flight'] ) ) : '' )
 		. ( $f['round_trip'] ? $line( 'Round Trip Return', esc_html( date_i18n( 'l, m/d/y', strtotime( $f['return_date'] ) ) . ' ' . date_i18n( 'g:i A', strtotime( '2000-01-01 ' . $f['return_time'] ) ) ) ) : '' )
 		. $line( 'OK to Text', $f['sms_ok'] ? 'Yes' : 'No' )
@@ -268,6 +282,8 @@ function mecca_qf_shortcode( $atts = array() ) {
 	.mqf .mqf-cond{display:none}.mqf .mqf-cond.on{display:block}
 	.mqf .mqf-addstop{display:inline-block;margin-top:10px;color:#e3b84f;cursor:pointer;font-size:15px;background:none;border:0;padding:0;width:auto;text-transform:none;letter-spacing:0;font-weight:600}
 	.mqf .mqf-addstop:hover{text-decoration:underline;background:none}
+	.mqf .mqf-stopline{display:flex;gap:8px;align-items:center}.mqf .mqf-stopline input{flex:1}
+	.mqf .mqf-rmstop{flex:0 0 auto;width:44px!important;height:44px;margin:0!important;padding:0!important;border-radius:8px!important;background:transparent!important;border:1px solid #555!important;color:#e3b84f!important;font-size:22px!important;line-height:1;cursor:pointer;letter-spacing:0!important}
 	@media(max-width:600px){.mqf-trust{gap:6px}.mqf-trust div{font-size:11px;padding:10px 4px}.mqf-trust b{font-size:12px}}
 	.mqf .mqf-note{color:#aaa;font-size:13px;text-align:center;margin-top:14px}
 	@media(max-width:600px){.mqf{padding:20px}.mqf .mqf-row{flex-direction:column;gap:0}}
@@ -297,9 +313,12 @@ function mecca_qf_shortcode( $atts = array() ) {
 			<label for="mqf-pickup">Pick-up Location *</label>
 			<input type="text" id="mqf-pickup" name="pickup" value="<?php echo $v( 'pickup' ); ?>" placeholder="Address, hotel, or airport (e.g. CHS)" required><?php echo $err( 'pickup' ); ?>
 
-			<button type="button" class="mqf-addstop" data-target="mqf-stopwrap" <?php echo ( $state['values']['stop'] ?? '' ) ? 'hidden' : ''; ?>>+ Add a stop</button>
-			<div id="mqf-stopwrap" class="mqf-cond<?php echo ( $state['values']['stop'] ?? '' ) ? ' on' : ''; ?>"><label for="mqf-stop">Extra Stop</label>
-			<input type="text" id="mqf-stop" name="stop" value="<?php echo $v( 'stop' ); ?>" placeholder="Any stop along the way"></div>
+			<div id="mqf-stops">
+			<?php foreach ( ( $state['values']['stops'] ?? array() ) as $i => $stop ) : ?>
+				<div class="mqf-stoprow"><label>Stop <?php echo (int) $i + 1; ?></label><div class="mqf-stopline"><input type="text" name="stops[]" value="<?php echo esc_attr( $stop ); ?>" placeholder="Any stop along the way"><button type="button" class="mqf-rmstop" aria-label="Remove this stop">&times;</button></div></div>
+			<?php endforeach; ?>
+			</div>
+			<button type="button" class="mqf-addstop">+ Add a stop</button>
 
 			<label for="mqf-dropoff">Drop-off Location *</label>
 			<input type="text" id="mqf-dropoff" name="dropoff" value="<?php echo $v( 'dropoff' ); ?>" placeholder="Address, hotel, or airport" required><?php echo $err( 'dropoff' ); ?>
@@ -374,7 +393,11 @@ function mecca_qf_shortcode( $atts = array() ) {
 			function sync(){show('mqf-hourswrap',hourly.indexOf(svc.value)>-1); show('mqf-flightwrap',svc.value==='Airport Transfer'); show('mqf-returnwrap',rt.checked);
 				['return_date','return_time'].forEach(function(n){var el=f.querySelector('[name='+n+']'); if(rt.checked) el.setAttribute('required',''); else el.removeAttribute('required');});}
 			svc.addEventListener('change',sync); rt.addEventListener('change',sync); sync();
-			f.querySelectorAll('.mqf-addstop').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.target,true); b.hidden=true; var i=document.querySelector('#'+b.dataset.target+' input'); if(i) i.focus();});});
+			var stops=document.getElementById('mqf-stops'), addb=f.querySelector('.mqf-addstop'), MAXS=8;
+			function renum(){var rows=stops.querySelectorAll('.mqf-stoprow'); rows.forEach(function(r,i){r.querySelector('label').textContent='Stop '+(i+1);}); addb.hidden=rows.length>=MAXS; addb.textContent=rows.length?'+ Add another stop':'+ Add a stop';}
+			addb.addEventListener('click',function(){var r=document.createElement('div'); r.className='mqf-stoprow'; r.innerHTML='<label></label><div class="mqf-stopline"><input type="text" name="stops[]" placeholder="Any stop along the way"><button type="button" class="mqf-rmstop" aria-label="Remove this stop">&times;</button></div>'; stops.appendChild(r); renum(); r.querySelector('input').focus();});
+			stops.addEventListener('click',function(e){var b=e.target.closest('.mqf-rmstop'); if(b){b.closest('.mqf-stoprow').remove(); renum();}});
+			renum();
 			var d1=f.querySelector('[name=date]'), d2=f.querySelector('[name=return_date]'); d1.addEventListener('change',function(){ if(d1.value) d2.min=d1.value; });
 			ph.addEventListener('input',function(){var d=digits(ph.value); if(d.length===11&&d[0]==='1') d=d.slice(1); d=d.slice(0,10); if(d.length>6) ph.value='('+d.slice(0,3)+') '+d.slice(3,6)+'-'+d.slice(6); else if(d.length>3) ph.value='('+d.slice(0,3)+') '+d.slice(3);});
 			f.addEventListener('submit',function(e){
