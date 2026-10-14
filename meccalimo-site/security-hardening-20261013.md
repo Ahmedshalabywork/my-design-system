@@ -7,3 +7,4 @@
 - .htaccess: deny xmlrpc.php (backup at ~/mecca-backups/htaccess-20261013.bak).
 - Cleared WP Super Cache: visitors were seeing the old quote form.
 - Oct 14: fleet-sprinter-wide/fleet-suv recompressed (172->71KB, 126->52KB); party bus wording removed from mecca-home templates/schema/llms.txt (backups in ~/mecca-backups).
+- Oct 14: removed Google forwarding-number swap (phone_conversion_number) so all visitors see (843) 804-1188; removed all 'last-minute' wording (home FAQ + 13 pages/posts; backups in ~/mecca-backups).
