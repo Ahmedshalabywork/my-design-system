@@ -9,3 +9,4 @@
 - Oct 14: fleet-sprinter-wide/fleet-suv recompressed (172->71KB, 126->52KB); party bus wording removed from mecca-home templates/schema/llms.txt (backups in ~/mecca-backups).
 - Oct 14: removed Google forwarding-number swap (phone_conversion_number) so all visitors see (843) 804-1188; removed all 'last-minute' wording (home FAQ + 13 pages/posts; backups in ~/mecca-backups).
 - Oct 14: moved 43KB inline CSS from mecca-home template to assets/mecca-site.css (minified, ?v=filemtime) to fix Semrush low text/HTML ratio on 108 pages.
+- Oct 15 (Screaming Frog fixes): stale WP Super Cache pages cleared (fixed 4xx/redirect/param links); preload mode off so cache expires in 24h; 4 Rank Math titles + 3 descriptions shortened/added; 5 long blog H1s shortened; 44 images recompressed (46->12 over 100KB, -2.9MB), originals in ~/mecca-backups/img-20261015.
