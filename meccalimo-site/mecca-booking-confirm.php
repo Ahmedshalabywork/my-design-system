@@ -152,6 +152,62 @@ function mecca_bc_stage_label( $st ) {
 	return $l[ $st ] ?? $st;
 }
 
+/* ---------------------------------------------------------------- Limo Anywhere hand-off */
+
+/**
+ * Signed bookings waiting to be entered in Limo Anywhere, with the fields its reservation
+ * form needs. Only bookings signed after the hand-off was switched on (older ones were
+ * entered by hand). Read by Claude's scheduled check, which creates each reservation
+ * through Zapier and then calls mecca_bc_la_mark().
+ */
+function mecca_bc_la_queue() {
+	$since = (string) get_option( 'mecca_bc_la_since', '' );
+	$out   = array();
+	if ( '' === $since ) {
+		return $out;
+	}
+	$veh = array( 'Executive Sedan' => 116180, 'Luxury SUV' => 117016, 'Mercedes Sprinter' => 138238 );
+	foreach ( get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 50, 'post_status' => 'publish', 'meta_key' => '_bc_status', 'meta_value' => 'confirmed' ) ) as $p ) {
+		$sig = (array) get_post_meta( $p->ID, '_bc_signed', true );
+		if ( 'confirmed' !== mecca_bc_stage( $p->ID ) || get_post_meta( $p->ID, '_bc_la_ref', true ) || ( $sig['time'] ?? '' ) < $since ) {
+			continue;
+		}
+		$d  = (array) get_post_meta( $p->ID, '_bc_details', true );
+		$ts = strtotime( str_replace( ' at ', ' ', (string) ( $d['trip_date'] ?? '' ) ) );
+		if ( $ts && $ts < time() - 30 * DAY_IN_SECONDS ) {
+			$ts = strtotime( '+1 year', $ts ); // "Sat, Jan 9" typed in December means next year.
+		}
+		$pax = preg_match( '/Passengers:\s*(\d+)/', (string) ( $d['notes'] ?? '' ), $m ) ? (int) $m[1] : 1;
+		$geo = function_exists( 'mecca_zap_geocode' ) ? 'mecca_zap_geocode' : function () {
+			return array( '32.7765', '-79.9311' );
+		};
+		$card  = (array) get_post_meta( $p->ID, '_bc_card', true );
+		$out[] = array(
+			'id'         => $p->ID,
+			'pickup_at'  => $ts ? date( 'Y-m-d H:i', $ts ) : '',
+			'first_name' => $d['first_name'] ?? '',
+			'last_name'  => $d['last_name'] ?? '',
+			'phone'      => $d['phone'] ?? '',
+			'email'      => $d['email'] ?? '',
+			'passengers' => $pax,
+			'vehicle_id' => $veh[ $d['vehicle'] ?? '' ] ?? 116180,
+			'vehicle'    => $d['vehicle'] ?? '',
+			'pickup'     => $d['pickup'] ?? '',
+			'pickup_ll'  => $geo( $d['pickup'] ?? '' ),
+			'dropoff'    => $d['dropoff'] ?? '',
+			'dropoff_ll' => $geo( $d['dropoff'] ?? '' ),
+			'notes'      => trim( 'Mecca app booking #' . $p->ID . ' (signed, card on file ' . ( $card['last4'] ?? '' ) . '). Price quoted: ' . ( $d['price'] ?? '' ) . "\n" . ( $d['notes'] ?? '' ) ),
+		);
+	}
+	return $out;
+}
+
+/** Record that a booking is in Limo Anywhere (moves it to the "In LA" step). */
+function mecca_bc_la_mark( $id, $ref ) {
+	update_post_meta( $id, '_bc_la_ref', sanitize_text_field( $ref ) );
+	update_post_meta( $id, '_bc_stage', 'la' );
+}
+
 /** Pre-written customer message for SMS/email. */
 function mecca_bc_message( $d, $link ) {
 	return 'Hi ' . ( $d['first_name'] ?? '' ) . ', this is Mecca Limo. Thanks for booking with us! Please confirm your ride (' . ( $d['trip_date'] ?? '' ) . ') here: ' . $link . ' It takes 2 minutes. Your card is saved securely and nothing is charged today. Questions? Call or text (843) 804-1188.';
@@ -417,6 +473,7 @@ form.inline{margin:0}
 		<?php endif; ?>
 	</div>
 	<?php endif; ?>
+	<?php if ( get_post_meta( $view, '_bc_la_ref', true ) ) : ?><div class="card"><div class="kv"><span>Limo Anywhere</span><b><?php echo esc_html( get_post_meta( $view, '_bc_la_ref', true ) ); ?></b></div></div><?php endif; ?>
 	<?php if ( $link ) : ?>
 	<div class="sec"><h2>Customer link</h2></div>
 	<div class="linkbox" style="margin-top:0"><?php echo esc_html( $link ); ?></div>
