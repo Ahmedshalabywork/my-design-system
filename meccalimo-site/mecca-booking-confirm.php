@@ -89,7 +89,7 @@ add_action( 'template_redirect', function () {
 		return;
 	}
 	nocache_headers();
-	$dest = admin_url( 'admin.php?page=mecca-bookings&view_id=' . (int) $m[1] );
+	$dest = home_url( '/new-booking/?view=' . (int) $m[1] );
 	if ( current_user_can( 'manage_options' ) ) {
 		wp_safe_redirect( $dest );
 		exit;
@@ -111,7 +111,7 @@ add_action( 'admin_init', function () {
 	setcookie( 'mecca_bk', '', time() - 3600, COOKIEPATH ?: '/', '', is_ssl(), true );
 	setcookie( 'mecca_bk', '', time() - 3600, ADMIN_COOKIE_PATH, '', is_ssl(), true );
 	if ( ( $_GET['page'] ?? '' ) !== 'mecca-bookings' ) {
-		wp_safe_redirect( admin_url( 'admin.php?page=mecca-bookings&view_id=' . $id ) );
+		wp_safe_redirect( home_url( '/new-booking/?view=' . $id ) );
 		exit;
 	}
 } );
@@ -128,6 +128,28 @@ function mecca_bc_staff_key() {
 
 function mecca_bc_staff_url() {
 	return home_url( '/new-booking/?k=' . mecca_bc_staff_key() );
+}
+
+/**
+ * Where a booking is: new (quote, no link) → sent (link waiting on customer) → confirmed
+ * (signed, card + ID on file) → la (entered in Limo Anywhere) → done (trip finished).
+ * A quote that already has a link reports 'linked'; its booking lives on the linked post.
+ */
+function mecca_bc_stage( $id ) {
+	$s = get_post_meta( $id, '_bc_status', true );
+	if ( 'confirmed' === $s ) {
+		$g = get_post_meta( $id, '_bc_stage', true );
+		return in_array( $g, array( 'la', 'done' ), true ) ? $g : 'confirmed';
+	}
+	if ( 'sent' === $s ) {
+		return 'sent';
+	}
+	return get_post_meta( $id, '_bc_linked', true ) ? 'linked' : 'new';
+}
+
+function mecca_bc_stage_label( $st ) {
+	$l = array( 'new' => 'New', 'sent' => 'Link sent', 'linked' => 'Link sent', 'confirmed' => 'Confirmed', 'la' => 'In Limo Anywhere', 'done' => 'Done' );
+	return $l[ $st ] ?? $st;
 }
 
 /** Pre-written customer message for SMS/email. */
@@ -179,6 +201,43 @@ add_action( 'template_redirect', function () {
 		exit;
 	}
 	status_header( 200 );
+	$self = mecca_bc_staff_url();
+	// Private ID photo, shown inside the app (same access check as the page itself).
+	if ( isset( $_GET['idimg'] ) ) {
+		$iid  = (int) $_GET['idimg'];
+		$f    = 'mecca_booking' === get_post_type( $iid ) ? get_post_meta( $iid, '_bc_id_file', true ) : '';
+		$path = $f ? mecca_bc_id_dir() . '/' . basename( (string) $f ) : '';
+		if ( ! $path || ! is_file( $path ) ) {
+			status_header( 404 );
+			exit;
+		}
+		header( 'Content-Type: ' . ( wp_check_filetype( $path )['type'] ?: 'application/octet-stream' ) );
+		header( 'Content-Disposition: inline; filename="id-' . $iid . '.' . pathinfo( $path, PATHINFO_EXTENSION ) . '"' );
+		readfile( $path );
+		exit;
+	}
+	// Next-step buttons on a confirmed booking.
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['stage'] ) ) {
+		$sid = (int) ( $_POST['id'] ?? 0 );
+		$to  = sanitize_key( $_POST['stage'] );
+		if ( wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) && 'mecca_booking' === get_post_type( $sid ) && 'confirmed' === get_post_meta( $sid, '_bc_status', true ) && in_array( $to, array( 'confirmed', 'la', 'done' ), true ) ) {
+			if ( 'confirmed' === $to ) {
+				delete_post_meta( $sid, '_bc_stage' );
+			} else {
+				update_post_meta( $sid, '_bc_stage', $to );
+			}
+		}
+		wp_safe_redirect( add_query_arg( 'view', $sid, $self ), 303 );
+		exit;
+	}
+	// ?view=ID shows one booking with everything on it. A quote with a link opens its booking.
+	$view = (int) ( $_GET['view'] ?? 0 );
+	if ( $view && 'mecca_booking' !== get_post_type( $view ) ) {
+		$view = 0;
+	}
+	if ( $view && 'linked' === mecca_bc_stage( $view ) ) {
+		$view = (int) get_post_meta( $view, '_bc_linked', true );
+	}
 	$made = null;
 	// ?from=ID opens a quote request OR a not-yet-confirmed booking, pre-filled, so it can be fixed and re-sent.
 	$from = (int) ( $_REQUEST['from'] ?? 0 );
@@ -213,11 +272,21 @@ add_action( 'template_redirect', function () {
 		}
 	}
 	$quotes = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 30, 'post_status' => 'publish', 'meta_query' => array( array( 'key' => '_bc_status', 'value' => 'quote' ), array( 'key' => '_bc_linked', 'compare' => 'NOT EXISTS' ) ) ) );
+	$all    = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 300, 'post_status' => 'publish' ) );
+	$next   = array(); // Signed, not finished yet.
+	$wait   = array(); // Link sent, customer hasn't signed.
+	foreach ( $all as $q ) {
+		$st = mecca_bc_stage( $q->ID );
+		if ( 'confirmed' === $st || 'la' === $st ) {
+			$next[] = $q;
+		} elseif ( 'sent' === $st ) {
+			$wait[] = $q;
+		}
+	}
 	$v      = function ( $k ) use ( $pre ) {
 		return esc_attr( $pre[ $k ] ?? '' );
 	};
-	$self   = mecca_bc_staff_url();
-	$icon   = home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' );
+	$icon  = home_url( '/wp-content/plugins/mecca-home/assets/icon-192.png' );
 	$route  = function ( $d ) {
 		return array( trim( (string) ( $d['pickup'] ?? '' ) ), trim( (string) ( $d['dropoff'] ?? '' ) ) );
 	};
@@ -290,13 +359,87 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 .done h1{font:600 24px "Didot","Bodoni 72",Georgia,serif;margin:0 0 4px}.done p{margin:0;color:var(--muted)}
 .linkbox{font:14px ui-monospace,Menlo,monospace;color:var(--gold);word-break:break-all;background:#111114;border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
 .hint{font-size:13px;color:var(--muted);margin:-2px 2px 14px}
+.steps{display:flex;gap:4px;margin:4px 0 16px}.steps div{flex:1;text-align:center;font:600 10px -apple-system,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.steps div:before{content:"";display:block;height:4px;border-radius:4px;background:#1c1c1e;margin-bottom:6px}.steps div.on{color:var(--gold)}.steps div.on:before{background:var(--goldg)}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}.kv:last-child{border:0}.kv span{color:var(--muted)}.kv b{font-weight:600;text-align:right;word-break:break-word}
+.idph{display:block;width:100%;border-radius:12px;border:1px solid var(--line);margin-top:6px}
+form.inline{margin:0}
 </style></head><body>
 <header class="top">
-<?php if ( $from || $made ) : ?><a class="back" href="<?php echo esc_url( $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
-<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : 'Quotes &amp; bookings' ); ?></small></div>
+<?php if ( $from || $made || $view ) : ?><a class="back" href="<?php echo esc_url( $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
+<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : 'Quotes &amp; bookings' ) ); ?></small></div>
 </header>
 <main class="wrap">
-<?php if ( $made ) :
+<?php if ( $view && ! $made && ! $from ) :
+	$d    = (array) get_post_meta( $view, '_bc_details', true );
+	$st   = mecca_bc_stage( $view );
+	$nm   = trim( ( $d['first_name'] ?? '' ) . ' ' . ( $d['last_name'] ?? '' ) ) ?: get_the_title( $view );
+	$ph   = $digits( $d['phone'] ?? '' );
+	$tok  = get_post_meta( $view, '_bc_token', true );
+	$link = $tok ? home_url( '/confirm/?t=' . $tok ) : '';
+	$card = get_post_meta( $view, '_bc_card', true );
+	$sig  = get_post_meta( $view, '_bc_signed', true );
+	$idf  = get_post_meta( $view, '_bc_id_file', true );
+	$ord  = array( 'new' => 0, 'sent' => 1, 'confirmed' => 2, 'la' => 3, 'done' => 4 );
+	$at   = $ord[ $st ] ?? 0;
+	list( $pu, $do ) = $route( $d );
+	$stage_btn = function ( $to, $label, $cls = 'btn' ) use ( $view, $self ) {
+		echo '<form class="inline" method="post" action="' . esc_url( $self ) . '">';
+		wp_nonce_field( 'mecca_bc_staff', '_sn' );
+		echo '<input type="hidden" name="id" value="' . (int) $view . '"><input type="hidden" name="stage" value="' . esc_attr( $to ) . '"><button class="' . esc_attr( $cls ) . '">' . esc_html( $label ) . '</button></form>';
+	};
+	?>
+	<div class="steps"><?php foreach ( array( 'New', 'Link sent', 'Confirmed', 'In LA', 'Done' ) as $i => $s ) : ?><div class="<?php echo $i <= $at ? 'on' : ''; ?>"><?php echo esc_html( $s ); ?></div><?php endforeach; ?></div>
+	<div class="card">
+		<div class="name"><?php echo esc_html( $nm ); ?></div>
+		<?php if ( ! empty( $d['trip_date'] ) ) : ?><div class="when">🗓 <?php echo esc_html( $d['trip_date'] ); ?></div><?php endif; ?>
+		<?php if ( $pu || $do ) : ?><div class="route"><?php if ( $pu ) : ?><div><?php echo esc_html( $pu ); ?></div><?php endif; ?><?php if ( $do ) : ?><div><?php echo esc_html( $do ); ?></div><?php endif; ?></div><?php endif; ?>
+		<div style="margin-top:10px">
+		<?php foreach ( array( 'vehicle' => 'Vehicle', 'price' => 'Price', 'phone' => 'Phone', 'email' => 'Email' ) as $k => $lab ) : if ( ! empty( $d[ $k ] ) ) : ?>
+			<div class="kv"><span><?php echo esc_html( $lab ); ?></span><b><?php echo esc_html( $d[ $k ] ); ?></b></div>
+		<?php endif; endforeach; ?>
+		<?php if ( ! empty( $d['notes'] ) ) : ?><div class="kv"><span>Notes</span><b><?php echo nl2br( esc_html( $d['notes'] ) ); ?></b></div><?php endif; ?>
+		</div>
+		<?php if ( $ph ) : ?><div class="acts"><a class="chip" href="tel:<?php echo esc_attr( $ph ); ?>">📞 Call</a><a class="chip" href="sms:<?php echo esc_attr( $ph ); ?>">💬 Text</a></div><?php endif; ?>
+	</div>
+	<?php if ( $card || $sig || $idf ) : ?>
+	<div class="sec"><h2>Customer confirmed</h2></div>
+	<div class="card">
+		<?php if ( $card ) : ?><div class="kv"><span>Card on file</span><b><?php echo esc_html( trim( ucwords( strtolower( str_replace( '_', ' ', $card['brand'] ) ) ) . ' •••• ' . $card['last4'] ) ); ?></b></div><?php endif; ?>
+		<?php if ( $sig ) : ?><div class="kv"><span>Signed</span><b><?php echo esc_html( $sig['name'] ); ?><br><small style="color:var(--muted);font-weight:400"><?php echo esc_html( mysql2date( 'M j, g:i A', $sig['time'] ) ); ?></small></b></div><?php endif; ?>
+		<?php if ( $idf ) :
+			$isimg = in_array( strtolower( pathinfo( (string) $idf, PATHINFO_EXTENSION ) ), array( 'jpg', 'jpeg', 'png', 'webp' ), true );
+			$iurl  = add_query_arg( 'idimg', $view, $self );
+			?>
+			<div class="kv" style="display:block"><span>Driver's license / ID</span>
+			<?php if ( $isimg ) : ?><a href="<?php echo esc_url( $iurl ); ?>" target="_blank"><img class="idph" src="<?php echo esc_url( $iurl ); ?>" alt="Photo ID"></a><?php else : ?><a class="chip" style="margin-top:8px" href="<?php echo esc_url( $iurl ); ?>" target="_blank">Open ID file</a><?php endif; ?>
+			</div>
+		<?php endif; ?>
+	</div>
+	<?php endif; ?>
+	<?php if ( $link ) : ?>
+	<div class="sec"><h2>Customer link</h2></div>
+	<div class="linkbox" style="margin-top:0"><?php echo esc_html( $link ); ?></div>
+	<?php endif; ?>
+	<div class="dock">
+	<?php if ( 'new' === $st ) : ?>
+		<a class="btn" href="<?php echo esc_url( add_query_arg( 'from', $view, $self ) ); ?>">Add price &amp; make link →</a>
+	<?php elseif ( 'sent' === $st ) :
+		$msg = mecca_bc_message( $d, $link );
+		?>
+		<button type="button" class="btn" onclick="navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( $link ) ); ?>);this.textContent='Copied ✓'">📋 Copy link</button>
+		<?php if ( $ph ) : ?><a class="btn alt" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text link</a><?php endif; ?>
+		<a class="btn alt" href="<?php echo esc_url( add_query_arg( 'from', $view, $self ) ); ?>">Edit trip</a>
+	<?php elseif ( 'confirmed' === $st ) : ?>
+		<?php $stage_btn( 'la', '✓ Added to Limo Anywhere' ); ?>
+	<?php elseif ( 'la' === $st ) : ?>
+		<?php $stage_btn( 'done', '✓ Trip done' ); ?>
+		<?php $stage_btn( 'confirmed', 'Undo', 'btn alt' ); ?>
+	<?php else : ?>
+		<?php $stage_btn( 'la', 'Undo', 'btn alt' ); ?>
+	<?php endif; ?>
+	</div>
+<?php elseif ( $made ) :
 	$msg = mecca_bc_message( $made['details'], $made['link'] );
 	$ph  = $digits( $made['details']['phone'] );
 	$nm  = trim( $made['details']['first_name'] . ' ' . $made['details']['last_name'] );
@@ -311,6 +454,7 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 	<?php if ( $ph ) : ?><a class="btn" href="sms:<?php echo esc_attr( $ph ); ?>?&amp;body=<?php echo rawurlencode( $msg ); ?>">💬 Text it to <?php echo esc_html( $made['details']['first_name'] ); ?></a><?php endif; ?>
 	<?php if ( $made['details']['email'] ) : ?><a class="btn alt" href="mailto:<?php echo esc_attr( $made['details']['email'] ); ?>?subject=<?php echo rawurlencode( 'Confirm your Mecca Limo booking' ); ?>&amp;body=<?php echo rawurlencode( $msg ); ?>">✉️ Email it</a><?php endif; ?>
 	<button type="button" class="btn alt" onclick="navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( $made['link'] ) ); ?>);this.textContent='Copied ✓'">📋 Copy link</button>
+	<a class="btn alt" href="<?php echo esc_url( add_query_arg( 'view', $made['id'], $self ) ); ?>">Open booking</a>
 	<a class="btn alt" href="<?php echo esc_url( $self ); ?>">Done</a>
 <?php elseif ( $from ) :
 	list( $pu, $do ) = $route( $pre );
@@ -331,6 +475,17 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="find" type="search" placeholder="Search name or phone" autocomplete="off" enterkeyhint="search"></div>
 	<div id="found" style="display:none"></div>
 	<div id="home">
+	<?php foreach ( array( 'Confirmed — next step' => $next, 'Waiting on customer' => $wait ) as $title => $list ) : if ( $list ) : ?>
+		<div class="sec"><h2><?php echo esc_html( $title ); ?></h2><span class="badge"><?php echo count( $list ); ?></span></div>
+		<div class="card" style="padding:4px 14px">
+		<?php foreach ( $list as $q ) :
+			$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
+			$st = mecca_bc_stage( $q->ID );
+			?>
+			<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ?: $q->post_title ); ?></b><span><?php echo esc_html( $qd['trip_date'] ?? '' ); ?></span></div><span class="tag <?php echo 'sent' === $st ? 'wait' : 'ok'; ?>"><?php echo esc_html( mecca_bc_stage_label( $st ) ); ?></span></a>
+		<?php endforeach; ?>
+		</div>
+	<?php endif; endforeach; ?>
 	<div class="sec"><h2>New requests</h2><?php if ( $quotes ) : ?><span class="badge"><?php echo count( $quotes ); ?></span><?php endif; ?></div>
 	<?php foreach ( $quotes as $q ) :
 		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
@@ -339,7 +494,7 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 		$nm = trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ?: $q->post_title;
 		?>
 		<div class="card">
-			<div class="name"><?php echo esc_html( $nm ); ?></div>
+			<a class="name" style="display:block" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><?php echo esc_html( $nm ); ?> <span style="color:var(--gold)">›</span></a>
 			<?php if ( ! empty( $qd['trip_date'] ) ) : ?><div class="when">🗓 <?php echo esc_html( $qd['trip_date'] ); ?></div><?php endif; ?>
 			<?php if ( $pu || $do ) : ?><div class="route"><?php if ( $pu ) : ?><div><?php echo esc_html( $pu ); ?></div><?php endif; ?><?php if ( $do ) : ?><div><?php echo esc_html( $do ); ?></div><?php endif; ?></div><?php endif; ?>
 			<?php if ( ! empty( $qd['vehicle'] ) ) : ?><div class="meta"><?php echo esc_html( $qd['vehicle'] ); ?></div><?php endif; ?>
@@ -357,19 +512,17 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 	</details>
 	</div>
 	<?php
-	$all  = get_posts( array( 'post_type' => 'mecca_booking', 'numberposts' => 300, 'post_status' => 'publish' ) );
 	$pool = array();
 	foreach ( $all as $q ) {
-		$qs = get_post_meta( $q->ID, '_bc_status', true );
+		$st = mecca_bc_stage( $q->ID );
 		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
-		$ql = 'quote' === $qs ? (int) get_post_meta( $q->ID, '_bc_linked', true ) : 0;
 		$pool[] = array(
 			'n' => trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ?: $q->post_title,
 			'd' => (string) ( $qd['trip_date'] ?? '' ),
 			's' => strtolower( $q->post_title . ' ' . ( $qd['phone'] ?? '' ) . ' ' . $digits( $qd['phone'] ?? '' ) . ' ' . ( $qd['email'] ?? '' ) ),
-			't' => 'confirmed' === $qs ? 'ok' : ( 'sent' === $qs ? 'wait' : ( $ql ? 'wait' : 'new' ) ),
-			'l' => 'confirmed' === $qs ? 'Confirmed' : ( 'sent' === $qs || $ql ? 'Link sent' : 'New' ),
-			'u' => 'confirmed' === $qs ? '' : add_query_arg( 'from', $q->ID, $self ),
+			't' => 'new' === $st ? 'new' : ( in_array( $st, array( 'sent', 'linked' ), true ) ? 'wait' : 'ok' ),
+			'l' => mecca_bc_stage_label( $st ),
+			'u' => add_query_arg( 'view', $q->ID, $self ),
 		);
 	}
 	?>
@@ -445,6 +598,9 @@ add_filter( 'wp_mail', function ( $args ) {
 
 add_action( 'admin_menu', function () {
 	add_menu_page( 'Mecca Bookings', 'Mecca Bookings', 'manage_options', 'mecca-bookings', 'mecca_bc_admin_list', 'dashicons-car', 3 );
+	add_submenu_page( 'mecca-bookings', 'Open the app', 'Open the app', 'manage_options', 'mecca-bookings-app', function () {
+		echo '<script>location.href=' . wp_json_encode( home_url( '/new-booking/' ) ) . '</script>';
+	} );
 	add_submenu_page( 'mecca-bookings', 'New booking link', 'New booking link', 'manage_options', 'mecca-bookings-new', 'mecca_bc_admin_new' );
 	add_submenu_page( 'mecca-bookings', 'Square settings', 'Square settings', 'manage_options', 'mecca-bookings-settings', 'mecca_bc_admin_settings' );
 } );
