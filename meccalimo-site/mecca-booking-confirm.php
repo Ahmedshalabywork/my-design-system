@@ -598,6 +598,7 @@ form.inline{margin:0}
 	}
 	ksort( $days );
 	?>
+	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Search trips" autocomplete="off" oninput="var t=this.value.toLowerCase();document.querySelectorAll('[data-c]').forEach(function(e){e.style.display=e.dataset.c.indexOf(t)>-1?'':'none'})"></div>
 	<?php if ( ! $days ) : ?><div class="empty"><b>No upcoming trips</b>Signed bookings show up here by day.</div><?php endif; ?>
 	<?php foreach ( $days as $day => $trips ) :
 		usort( $trips, function ( $a, $b ) {
@@ -611,7 +612,7 @@ form.inline{margin:0}
 			list( $ts, $q, $qd, $st ) = $t;
 			list( $pu, $do )          = $route( $qd );
 			?>
-			<a class="card" style="display:block" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>">
+			<a class="card" style="display:block" data-c="<?php echo esc_attr( strtolower( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) . ' ' . ( $qd['phone'] ?? '' ) . ' ' . $digits( $qd['phone'] ?? '' ) . ' ' . ( $qd['pickup'] ?? '' ) . ' ' . ( $qd['dropoff'] ?? '' ) . ' ' . ( $qd['vehicle'] ?? '' ) ) ); ?>" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>">
 				<div class="sum"><div class="av" style="font-size:14px"><?php echo esc_html( $ts ? date( 'g:i', $ts ) : '—' ); ?><br><small style="font-size:10px"><?php echo esc_html( $ts ? date( 'A', $ts ) : '' ); ?></small></div>
 				<div style="flex:1;min-width:0"><div class="name" style="margin:0"><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></div><div class="meta" style="margin:2px 0 0"><?php echo esc_html( $qd['vehicle'] ?? '' ); ?></div></div>
 				<span class="tag <?php echo 'sent' === $st ? 'wait' : 'ok'; ?>"><?php echo esc_html( mecca_bc_stage_label( $st ) ); ?></span></div>
@@ -687,6 +688,7 @@ form.inline{margin:0}
 	$today = strtotime( 'today', current_time( 'timestamp' ) );
 	$sums  = array( 'Today' => $today, 'This week' => strtotime( 'monday this week', $today ), 'This month' => strtotime( 'first day of this month', $today ) );
 	?>
+	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Search payments" autocomplete="off" oninput="var t=this.value.toLowerCase();document.querySelectorAll('[data-c]').forEach(function(e){e.style.display=e.dataset.c.indexOf(t)>-1?'':'none'})"></div>
 	<div class="two" style="margin-top:6px">
 	<?php foreach ( $sums as $lab => $from_ts ) :
 		$tot = 0;
@@ -703,7 +705,7 @@ form.inline{margin:0}
 		<div class="sec"><h2>Signed, not charged yet</h2><span class="badge"><?php echo count( $unpaid ); ?></span></div>
 		<div class="card" style="padding:4px 14px">
 		<?php foreach ( $unpaid as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
-			<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( $qd['trip_date'] ?? '' ); ?></span></div><span class="tag wait">Charge ›</span></a>
+			<a class="row" data-c="<?php echo esc_attr( strtolower( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) . ' ' . ( $qd['trip_date'] ?? '' ) ) ); ?>" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( $qd['trip_date'] ?? '' ); ?></span></div><span class="tag wait">Charge ›</span></a>
 		<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
@@ -711,7 +713,7 @@ form.inline{margin:0}
 	<?php if ( ! $rows ) : ?><div class="empty"><b>No payments yet</b>Charges you make from a booking show up here.</div><?php else : ?>
 		<div class="card" style="padding:4px 14px">
 		<?php foreach ( $rows as $r ) : list( $ts, $p, $q ) = $r; $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
-			<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( date( 'M j, g:i A', $ts ) ); ?></span></div><b style="color:var(--ok)">$<?php echo esc_html( number_format( $p['cents'] / 100, 2 ) ); ?></b></a>
+			<a class="row" data-c="<?php echo esc_attr( strtolower( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) . ' ' . number_format( $p['cents'] / 100, 2 ) ) ); ?>" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( date( 'M j, g:i A', $ts ) ); ?></span></div><b style="color:var(--ok)">$<?php echo esc_html( number_format( $p['cents'] / 100, 2 ) ); ?></b></a>
 		<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
