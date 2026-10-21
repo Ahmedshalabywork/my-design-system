@@ -272,6 +272,17 @@ add_action( 'template_redirect', function () {
 		readfile( $path );
 		exit;
 	}
+	// "Charge card" on a confirmed booking.
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['charge'] ) ) {
+		$cid = (int) ( $_POST['id'] ?? 0 );
+		$err = 'Your session expired. Please try again.';
+		if ( wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) && 'mecca_booking' === get_post_type( $cid ) ) {
+			$cents = (int) round( 100 * (float) preg_replace( '/[^0-9.]/', '', (string) $_POST['charge'] ) );
+			$err   = mecca_bc_charge( $cid, $cents, (string) ( $_POST['ctok'] ?? '' ) );
+		}
+		wp_safe_redirect( add_query_arg( '' === $err ? array( 'view' => $cid, 'paid' => 1 ) : array( 'view' => $cid, 'payerr' => rawurlencode( $err ) ), $self ), 303 );
+		exit;
+	}
 	// Next-step buttons on a confirmed booking.
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['stage'] ) ) {
 		$sid = (int) ( $_POST['id'] ?? 0 );
@@ -471,6 +482,26 @@ form.inline{margin:0}
 			<?php if ( $isimg ) : ?><a href="<?php echo esc_url( $iurl ); ?>" target="_blank"><img class="idph" src="<?php echo esc_url( $iurl ); ?>" alt="Photo ID"></a><?php else : ?><a class="chip" style="margin-top:8px" href="<?php echo esc_url( $iurl ); ?>" target="_blank">Open ID file</a><?php endif; ?>
 			</div>
 		<?php endif; ?>
+	</div>
+	<?php endif; ?>
+	<?php if ( ! empty( $card['card_id'] ) ) :
+		$pays  = (array) get_post_meta( $view, '_bc_payments', true );
+		$label = trim( ucwords( strtolower( str_replace( '_', ' ', $card['brand'] ) ) ) . ' •••• ' . $card['last4'] );
+		$guess = preg_replace( '/[^0-9.]/', '', (string) ( $d['price'] ?? '' ) );
+		?>
+	<div class="sec"><h2>Payment</h2></div>
+	<div class="card">
+		<?php if ( isset( $_GET['paid'] ) ) : ?><p class="hint" style="color:var(--ok);margin:0 0 10px">✓ Payment went through.</p><?php endif; ?>
+		<?php if ( isset( $_GET['payerr'] ) ) : ?><p class="hint" style="color:#ff8a80;margin:0 0 10px"><?php echo esc_html( wp_unslash( $_GET['payerr'] ) ); ?></p><?php endif; ?>
+		<?php foreach ( $pays as $p ) : if ( empty( $p['id'] ) ) { continue; } ?>
+			<div class="kv"><span>Paid <?php echo esc_html( mysql2date( 'M j, g:i A', $p['time'] ) ); ?></span><b>$<?php echo esc_html( number_format( $p['cents'] / 100, 2 ) ); ?><?php if ( $p['receipt'] ) : ?> · <a href="<?php echo esc_url( $p['receipt'] ); ?>" target="_blank" style="color:var(--gold)">receipt</a><?php endif; ?></b></div>
+		<?php endforeach; ?>
+		<form class="inline" method="post" action="<?php echo esc_url( $self ); ?>" onsubmit="var a=this.charge.value.replace(/[^0-9.]/g,'');if(!a||+a<1){alert('Enter an amount.');return false}if(!confirm('Charge $'+(+a).toFixed(2)+' to <?php echo esc_js( $label ); ?>?'))return false;this.querySelector('button').disabled=true;this.querySelector('button').textContent='Charging…'">
+			<?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+			<input type="hidden" name="id" value="<?php echo (int) $view; ?>"><input type="hidden" name="ctok" value="<?php echo esc_attr( wp_generate_password( 24, false, false ) ); ?>">
+			<div class="field price" style="margin-top:8px"><label>Amount to charge · <?php echo esc_html( $label ); ?></label><input name="charge" inputmode="decimal" autocomplete="off" placeholder="$0.00" value="<?php echo $pays ? '' : esc_attr( $guess ); ?>"></div>
+			<button class="btn">💳 Charge card</button>
+		</form>
 	</div>
 	<?php endif; ?>
 	<?php if ( get_post_meta( $view, '_bc_la_ref', true ) ) : ?><div class="card"><div class="kv"><span>Limo Anywhere</span><b><?php echo esc_html( get_post_meta( $view, '_bc_la_ref', true ) ); ?></b></div></div><?php endif; ?>
@@ -805,6 +836,49 @@ add_action( 'admin_post_mecca_bc_id_delete', function () {
 } );
 
 /* ---------------------------------------------------------------- Square */
+
+/**
+ * Charge the card a customer saved on their confirm page. Staff enter the amount and
+ * confirm it in the app; nothing is ever charged automatically. $token makes a double
+ * tap or a re-sent form reuse the same Square idempotency key, so it charges once.
+ * Returns '' on success or an error message.
+ */
+function mecca_bc_charge( $id, $cents, $token ) {
+	$card = (array) get_post_meta( $id, '_bc_card', true );
+	if ( empty( $card['card_id'] ) ) {
+		return 'No card on file for this booking.';
+	}
+	if ( $cents < 100 || $cents > 500000 ) {
+		return 'Enter an amount between $1 and $5,000.';
+	}
+	$res = mecca_bc_square( 'POST', '/v2/payments', array(
+		'idempotency_key' => 'chg-' . $id . '-' . substr( md5( $token ), 0, 20 ),
+		'source_id'       => $card['card_id'],
+		'customer_id'     => $card['customer_id'],
+		'amount_money'    => array( 'amount' => (int) $cents, 'currency' => 'USD' ),
+		'autocomplete'    => true,
+		'reference_id'    => 'mecca-booking-' . $id,
+		'note'            => 'Mecca Limo: ' . get_the_title( $id ),
+	) );
+	if ( empty( $res['payment']['id'] ) ) {
+		return 'Square declined it: ' . ( $res['errors'][0]['detail'] ?? 'unknown error' );
+	}
+	$pays = (array) get_post_meta( $id, '_bc_payments', true );
+	foreach ( $pays as $p ) {
+		if ( ( $p['id'] ?? '' ) === $res['payment']['id'] ) {
+			return ''; // Same request sent twice: Square returned the original payment.
+		}
+	}
+	$pays[] = array(
+		'id'      => $res['payment']['id'],
+		'cents'   => (int) $cents,
+		'status'  => $res['payment']['status'] ?? '',
+		'receipt' => $res['payment']['receipt_url'] ?? '',
+		'time'    => current_time( 'mysql' ),
+	);
+	update_post_meta( $id, '_bc_payments', $pays );
+	return '';
+}
 
 function mecca_bc_square( $method, $path, $body ) {
 	$base = 'production' === mecca_bc_opt( 'env', 'sandbox' ) ? 'https://connect.squareup.com' : 'https://connect.squareupsandbox.com';
