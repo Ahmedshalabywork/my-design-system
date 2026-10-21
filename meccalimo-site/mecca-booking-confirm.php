@@ -226,6 +226,50 @@ function mecca_bc_paid_cents( $id ) {
 	return $sum;
 }
 
+/* ---------------------------------------------------------------- Drivers */
+
+/** Driver records (license details and photos), kept in one private option. */
+function mecca_drv_all() {
+	return (array) get_option( 'mecca_drivers', array() );
+}
+
+/** Days until a driver's license expires (negative = expired), or null if no date. */
+function mecca_drv_days_left( $drv ) {
+	$ts = strtotime( (string) ( $drv['exp'] ?? '' ) );
+	return $ts ? (int) floor( ( $ts - strtotime( 'today', current_time( 'timestamp' ) ) ) / DAY_IN_SECONDS ) : null;
+}
+
+/** Save one driver from the form, including optional license / portrait photos. */
+function mecca_drv_save( $id, $in, $files ) {
+	$all = mecca_drv_all();
+	$id  = $id && isset( $all[ $id ] ) ? $id : 'd' . strtolower( wp_generate_password( 10, false, false ) ); // Lowercase: IDs pass through sanitize_key().
+	$cur = $all[ $id ] ?? array();
+	foreach ( array( 'name', 'phone', 'email', 'lic', 'state', 'exp', 'notes' ) as $k ) {
+		$cur[ $k ] = 'notes' === $k ? sanitize_textarea_field( $in[ $k ] ?? '' ) : sanitize_text_field( $in[ $k ] ?? '' );
+	}
+	$cur['state']  = strtoupper( substr( $cur['state'], 0, 2 ) );
+	$cur['active'] = empty( $in['inactive'] );
+	foreach ( array( 'lic_file', 'photo' ) as $f ) {
+		if ( empty( $files[ $f ]['tmp_name'] ) || UPLOAD_ERR_OK !== $files[ $f ]['error'] || $files[ $f ]['size'] > 10 * MB_IN_BYTES ) {
+			continue;
+		}
+		$check = wp_check_filetype_and_ext( $files[ $f ]['tmp_name'], $files[ $f ]['name'], array( 'jpg|jpeg' => 'image/jpeg', 'png' => 'image/png', 'heic' => 'image/heic', 'webp' => 'image/webp', 'pdf' => 'application/pdf' ) );
+		if ( empty( $check['ext'] ) ) {
+			continue;
+		}
+		$name = 'drv-' . $id . '-' . $f . '-' . wp_generate_password( 12, false, false ) . '.' . $check['ext'];
+		if ( move_uploaded_file( $files[ $f ]['tmp_name'], mecca_bc_id_dir() . '/' . $name ) ) {
+			if ( ! empty( $cur[ $f ] ) ) {
+				@unlink( mecca_bc_id_dir() . '/' . basename( $cur[ $f ] ) );
+			}
+			$cur[ $f ] = $name;
+		}
+	}
+	$all[ $id ] = $cur;
+	update_option( 'mecca_drivers', $all, false );
+	return $id;
+}
+
 /** Pre-written customer message for SMS/email. */
 function mecca_bc_message( $d, $link ) {
 	return 'Hi ' . ( $d['first_name'] ?? '' ) . ', this is Mecca Limo. Thanks for booking with us! Please confirm your ride (' . ( $d['trip_date'] ?? '' ) . ') here: ' . $link . ' It takes 2 minutes. Your card is saved securely and nothing is charged today. Questions? Call or text (843) 804-1188.';
@@ -290,6 +334,26 @@ add_action( 'template_redirect', function () {
 		readfile( $path );
 		exit;
 	}
+	// Drivers: only someone logged into WordPress (not the phone shortcut link) can see or change them.
+	$is_admin = current_user_can( 'manage_options' );
+	$drv      = sanitize_key( $_GET['drv'] ?? '' );
+	if ( isset( $_GET['dimg'] ) && $is_admin ) {
+		$dd   = mecca_drv_all()[ sanitize_key( $_GET['dimg'] ) ] ?? array();
+		$f    = 'photo' === ( $_GET['k'] ?? '' ) ? ( $dd['photo'] ?? '' ) : ( $dd['lic_file'] ?? '' );
+		$path = $f ? mecca_bc_id_dir() . '/' . basename( $f ) : '';
+		if ( ! $path || ! is_file( $path ) ) {
+			status_header( 404 );
+			exit;
+		}
+		header( 'Content-Type: ' . ( wp_check_filetype( $path )['type'] ?: 'application/octet-stream' ) );
+		readfile( $path );
+		exit;
+	}
+	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['drv_save'] ) && $is_admin && wp_verify_nonce( $_POST['_sn'] ?? '', 'mecca_bc_staff' ) ) {
+		$saved = mecca_drv_save( sanitize_key( $_POST['drv_save'] ), wp_unslash( $_POST ), $_FILES );
+		wp_safe_redirect( add_query_arg( array( 'tab' => 'drivers', 'drv' => $saved, 'saved' => 1 ), $self ), 303 );
+		exit;
+	}
 	// "Charge card" on a confirmed booking.
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['charge'] ) ) {
 		$cid = (int) ( $_POST['id'] ?? 0 );
@@ -323,7 +387,7 @@ add_action( 'template_redirect', function () {
 	if ( $view && 'linked' === mecca_bc_stage( $view ) ) {
 		$view = (int) get_post_meta( $view, '_bc_linked', true );
 	}
-	$tab  = in_array( $_GET['tab'] ?? '', array( 'schedule', 'customers', 'money' ), true ) ? $_GET['tab'] : '';
+	$tab  = in_array( $_GET['tab'] ?? '', array( 'schedule', 'customers', 'money', 'drivers' ), true ) ? $_GET['tab'] : '';
 	$made = null;
 	// ?from=ID opens a quote request OR a not-yet-confirmed booking, pre-filled, so it can be fixed and re-sent.
 	$from = (int) ( $_REQUEST['from'] ?? 0 );
@@ -454,7 +518,7 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 form.inline{margin:0}
 </style></head><body>
 <header class="top">
-<?php if ( $from || $made || $view ) : ?><a class="back" href="<?php echo esc_url( $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
+<?php if ( $from || $made || $view || $drv ) : ?><a class="back" href="<?php echo esc_url( $drv ? add_query_arg( 'tab', 'drivers', $self ) : $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
 <img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : ( $tab ? ucfirst( $tab ) : 'Quotes &amp; bookings' ) ) ); ?></small></div>
 </header>
 <main class="wrap">
@@ -580,6 +644,55 @@ form.inline{margin:0}
 	</details>
 	</form>
 	<div class="dock"><button class="btn" form="bk">Create booking link</button></div>
+<?php elseif ( 'drivers' === $tab ) :
+	if ( ! $is_admin ) : ?>
+		<div class="empty"><b>Log in to see drivers</b>Driver licenses are private. Open this page after logging into WordPress.</div>
+	<?php elseif ( $drv ) :
+		$dd = 'new' === $drv ? array() : ( mecca_drv_all()[ $drv ] ?? array() );
+		$dv = function ( $k ) use ( $dd ) {
+			return esc_attr( $dd[ $k ] ?? '' );
+		};
+		?>
+		<?php if ( isset( $_GET['saved'] ) ) : ?><p class="hint" style="color:var(--ok)">✓ Saved.</p><?php endif; ?>
+		<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( add_query_arg( 'tab', 'drivers', $self ) ); ?>"><?php wp_nonce_field( 'mecca_bc_staff', '_sn' ); ?>
+		<input type="hidden" name="drv_save" value="<?php echo esc_attr( 'new' === $drv ? '' : $drv ); ?>">
+		<?php if ( ! empty( $dd['photo'] ) ) : ?><img src="<?php echo esc_url( add_query_arg( array( 'dimg' => $drv, 'k' => 'photo' ), $self ) ); ?>" alt="" style="width:96px;height:96px;object-fit:cover;border-radius:50%;display:block;margin:4px auto 14px;border:2px solid var(--gold)"><?php endif; ?>
+		<div class="field"><label>Full name</label><input name="name" value="<?php echo $dv( 'name' ); ?>" required></div>
+		<div class="two"><div class="field"><label>Cell phone</label><input name="phone" type="tel" value="<?php echo $dv( 'phone' ); ?>"></div><div class="field"><label>Email</label><input name="email" type="email" value="<?php echo $dv( 'email' ); ?>"></div></div>
+		<div class="field"><label>Driver's license number</label><input name="lic" value="<?php echo $dv( 'lic' ); ?>" autocomplete="off"></div>
+		<div class="two"><div class="field"><label>State</label><input name="state" maxlength="2" value="<?php echo $dv( 'state' ); ?>" placeholder="SC"></div><div class="field"><label>Expires</label><input name="exp" type="date" value="<?php echo $dv( 'exp' ); ?>"></div></div>
+		<div class="field"><label>License photo <?php echo ! empty( $dd['lic_file'] ) ? '· <a style="color:var(--gold)" target="_blank" href="' . esc_url( add_query_arg( array( 'dimg' => $drv, 'k' => 'lic' ), $self ) ) . '">view current</a>' : ''; ?></label><input type="file" name="lic_file" accept="image/*,.pdf"></div>
+		<div class="field"><label>Driver photo (shown to you only)</label><input type="file" name="photo" accept="image/*"></div>
+		<div class="field"><label>Notes</label><textarea name="notes" rows="2"><?php echo esc_textarea( $dd['notes'] ?? '' ); ?></textarea></div>
+		<label style="display:flex;gap:8px;align-items:center;color:var(--muted);font-size:14px;margin:0 2px 14px"><input type="checkbox" name="inactive" value="1" <?php checked( isset( $dd['active'] ) && ! $dd['active'] ); ?>> No longer driving for us</label>
+		<button class="btn">Save driver</button>
+		<a class="btn alt" href="<?php echo esc_url( add_query_arg( 'tab', 'drivers', $self ) ); ?>">Back to drivers</a>
+		</form>
+	<?php else :
+		$list = mecca_drv_all();
+		uasort( $list, function ( $a, $b ) {
+			return strcasecmp( $a['name'] ?? '', $b['name'] ?? '' );
+		} );
+		?>
+		<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Search drivers" autocomplete="off" oninput="var t=this.value.toLowerCase();document.querySelectorAll('[data-c]').forEach(function(e){e.style.display=e.dataset.c.indexOf(t)>-1?'':'none'})"></div>
+		<div class="sec"><h2>Drivers</h2><span class="badge"><?php echo count( $list ); ?></span></div>
+		<div class="card" style="padding:4px 14px">
+		<?php foreach ( $list as $id => $dd ) :
+			$left = mecca_drv_days_left( $dd );
+			$miss = empty( $dd['lic'] ) || empty( $dd['state'] ) || null === $left;
+			list( $cls, $txt ) = $miss ? array( 'new', 'Missing info' ) : ( $left < 0 ? array( 'new', 'Expired' ) : ( $left <= 30 ? array( 'wait', 'Expires in ' . $left . 'd' ) : array( 'ok', 'OK' ) ) );
+			$ph = $digits( $dd['phone'] ?? '' );
+			?>
+			<div class="row" data-c="<?php echo esc_attr( strtolower( ( $dd['name'] ?? '' ) . ' ' . ( $dd['phone'] ?? '' ) . ' ' . $ph ) ); ?>" style="<?php echo isset( $dd['active'] ) && ! $dd['active'] ? 'opacity:.45' : ''; ?>">
+				<a class="t" href="<?php echo esc_url( add_query_arg( array( 'tab' => 'drivers', 'drv' => $id ), $self ) ); ?>"><b><?php echo esc_html( $dd['name'] ?? '' ); ?></b><span><?php echo esc_html( $dd['phone'] ?? '' ); ?></span></a>
+				<?php if ( $ph ) : ?><a class="tag wait" href="tel:<?php echo esc_attr( $ph ); ?>">📞</a><?php endif; ?>
+				<span class="tag <?php echo esc_attr( $cls ); ?>"><?php echo esc_html( $txt ); ?></span>
+			</div>
+		<?php endforeach; ?>
+		<?php if ( ! $list ) : ?><div class="empty" style="border:0"><b>No drivers yet</b></div><?php endif; ?>
+		</div>
+		<a class="btn" href="<?php echo esc_url( add_query_arg( array( 'tab' => 'drivers', 'drv' => 'new' ), $self ) ); ?>">+ Add driver</a>
+	<?php endif; ?>
 <?php elseif ( 'schedule' === $tab ) :
 	// Every signed (or in-progress) trip from today on, grouped by day.
 	$days = array();
@@ -721,6 +834,18 @@ form.inline{margin:0}
 	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="find" type="search" placeholder="Search name or phone" autocomplete="off" enterkeyhint="search"></div>
 	<div id="found" style="display:none"></div>
 	<div id="home">
+	<?php
+	// Heads-up when a driver's license is expired, expiring within 30 days, or incomplete.
+	$drv_alert = 0;
+	if ( $is_admin ) {
+		foreach ( mecca_drv_all() as $dd ) {
+			$left = mecca_drv_days_left( $dd );
+			if ( ( ! isset( $dd['active'] ) || $dd['active'] ) && ( null === $left || $left <= 30 || empty( $dd['lic'] ) ) ) {
+				$drv_alert++;
+			}
+		}
+	}
+	if ( $drv_alert ) : ?><a class="card" style="display:block;border-color:rgba(227,194,125,.45)" href="<?php echo esc_url( add_query_arg( 'tab', 'drivers', $self ) ); ?>">🪪 <b><?php echo (int) $drv_alert; ?> driver license<?php echo 1 === $drv_alert ? '' : 's'; ?></b> <?php echo 1 === $drv_alert ? 'needs' : 'need'; ?> attention ›</a><?php endif; ?>
 	<?php foreach ( array( 'Confirmed — next step' => $next, 'Waiting on customer' => $wait ) as $title => $list ) : if ( $list ) : ?>
 		<div class="sec"><h2><?php echo esc_html( $title ); ?></h2><span class="badge"><?php echo count( $list ); ?></span></div>
 		<div class="card" style="padding:4px 14px">
@@ -783,8 +908,8 @@ form.inline{margin:0}
 	</script>
 <?php endif; ?>
 </main>
-<?php if ( ! $view && ! $from && ! $made ) : ?>
-<nav class="tabs"><?php foreach ( array( '' => array( '📥', 'Bookings' ), 'schedule' => array( '🗓', 'Schedule' ), 'customers' => array( '👥', 'Customers' ), 'money' => array( '💳', 'Money' ) ) as $k => $t ) : ?><a class="<?php echo $tab === $k ? 'on' : ''; ?>" href="<?php echo esc_url( $k ? add_query_arg( 'tab', $k, $self ) : $self ); ?>"><span><?php echo $t[0]; ?></span><?php echo esc_html( $t[1] ); ?></a><?php endforeach; ?></nav>
+<?php if ( ! $view && ! $from && ! $made && ! $drv ) : ?>
+<nav class="tabs"><?php foreach ( array( '' => array( '📥', 'Bookings' ), 'schedule' => array( '🗓', 'Schedule' ), 'customers' => array( '👥', 'Customers' ), 'money' => array( '💳', 'Money' ), 'drivers' => array( '🪪', 'Drivers' ) ) as $k => $t ) : ?><a class="<?php echo $tab === $k ? 'on' : ''; ?>" href="<?php echo esc_url( $k ? add_query_arg( 'tab', $k, $self ) : $self ); ?>"><span><?php echo $t[0]; ?></span><?php echo esc_html( $t[1] ); ?></a><?php endforeach; ?></nav>
 <?php endif; ?>
 </body></html>
 	<?php
