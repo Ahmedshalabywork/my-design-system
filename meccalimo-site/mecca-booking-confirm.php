@@ -506,7 +506,7 @@ form.inline{margin:0}
 	</div>
 	<?php endif; ?>
 	<?php if ( ! empty( $card['card_id'] ) ) :
-		$pays  = (array) get_post_meta( $view, '_bc_payments', true );
+		$pays  = array_filter( (array) get_post_meta( $view, '_bc_payments', true ) );
 		$label = trim( ucwords( strtolower( str_replace( '_', ' ', $card['brand'] ) ) ) . ' •••• ' . $card['last4'] );
 		$guess = preg_replace( '/[^0-9.]/', '', (string) ( $d['price'] ?? '' ) );
 		?>
