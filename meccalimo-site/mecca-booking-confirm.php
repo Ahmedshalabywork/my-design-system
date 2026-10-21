@@ -208,6 +208,24 @@ function mecca_bc_la_mark( $id, $ref ) {
 	update_post_meta( $id, '_bc_stage', 'la' );
 }
 
+/** Pickup time as a timestamp, read from the typed "Sat, Oct 24 at 6:30 PM" date. */
+function mecca_bc_trip_ts( $d ) {
+	$ts = strtotime( str_replace( ' at ', ' ', (string) ( $d['trip_date'] ?? '' ) ) );
+	if ( $ts && $ts < time() - 30 * DAY_IN_SECONDS ) {
+		$ts = strtotime( '+1 year', $ts ); // "Sat, Jan 9" typed in December means next year.
+	}
+	return $ts ?: 0;
+}
+
+/** Total charged through the app's Charge card button, in cents. */
+function mecca_bc_paid_cents( $id ) {
+	$sum = 0;
+	foreach ( (array) get_post_meta( $id, '_bc_payments', true ) as $p ) {
+		$sum += (int) ( $p['cents'] ?? 0 );
+	}
+	return $sum;
+}
+
 /** Pre-written customer message for SMS/email. */
 function mecca_bc_message( $d, $link ) {
 	return 'Hi ' . ( $d['first_name'] ?? '' ) . ', this is Mecca Limo. Thanks for booking with us! Please confirm your ride (' . ( $d['trip_date'] ?? '' ) . ') here: ' . $link . ' It takes 2 minutes. Your card is saved securely and nothing is charged today. Questions? Call or text (843) 804-1188.';
@@ -305,6 +323,7 @@ add_action( 'template_redirect', function () {
 	if ( $view && 'linked' === mecca_bc_stage( $view ) ) {
 		$view = (int) get_post_meta( $view, '_bc_linked', true );
 	}
+	$tab  = in_array( $_GET['tab'] ?? '', array( 'schedule', 'customers', 'money' ), true ) ? $_GET['tab'] : '';
 	$made = null;
 	// ?from=ID opens a quote request OR a not-yet-confirmed booking, pre-filled, so it can be fixed and re-sent.
 	$from = (int) ( $_REQUEST['from'] ?? 0 );
@@ -426,6 +445,8 @@ details.more{margin:6px 0 4px}details.more summary{list-style:none;color:var(--g
 .done h1{font:600 24px "Didot","Bodoni 72",Georgia,serif;margin:0 0 4px}.done p{margin:0;color:var(--muted)}
 .linkbox{font:14px ui-monospace,Menlo,monospace;color:var(--gold);word-break:break-all;background:#111114;border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
 .hint{font-size:13px;color:var(--muted);margin:-2px 2px 14px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:rgba(5,5,5,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:6px 4px calc(env(safe-area-inset-bottom) + 6px)}
+.tabs a{flex:1;text-align:center;font:600 11px -apple-system,sans-serif;color:var(--muted);padding:4px 0}.tabs a span{display:block;font-size:20px;line-height:1.2}.tabs a.on{color:var(--gold)}
 .steps{display:flex;gap:4px;margin:4px 0 16px}.steps div{flex:1;text-align:center;font:600 10px -apple-system,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .steps div:before{content:"";display:block;height:4px;border-radius:4px;background:#1c1c1e;margin-bottom:6px}.steps div.on{color:var(--gold)}.steps div.on:before{background:var(--goldg)}
 .kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}.kv:last-child{border:0}.kv span{color:var(--muted)}.kv b{font-weight:600;text-align:right;word-break:break-word}
@@ -434,7 +455,7 @@ form.inline{margin:0}
 </style></head><body>
 <header class="top">
 <?php if ( $from || $made || $view ) : ?><a class="back" href="<?php echo esc_url( $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
-<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : 'Quotes &amp; bookings' ) ); ?></small></div>
+<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : ( $tab ? ucfirst( $tab ) : 'Quotes &amp; bookings' ) ) ); ?></small></div>
 </header>
 <main class="wrap">
 <?php if ( $view && ! $made && ! $from ) :
@@ -559,6 +580,123 @@ form.inline{margin:0}
 	</details>
 	</form>
 	<div class="dock"><button class="btn" form="bk">Create booking link</button></div>
+<?php elseif ( 'schedule' === $tab ) :
+	// Every signed (or in-progress) trip from today on, grouped by day.
+	$days = array();
+	$now  = strtotime( 'today', current_time( 'timestamp' ) );
+	foreach ( $all as $q ) {
+		$st = mecca_bc_stage( $q->ID );
+		if ( ! in_array( $st, array( 'sent', 'confirmed', 'la' ), true ) ) {
+			continue;
+		}
+		$qd = (array) get_post_meta( $q->ID, '_bc_details', true );
+		$ts = mecca_bc_trip_ts( $qd );
+		if ( $ts && $ts < $now ) {
+			continue;
+		}
+		$days[ $ts ? date( 'Y-m-d', $ts ) : 'zzzz' ][] = array( $ts, $q, $qd, $st );
+	}
+	ksort( $days );
+	?>
+	<?php if ( ! $days ) : ?><div class="empty"><b>No upcoming trips</b>Signed bookings show up here by day.</div><?php endif; ?>
+	<?php foreach ( $days as $day => $trips ) :
+		usort( $trips, function ( $a, $b ) {
+			return $a[0] - $b[0];
+		} );
+		$dts   = strtotime( $day );
+		$title = 'zzzz' === $day ? 'Date to confirm' : ( $dts === $now ? 'Today' : ( $dts === $now + DAY_IN_SECONDS ? 'Tomorrow' : date( 'l, M j', $dts ) ) );
+		?>
+		<div class="sec"><h2><?php echo esc_html( $title ); ?></h2><span class="badge"><?php echo count( $trips ); ?></span></div>
+		<?php foreach ( $trips as $t ) :
+			list( $ts, $q, $qd, $st ) = $t;
+			list( $pu, $do )          = $route( $qd );
+			?>
+			<a class="card" style="display:block" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>">
+				<div class="sum"><div class="av" style="font-size:14px"><?php echo esc_html( $ts ? date( 'g:i', $ts ) : '—' ); ?><br><small style="font-size:10px"><?php echo esc_html( $ts ? date( 'A', $ts ) : '' ); ?></small></div>
+				<div style="flex:1;min-width:0"><div class="name" style="margin:0"><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></div><div class="meta" style="margin:2px 0 0"><?php echo esc_html( $qd['vehicle'] ?? '' ); ?></div></div>
+				<span class="tag <?php echo 'sent' === $st ? 'wait' : 'ok'; ?>"><?php echo esc_html( mecca_bc_stage_label( $st ) ); ?></span></div>
+				<?php if ( $pu || $do ) : ?><div class="route" style="margin-top:10px"><?php if ( $pu ) : ?><div><?php echo esc_html( $pu ); ?></div><?php endif; ?><?php if ( $do ) : ?><div><?php echo esc_html( $do ); ?></div><?php endif; ?></div><?php endif; ?>
+			</a>
+		<?php endforeach; ?>
+	<?php endforeach; ?>
+<?php elseif ( 'customers' === $tab ) :
+	// One row per customer (matched by phone, else email, else name) with every trip they've had.
+	$people = array();
+	foreach ( $all as $q ) {
+		$qd  = (array) get_post_meta( $q->ID, '_bc_details', true );
+		$key = $digits( $qd['phone'] ?? '' ) ?: strtolower( trim( (string) ( $qd['email'] ?? '' ) ) ) ?: strtolower( $q->post_title );
+		if ( ! isset( $people[ $key ] ) ) {
+			$people[ $key ] = array( 'n' => trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ), 'p' => $qd['phone'] ?? '', 'e' => $qd['email'] ?? '', 'trips' => array(), 'paid' => 0 );
+		}
+		$people[ $key ]['trips'][] = $q;
+		$people[ $key ]['paid']   += mecca_bc_paid_cents( $q->ID );
+	}
+	uasort( $people, function ( $a, $b ) {
+		return strcasecmp( $a['n'], $b['n'] );
+	} );
+	?>
+	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="cfind" type="search" placeholder="Search customers" autocomplete="off" oninput="var t=this.value.toLowerCase();document.querySelectorAll('[data-c]').forEach(function(e){e.style.display=e.dataset.c.indexOf(t)>-1?'':'none'})"></div>
+	<div class="sec"><h2>Customers</h2><span class="badge"><?php echo count( $people ); ?></span></div>
+	<?php foreach ( $people as $c ) : $ph = $digits( $c['p'] ); ?>
+		<details class="card" data-c="<?php echo esc_attr( strtolower( $c['n'] . ' ' . $c['p'] . ' ' . $ph . ' ' . $c['e'] ) ); ?>">
+			<summary style="list-style:none;cursor:pointer"><div class="sum"><div class="av"><?php echo esc_html( strtoupper( mb_substr( $c['n'] ?: '?', 0, 1 ) ) ); ?></div><div style="flex:1;min-width:0"><div class="name" style="margin:0"><?php echo esc_html( $c['n'] ); ?></div><div class="meta" style="margin:2px 0 0"><?php echo count( $c['trips'] ); ?> trip<?php echo 1 === count( $c['trips'] ) ? '' : 's'; ?><?php echo $c['paid'] ? ' · $' . esc_html( number_format( $c['paid'] / 100, 2 ) ) . ' paid' : ''; ?></div></div></div></summary>
+			<?php if ( $c['e'] ) : ?><div class="meta"><?php echo esc_html( $c['e'] ); ?></div><?php endif; ?>
+			<?php if ( $ph ) : ?><div class="acts"><a class="chip" href="tel:<?php echo esc_attr( $ph ); ?>">📞 Call</a><a class="chip" href="sms:<?php echo esc_attr( $ph ); ?>">💬 Text</a></div><?php endif; ?>
+			<div style="margin-top:10px">
+			<?php foreach ( $c['trips'] as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); $st = mecca_bc_stage( $q->ID ); ?>
+				<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( $qd['trip_date'] ?? '' ); ?></b><span><?php echo esc_html( $qd['vehicle'] ?? '' ); ?></span></div><span class="tag <?php echo 'new' === $st ? 'new' : ( in_array( $st, array( 'sent', 'linked' ), true ) ? 'wait' : 'ok' ); ?>"><?php echo esc_html( mecca_bc_stage_label( $st ) ); ?></span></a>
+			<?php endforeach; ?>
+			</div>
+		</details>
+	<?php endforeach; ?>
+<?php elseif ( 'money' === $tab ) :
+	// Everything charged through the app, newest first, plus signed trips with nothing charged yet.
+	$rows   = array();
+	$unpaid = array();
+	foreach ( $all as $q ) {
+		foreach ( (array) get_post_meta( $q->ID, '_bc_payments', true ) as $p ) {
+			if ( ! empty( $p['id'] ) ) {
+				$rows[] = array( strtotime( $p['time'] ), $p, $q );
+			}
+		}
+		if ( in_array( mecca_bc_stage( $q->ID ), array( 'confirmed', 'la', 'done' ), true ) && ! mecca_bc_paid_cents( $q->ID ) ) {
+			$unpaid[] = $q;
+		}
+	}
+	usort( $rows, function ( $a, $b ) {
+		return $b[0] - $a[0];
+	} );
+	$today = strtotime( 'today', current_time( 'timestamp' ) );
+	$sums  = array( 'Today' => $today, 'This week' => strtotime( 'monday this week', $today ), 'This month' => strtotime( 'first day of this month', $today ) );
+	?>
+	<div class="two" style="margin-top:6px">
+	<?php foreach ( $sums as $lab => $from_ts ) :
+		$tot = 0;
+		foreach ( $rows as $r ) {
+			if ( $r[0] >= $from_ts ) {
+				$tot += $r[1]['cents'];
+			}
+		}
+		?>
+		<div class="card" style="flex:1;text-align:center;padding:14px 6px"><div class="meta" style="margin:0"><?php echo esc_html( $lab ); ?></div><div class="name" style="color:var(--gold);margin:4px 0 0">$<?php echo esc_html( number_format( $tot / 100 ) ); ?></div></div>
+	<?php endforeach; ?>
+	</div>
+	<?php if ( $unpaid ) : ?>
+		<div class="sec"><h2>Signed, not charged yet</h2><span class="badge"><?php echo count( $unpaid ); ?></span></div>
+		<div class="card" style="padding:4px 14px">
+		<?php foreach ( $unpaid as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
+			<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( $qd['trip_date'] ?? '' ); ?></span></div><span class="tag wait">Charge ›</span></a>
+		<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
+	<div class="sec"><h2>Payments</h2></div>
+	<?php if ( ! $rows ) : ?><div class="empty"><b>No payments yet</b>Charges you make from a booking show up here.</div><?php else : ?>
+		<div class="card" style="padding:4px 14px">
+		<?php foreach ( $rows as $r ) : list( $ts, $p, $q ) = $r; $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); ?>
+			<a class="row" href="<?php echo esc_url( add_query_arg( 'view', $q->ID, $self ) ); ?>"><div class="t"><b><?php echo esc_html( trim( ( $qd['first_name'] ?? '' ) . ' ' . ( $qd['last_name'] ?? '' ) ) ); ?></b><span><?php echo esc_html( date( 'M j, g:i A', $ts ) ); ?></span></div><b style="color:var(--ok)">$<?php echo esc_html( number_format( $p['cents'] / 100, 2 ) ); ?></b></a>
+		<?php endforeach; ?>
+		</div>
+	<?php endif; ?>
 <?php else : ?>
 	<div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="find" type="search" placeholder="Search name or phone" autocomplete="off" enterkeyhint="search"></div>
 	<div id="found" style="display:none"></div>
@@ -625,6 +763,9 @@ form.inline{margin:0}
 	</script>
 <?php endif; ?>
 </main>
+<?php if ( ! $view && ! $from && ! $made ) : ?>
+<nav class="tabs"><?php foreach ( array( '' => array( '📥', 'Bookings' ), 'schedule' => array( '🗓', 'Schedule' ), 'customers' => array( '👥', 'Customers' ), 'money' => array( '💳', 'Money' ) ) as $k => $t ) : ?><a class="<?php echo $tab === $k ? 'on' : ''; ?>" href="<?php echo esc_url( $k ? add_query_arg( 'tab', $k, $self ) : $self ); ?>"><span><?php echo $t[0]; ?></span><?php echo esc_html( $t[1] ); ?></a><?php endforeach; ?></nav>
+<?php endif; ?>
 </body></html>
 	<?php
 	exit;
