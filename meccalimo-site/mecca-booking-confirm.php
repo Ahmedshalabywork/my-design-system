@@ -641,6 +641,24 @@ form.inline{margin:0}
 		<details class="card" data-c="<?php echo esc_attr( strtolower( $c['n'] . ' ' . $c['p'] . ' ' . $ph . ' ' . $c['e'] ) ); ?>">
 			<summary style="list-style:none;cursor:pointer"><div class="sum"><div class="av"><?php echo esc_html( strtoupper( mb_substr( $c['n'] ?: '?', 0, 1 ) ) ); ?></div><div style="flex:1;min-width:0"><div class="name" style="margin:0"><?php echo esc_html( $c['n'] ); ?></div><div class="meta" style="margin:2px 0 0"><?php echo count( $c['trips'] ); ?> trip<?php echo 1 === count( $c['trips'] ) ? '' : 's'; ?><?php echo $c['paid'] ? ' · $' . esc_html( number_format( $c['paid'] / 100, 2 ) ) . ' paid' : ''; ?></div></div></div></summary>
 			<?php if ( $c['e'] ) : ?><div class="meta"><?php echo esc_html( $c['e'] ); ?></div><?php endif; ?>
+			<?php
+			// Newest card and ID photo this customer gave on any signed booking.
+			$ccard = null;
+			$cid   = 0;
+			foreach ( $c['trips'] as $q ) {
+				$cc = get_post_meta( $q->ID, '_bc_card', true );
+				if ( ! $ccard && ! empty( $cc['last4'] ) ) {
+					$ccard = $cc;
+				}
+				if ( ! $cid && get_post_meta( $q->ID, '_bc_id_file', true ) ) {
+					$cid = $q->ID;
+				}
+			}
+			?>
+			<?php if ( $ccard ) : ?><div class="kv"><span>Card on file</span><b><?php echo esc_html( trim( ucwords( strtolower( str_replace( '_', ' ', $ccard['brand'] ) ) ) . ' •••• ' . $ccard['last4'] ) ); ?></b></div><?php endif; ?>
+			<?php if ( $cid ) : $iurl = add_query_arg( 'idimg', $cid, $self ); ?>
+				<div class="kv" style="display:block"><span>Driver's license / ID</span><a href="<?php echo esc_url( $iurl ); ?>" target="_blank"><img class="idph" loading="lazy" src="<?php echo esc_url( $iurl ); ?>" alt="Photo ID" onerror="this.replaceWith('Open ID file ›')"></a></div>
+			<?php endif; ?>
 			<?php if ( $ph ) : ?><div class="acts"><a class="chip" href="tel:<?php echo esc_attr( $ph ); ?>">📞 Call</a><a class="chip" href="sms:<?php echo esc_attr( $ph ); ?>">💬 Text</a></div><?php endif; ?>
 			<div style="margin-top:10px">
 			<?php foreach ( $c['trips'] as $q ) : $qd = (array) get_post_meta( $q->ID, '_bc_details', true ); $st = mecca_bc_stage( $q->ID ); ?>
