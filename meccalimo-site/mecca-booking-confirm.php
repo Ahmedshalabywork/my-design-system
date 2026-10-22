@@ -904,13 +904,19 @@ form.inline{margin:0}
 	var r=P.filter(function(x){return x.s.indexOf(t)>-1||x.s.indexOf(t.replace(/\D/g,'')||'~')>-1}).slice(0,25),s='<div class="card" style="padding:4px 14px">';
 	r.forEach(function(x){var row='<div class="t"><b>'+e(x.n)+'</b><span>'+e(x.d)+'</span></div><span class="tag '+x.t+'">'+e(x.l)+'</span>';s+=x.u?'<a class="row" href="'+e(x.u)+'">'+row+'</a>':'<div class="row">'+row+'</div>'});
 	s+='</div>';o.innerHTML=r.length?s:'<div class="empty"><b>No match</b>Nobody found for “'+e(f.value)+'”.</div>';o.style.display='';h.style.display='none'});})();
-	document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.getElementById('find').value&&!document.querySelector('details[open]'))location.reload()});
+	// Refresh when coming back to the app only if the list is over 3 minutes old (every return used to reload).
+	var loadedAt=Date.now();document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-loadedAt>180000&&!document.getElementById('find').value&&!document.querySelector('details[open]'))location.reload()});
 	</script>
 <?php endif; ?>
 </main>
 <?php if ( ! $view && ! $from && ! $made && ! $drv ) : ?>
 <nav class="tabs"><?php foreach ( array( '' => array( '📥', 'Bookings' ), 'schedule' => array( '🗓', 'Schedule' ), 'customers' => array( '👥', 'Customers' ), 'money' => array( '💳', 'Money' ), 'drivers' => array( '🪪', 'Drivers' ) ) as $k => $t ) : ?><a class="<?php echo $tab === $k ? 'on' : ''; ?>" href="<?php echo esc_url( $k ? add_query_arg( 'tab', $k, $self ) : $self ); ?>"><span><?php echo $t[0]; ?></span><?php echo esc_html( $t[1] ); ?></a><?php endforeach; ?></nav>
 <?php endif; ?>
+<div id="ld" style="position:fixed;top:0;left:0;height:3px;width:0;background:var(--goldg);z-index:9;transition:width 1.2s ease-out"></div>
+<script>/* Show a loading bar the moment a link or form is tapped, so the app never feels frozen. */
+document.addEventListener('click',function(e){var a=e.target.closest('a[href]');if(a&&!a.target&&a.href.indexOf(location.origin)===0&&!/^(tel|sms|mailto):/.test(a.getAttribute('href'))){var l=document.getElementById('ld');l.style.width='85%'}});
+document.addEventListener('submit',function(){document.getElementById('ld').style.width='85%'});
+window.addEventListener('pageshow',function(){document.getElementById('ld').style.width='0'});</script>
 </body></html>
 	<?php
 	exit;
