@@ -916,7 +916,19 @@ form.inline{margin:0}
 <script>/* Show a loading bar the moment a link or form is tapped, so the app never feels frozen. */
 document.addEventListener('click',function(e){var a=e.target.closest('a[href]');if(a&&!a.target&&a.href.indexOf(location.origin)===0&&!/^(tel|sms|mailto):/.test(a.getAttribute('href'))){var l=document.getElementById('ld');l.style.width='85%'}});
 document.addEventListener('submit',function(){document.getElementById('ld').style.width='85%'});
-window.addEventListener('pageshow',function(){document.getElementById('ld').style.width='0'});</script>
+window.addEventListener('pageshow',function(){document.getElementById('ld').style.width='0'});
+/* Instant tabs: after the first screen loads, fetch the other tabs in the background and swap them in on tap.
+   Each tab is refetched after it's shown, so it's never more than one visit old. */
+(function(){var nav=document.querySelector('.tabs');if(!nav||!window.fetch||!window.DOMParser)return;
+var main=document.querySelector('main.wrap'),sub=document.querySelector('.brand small'),cache={};
+cache[location.href]={h:main.innerHTML,t:sub.textContent};
+function load(u){return fetch(u,{credentials:'same-origin'}).then(function(r){return r.text()}).then(function(t){var d=new DOMParser().parseFromString(t,'text/html'),m=d.querySelector('main.wrap'),b=d.querySelector('.brand small');if(m&&b)cache[u]={h:m.innerHTML,t:b.textContent}}).catch(function(){})}
+function show(u,push){var c=cache[u];if(!c)return false;main.innerHTML=c.h;sub.textContent=c.t;
+main.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');n.textContent=s.textContent;s.parentNode.replaceChild(n,s)});
+nav.querySelectorAll('a').forEach(function(a){a.classList.toggle('on',a.href===u)});if(push)history.pushState({},'',u);window.scrollTo(0,0);return true}
+setTimeout(function(){nav.querySelectorAll('a').forEach(function(a){if(!cache[a.href])load(a.href)})},300);
+nav.addEventListener('click',function(e){var a=e.target.closest('a');if(a&&show(a.href,true)){e.preventDefault();e.stopPropagation();load(a.href)}},true);
+window.addEventListener('popstate',function(){if(!show(location.href,false))location.reload()});})();</script>
 </body></html>
 	<?php
 	exit;
