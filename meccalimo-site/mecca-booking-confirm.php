@@ -336,6 +336,8 @@ add_action( 'template_redirect', function () {
 	}
 	// Drivers: only someone logged into WordPress (not the phone shortcut link) can see or change them.
 	$is_admin = current_user_can( 'manage_options' );
+	// The site's login page has a custom address (WPS Hide Login); come back to the app afterwards.
+	$login_url = add_query_arg( 'redirect_to', rawurlencode( home_url( '/new-booking/' ) ), get_option( 'whl_page' ) ? home_url( '/' . get_option( 'whl_page' ) . '/' ) : wp_login_url() );
 	$drv      = sanitize_key( $_GET['drv'] ?? '' );
 	if ( isset( $_GET['dimg'] ) && $is_admin ) {
 		$dd   = mecca_drv_all()[ sanitize_key( $_GET['dimg'] ) ] ?? array();
@@ -519,7 +521,7 @@ form.inline{margin:0}
 </style></head><body>
 <header class="top">
 <?php if ( $from || $made || $view || $drv ) : ?><a class="back" href="<?php echo esc_url( $drv ? add_query_arg( 'tab', 'drivers', $self ) : $self ); ?>" aria-label="Back">‹</a><?php endif; ?>
-<img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : ( $tab ? ucfirst( $tab ) : 'Quotes &amp; bookings' ) ) ); ?></small></div>
+<?php if ( ! $is_admin ) : ?><a href="<?php echo esc_url( $login_url ); ?>" style="order:3;margin-left:auto;font:600 13px -apple-system,sans-serif;color:var(--gold);border:1px solid var(--line);padding:8px 12px;border-radius:99px">Log in</a><?php endif; ?><img src="<?php echo esc_url( $icon ); ?>" alt=""><div class="brand">MECCA LIMO<small><?php echo $made ? 'Booking link' : ( $from ? 'Create booking' : ( $view ? 'Booking' : ( $tab ? ucfirst( $tab ) : 'Quotes &amp; bookings' ) ) ); ?></small></div>
 </header>
 <main class="wrap">
 <?php if ( $view && ! $made && ! $from ) :
@@ -646,7 +648,8 @@ form.inline{margin:0}
 	<div class="dock"><button class="btn" form="bk">Create booking link</button></div>
 <?php elseif ( 'drivers' === $tab ) :
 	if ( ! $is_admin ) : ?>
-		<div class="empty"><b>Log in to see drivers</b>Driver licenses are private. Open this page after logging into WordPress.</div>
+		<div class="empty"><b>Log in to see drivers</b>Driver licenses are private, so this tab needs your WordPress login.</div>
+		<a class="btn" style="margin-top:14px" href="<?php echo esc_url( $login_url ); ?>">🔐 Log in</a>
 	<?php elseif ( $drv ) :
 		$dd = 'new' === $drv ? array() : ( mecca_drv_all()[ $drv ] ?? array() );
 		$dv = function ( $k ) use ( $dd ) {
